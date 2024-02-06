@@ -1,0 +1,290 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box ;
+    font-family: 'Alfa Slab One';
+}
+body{
+    display: flex;
+    justify-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color:whitesmoke;
+    /* background: url("/Registration/Images/Background1.jpg") */
+
+}
+
+.container{
+    position: relative;
+    width: 1100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 30px;
+    margin-top: 8%;
+
+
+}
+.container .card{
+    width: 450px;
+    position: relative;
+    color: white;
+    height: 400px;
+    background: rgba(126, 125, 125,0.5);
+    margin: 30px 10px;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    /* box-shadow: 0.5px 10px #e6e6e6; */
+    transition: 0.3s ease-in-out;
+    margin-top: 5%;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgb(200, 200, 200);
+
+}
+.container .card .imgBx{
+    position: relative;
+    width:400px;
+    height: 80px;
+    top:-60px;
+    left:20px;
+}
+
+.container .card .imgBx img{
+    max-width: 100%;
+    border-radius: 10px;
+    height: 80px;
+}
+
+.imgBx:hover img{
+    transform: scale(1.1);
+}
+
+.form-group {
+    margin-right: 10px;
+    display: inline-block;
+    width: 50%; /* Adjust this width to fit three columns */
+}
+.nav{
+    position: fixed;
+    top:0;
+    display: flex;
+    justify-content: space-around;
+    width:100%;
+    height: 60px;
+    line-height: 60px;
+    z-index: 100;
+    background: linear-gradient(to right, rgb(190, 190, 190), rgb(164, 164, 164));
+}
+.nav-logo p{
+    color:white;
+    font-size: 25px;
+    font-weight:600 ;
+
+}
+.nav-menu ul{
+    display: flex;
+}
+
+.nav-menu ul li{
+    list-style-type: none;
+}
+
+.nav-menu ul li .link{
+    text-decoration: none;
+    font-weight: 500;
+    color:white;
+    padding-bottom: 15px;
+    margin: 0 25px;
+}
+
+
+.link:hover, .active{
+    border-bottom: 2px solid white;
+}
+
+.nav-button .btn{
+    width:130px;
+    height: 40px;
+    font-weight: 500;
+    background: rgba(128, 128, 128, 0.4);
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: .3 ease;
+}
+ .register-button{
+    font-size: 13px;
+    font-weight: 500;
+    color: black;
+    bottom: 20px;
+    transform: translateX(100%); /* Center the button horizontally */
+    height: 35px;
+    width:  30%;
+    cursor: pointer;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    position: absolute; 
+}
+    
+    
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+    display:inline;
+}
+
+.bottom span{
+    color: white;
+    margin-left: 5px;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.user-button {
+    gap:5px;
+    width:300px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    height: 40px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: .3 ease;
+}
+.btn{
+    color: white;
+    font-weight: 800;
+    width:300px;
+    height: 40px;
+    font-weight: 500;
+    background: rgba(128, 128, 128, 0.2);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0; /* No border radius on the bottom-left corner */
+    border-bottom-right-radius: 0; /* No border radius on the bottom-right corner */
+    border: none;
+    cursor: pointer;
+    transition: .3 ease;
+}
+.active {
+    color: white;
+    font-weight: 800;
+    width: 300px;
+    height: 40px;
+    font-weight: 500;
+   background: rgba(128, 128, 128, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: .3 ease;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0; /* No border radius on the bottom-left corner */
+    border-bottom-right-radius: 0; /* No border radius on the bottom-right corner */
+}
+
+
+.link:hover, .link-active{
+    border-bottom: 2px solid white;
+    color: white;
+}
+.top h5{
+    text-align: center;
+    padding-bottom: 30px;
+}
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 118vh;
+    background:rgba(187, 187, 187, 0.3);
+    max-width: 1000px;
+}
+
+header{
+    font-size: 30px;
+    color: white;
+    text-align: center;
+    padding: 10px 0 0 0;
+    
+}
+.contHeader{
+    margin: 20px;
+}
+
+.two-forms{
+    display: flex;
+    gap: 5px;
+    margin-left: 17px;
+}
+
+.two-forms input{
+    width: 90%;
+}
+.input-field{
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 15px;
+    color: black;
+    height: 38px;
+    margin-left: 5%;
+    width: 90%;
+    padding:0 10px 0 45px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    transition: .2s ease;
+    margin-bottom: 15px;
+
+
+}
+
+.client-form{
+    justify-content: space-around;
+    position: relative;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    width: 700px;
+    height: 420;
+    overflow: hidden;
+    z-index: 2;
+}
+
+
+
+.register-container{
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    transition: .5s ease-in-out; 
+}
+
+.client-container{
+    background: rgba(128, 128, 128, 0.4);
+    border-top-right-radius: 10px;
+
+
+}
+
+
+label {
+    display: block;
+    margin-left: 7%;
+    font-weight:100;
+    color: rgb(74, 74, 74);
+    margin-bottom: 3px;
+}
+.h4{
+    margin-bottom: 20px;
+}

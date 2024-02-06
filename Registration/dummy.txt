@@ -1,0 +1,58 @@
+<!-- <h3>Buyer</h3>
+            <p>Are you ready to level up your learning?</p>
+                <p>Join our bookstore today and get access to the best books on CBC.</p>
+                <p>Discover how to master the skills and knowledge you need for the real world.</p>
+                <p>It only takes a few seconds to sign up.</p>
+                <p>Don't miss this chance to join our community of CBC lovers.</p>
+        </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         <h1>📚 Join Our Marketplace and Reach Millions! 🌟</h1>
+    <p>Calling all authors, publishers, and stationery manufacturers! 📝✨</p>
+    <p>Take your creations to new heights by joining our vibrant online platform! 🚀</p>
+    <p>With millions of eager learners and educators browsing our marketplace daily, there's never been a better time to showcase your books or stationery products! 🌐</p>
+    <p>From captivating novels to informative textbooks, or innovative stationery supplies, our platform provides the perfect opportunity to connect with your target audience and boost your sales! 📖✒️</p>
+    <p>Join us today and expand your reach in the ever-growing world of education! 🌍</p>
+    <p>#ExpandYourHorizons #ConnectWithReaders</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .register-button {
+        position: absolute;
+        bottom: 20px; /* Adjust the distance from the bottom */
+        left: 50%;
+        transform: translateX(-50%); /* Center the button horizontally */
+        background-color: #007bff; /* Add background color for the button */
+        color: #fff; /* Add text color for the button */
+        padding: 10px 20px; /* Add padding for the button */
+        border: none; /* Remove border */
+        border-radius: 5px; /* Add border radius for rounded corners */
+        cursor: pointer; /* Change cursor to pointer on hover */
+
+}

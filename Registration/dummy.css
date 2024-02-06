@@ -27,6 +27,12 @@ body{
 
 
 }
+.submit-sect{
+    margin: 40px;
+    padding: 10px;
+
+}
+
 .container .card{
     width: 450px;
     position: relative;
@@ -221,6 +227,7 @@ header{
 }
 .contHeader{
     margin: 20px;
+    margin-top: 0;
 }
 
 .two-forms{

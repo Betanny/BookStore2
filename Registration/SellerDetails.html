@@ -36,13 +36,12 @@
                     <button type="button"  id="individual-btn" name="individual-btn" class="btn" onclick="individual()">Individual</button>
                     <button type="button" id="organization-btn"   name="organization-btn" class="btn" onclick="organization()">Business</button>
                 </div>
-                
-
-
+                <form action="seller.php" method="post" onsubmit="return submitForm()">
                 <div id="individual-container" class="client-container">
                     <div class="contHeader">
                         <h4>Personal</h4>
                         </div>
+
 
                     <div class="two-forms">
                         <div class="form-group">
@@ -81,6 +80,8 @@
                             <label for="password2">Confirm Password</label>
                             <input type="text" class="input-field" name="password2" />
                         </div>
+                        <input type="hidden" name="user_type">
+
                     </div>    
                 </div>
 
@@ -88,6 +89,7 @@
                     <div class="contHeader">
                     <h4>Organization Details</h4> 
                 </div>
+
                     <div class="input-box">
                         <label for="Organization">Organization Name</label>
                         <input type="text" class="input-field" name="OrgName" />
@@ -117,20 +119,20 @@
                         <div class="two-forms">
                             <div class="form-group">
                                 <label for="FirstName">First Name</label>
-                                <input type="text" class="input-field" name="fname" />
+                                <input type="text" class="input-field" name="cfname" />
                             </div>
                             <div class="form-group">
                                 <label for="LastName">Last Name</label>
-                                <input type="text" class="input-field" name="lname" />
+                                <input type="text" class="input-field" name="clname" />
                             </div>
                         </div>
                         <div class="input-box">
                             <label for="Email">Email</label>
-                            <input type="text" class="input-field" name="email" />
+                            <input type="text" class="input-field" name="cemail" />
                         </div>
                         <div class="input-box">
                             <label for="Phone">Phone</label>
-                            <input type="text" class="input-field" name="phone" />
+                            <input type="text" class="input-field" name="cphone" />
                         </div>
                         <div class="two-forms">
                             <div class="form-group">
@@ -144,6 +146,10 @@
                         </div> 
                     </div>
                 </div>
+                <div class="submit-sect">
+                <button type="submit" class="register-button">Submit</button>
+            </div>
+                </form>
             </div>
         </div>
     </div>
@@ -152,6 +158,9 @@
         var y = document.getElementById("organization-btn"); // Accessing the first element with the name "organization-btn"
         var indivCont = document.getElementById("individual-container");
         var orgCont = document.getElementById("organization-container");
+        // var user_type = document.getElementsByName("user_type");
+        var user_type = document.querySelector("input[name='user_type']");
+
     
         document.addEventListener("DOMContentLoaded", function() {
             x.click(); // Simulate click on individual button when the document is loaded
@@ -164,6 +173,11 @@
             y.classList.add('btn');
             indivCont.style.display = 'block'; // Set display property to block
             orgCont.style.display = 'none'; // Set display property to none
+            // var user_type= "Individual";
+            user_type.value="Individual";
+
+
+
         }
     
         function organization() {
@@ -173,7 +187,18 @@
             x.classList.add('btn');
             indivCont.style.display = 'none'; // Set display property to none
             orgCont.style.display = 'block'; // Set display property to block
+            user_type.value="Business";
+            // location.reload();
+
+    //         var individualInputs = document.querySelectorAll("#individual-container input");
+    // individualInputs.forEach(function(input) {
+    //     input.value = ""; // Set the value to an empty string
+    // });
+
+            // var user_type= "Business";
         }
+        localStorage.setItem('user_type', userType);
+
     </script>
 </body>
 

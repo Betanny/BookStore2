@@ -28,8 +28,10 @@ body{
 
 }
 .submit-sect{
-    margin: 40px;
-    padding: 10px;
+    margin-top: 80px;
+    margin-left: 40px;
+    padding-top: 10px;
+    justify-content: center;
 
 }
 
@@ -72,6 +74,11 @@ body{
     margin-right: 10px;
     display: inline-block;
     width: 50%; /* Adjust this width to fit three columns */
+}
+.form-group1 {
+    margin-right: 10px;
+    display: inline-block;
+    width: 30%; /* Adjust this width to fit three columns */
 }
 .nav{
     position: fixed;
@@ -128,7 +135,7 @@ body{
     bottom: 20px;
     transform: translateX(100%); /* Center the button horizontally */
     height: 35px;
-    width:  30%;
+    width:  25%;
     cursor: pointer;
     border-radius: 30px;
     background: rgba(255, 255, 255, 0.5);
@@ -207,7 +214,7 @@ body{
 }
 .top h5{
     text-align: center;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
 }
 .wrapper{
     display: flex;
@@ -222,7 +229,7 @@ header{
     font-size: 30px;
     color: white;
     text-align: center;
-    padding: 10px 0 0 0;
+    padding: 65px 0 0 0;
     
 }
 .contHeader{
@@ -246,7 +253,7 @@ header{
     height: 38px;
     margin-left: 5%;
     width: 90%;
-    padding:0 10px 0 45px;
+    padding:0 10px 0 10px;
     border: none;
     border-radius: 8px;
     outline: none;
@@ -275,7 +282,16 @@ header{
     display: flex;
     flex-direction: column;
     transition: .5s ease-in-out; 
+
 }
+
+.input-field[type="checkbox"] {
+    width: 25px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 10px; /*Adjust the margin as needed*/
+}
+
 
 .client-container{
     background: rgba(128, 128, 128, 0.4);
@@ -284,7 +300,9 @@ header{
 
 }
 
-
+.sec-cont {
+    padding: 15px 20px 10px 25px; /* Top, Right, Bottom, Left */
+}
 label {
     display: block;
     margin-left: 7%;

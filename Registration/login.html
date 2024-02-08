@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="regStyle.css">
+    <title>Registration</title>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>LOGO .</p>
+            </div>
+            <div class="nav-menu">
+                <ul>
+                    <li><a href="#" class="link active">Home</a></li>
+                    <li><a href="#" class="link">Home</a></li>
+                    <li><a href="#" class="link">Home</a></li>
+                    <li><a href="#" class="link">Home</a></li>
+                </ul>
+            </div>
+            <div class="nav-button">
+                <button class="btn" id="loginBtn">Sign In</button>
+                <button class="btn" id="registerBtn">Sign Up</button>
+            </div>
+            <div class="nav-menu-btn"></div>
+        </nav>
+
+        <div class="form-box">
+            <div class="register-container" id="register">
+                <div class="top">
+                    <header>Welcome Back!</header>
+                    <h5>Login to continue</h5>
+                </div>
+                <form action="login.php" method="post">
+                    <div class="input-box">
+                        <label for="email">Email</label>
+                        <input type="text" class="input-field" name="email" id="email" required>
+                        <i class="bx bx-envelope"></i>
+                    </div>
+                    <div class="input-box">
+                        <label for="password">Password</label>
+                        <input type="password" class="input-field" name="password" id="password" required>
+                        <i class="bx bx-key"></i>
+                    </div>
+                    <div class="input-box">
+                        <button type="submit" class="register-button">Submit</button>
+                    </div>
+                </form>
+                <div class="bottom">
+                    <span>Don't have an account? <a href="reg2.html">Register</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -5,7 +5,7 @@
     font-family: 'Alfa Slab One';
 }
 body{
-    display: flex;
+    display:flex;
     justify-content: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -27,6 +27,9 @@ body{
 
 
 }
+
+
+
 .submit-sect{
     margin-top: 80px;
     margin-left: 40px;
@@ -285,6 +288,8 @@ header{
 
 }
 
+
+
 .input-field[type="checkbox"] {
     width: 25px;
     height: 12px;
@@ -298,7 +303,7 @@ header{
     border-top-right-radius: 10px;
 
 
-}
+}        
 
 .sec-cont {
     padding: 15px 20px 10px 25px; /* Top, Right, Bottom, Left */

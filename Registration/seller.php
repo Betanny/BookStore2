@@ -14,9 +14,10 @@ try {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_type = $_POST["user_type"];
+        $role = "Dealer";
 
+        //Author
         if ($user_type === "Author") {
-
             $fname = $_POST["fname"];
             $lname = $_POST["lname"];
             $email = $_POST["email"];
@@ -31,16 +32,17 @@ try {
             $instagram = $_POST["instagram"];
             $facebook = $_POST["facebook"];
 
-            // Combine Instagram and Facebook values into a single string separated by comma
+            // Combinining Instagram and Facebook values into a single string 
             $social_media_handles = implode(', ', array_filter([$instagram, $facebook]));
-            // Inserting data into users table using prepared statements
-            $stmt_users = $db_connection->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-            $stmt_users->execute([$email, $password]);
+
+            // Inserting data into users table
+            $sql = "INSERT INTO users (email, password ,role) VALUES ('$email', '$password','$role')";
+            $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
 
-            // Insert data into the authors table using prepared statements
-            $stmt = $db_connection->prepare("INSERT INTO authors (first_name, last_name, email, phone, username, gender, nationality, address, biography, website, socialmedia_handles, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$fname, $lname, $email, $phone, $username, $gender, $nationality, $author_address, $biography, $website, $social_media_handles, $user_id]);
+            // Inserting data into the authors table
+            $sql = "INSERT INTO authors (first_name, last_name, email, phone, username, gender, nationality, address, biography, website, socialmedia_handles, user_id) VALUES ('$fname', '$lname', '$email', '$phone', '$username', '$gender', '$nationality', '$author_address', '$biography', '$website', '$social_media_handles', '$user_id')";
+            $db_connection->query($sql);
         }
         //PUBLISHER
         elseif ($user_type === "Publisher") {
@@ -55,18 +57,17 @@ try {
             $publisher_website = $_POST["website1"];
             $publisher_password = $_POST["password"];
 
-
-
-
-            $stmt_users = $db_connection->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-            $stmt_users->execute([$publisher_email, $publisher_password]);
+            // Inserting data into users table
+            $sql = "INSERT INTO users (email, password ,role) VALUES ('$publisher_email', '$publisher_password','$role')";
+            $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
 
-
-            // Insert data into publishers table using prepared statements
-            $stmt = $db_connection->prepare("INSERT INTO publishers (publisher_name, contact_first_name, contact_last_name, contact_email, contact_phone, publisher_email, publisher_phone, address, website, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$publisher_name, $contact_first_name, $contact_last_name, $contact_email, $contact_phone, $publisher_email, $publisher_phone, $publisher_address, $publisher_website, $user_id]);
-        } elseif ($user_type === "Manufacturer") {
+            // Inserting data into publishers table
+            $sql = "INSERT INTO publishers (publisher_name, contact_first_name, contact_last_name, contact_email, contact_phone, publisher_email, publisher_phone, address, website, user_id) VALUES ('$publisher_name', '$contact_first_name', '$contact_last_name', '$contact_email', '$contact_phone', '$publisher_email', '$publisher_phone', '$publisher_address', '$publisher_website', '$user_id')";
+            $db_connection->query($sql);
+        }
+        //Manufacturer
+        elseif ($user_type === "Manufacturer") {
             $manufacturer_name = $_POST['OrgName'];
             $contact_first_name = $_POST['cfname'];
             $contact_last_name = $_POST['clname'];
@@ -80,27 +81,14 @@ try {
             $products_offered = isset($_POST['products']) ? $_POST['products'] : array();
             $products_offered_string = '{' . implode(",", $products_offered) . '}';
 
-
-
-
-            $stmt_users = $db_connection->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-            $stmt_users->execute([$manufacturer_email, $manufacturer_password]);
+            // Inserting data into users table
+            $sql = "INSERT INTO users (email, password,role) VALUES ('$manufacturer_email', '$manufacturer_password','$role')";
+            $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
 
-
-            // Assuming $db_connection is your database connection object
-
-            // Prepare the SQL statement
-            $stmt = $db_connection->prepare("INSERT INTO manufacturers (manufacturer_name, contact_first_name, contact_last_name, contact_email, contact_phone, manufacturer_email, manufacturer_phone, address, website, products_offered,user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-            // Execute the SQL statement with the provided values
-            $stmt->execute([$manufacturer_name, $contact_first_name, $contact_last_name, $contact_email, $contact_phone, $manufacturer_email, $manufacturer_phone, $address, $website, $products_offered_string, $user_id]);
-
-
-
-
-
-
+            // Inserting data into manufacturers table
+            $sql = "INSERT INTO manufacturers (manufacturer_name, contact_first_name, contact_last_name, contact_email, contact_phone, manufacturer_email, manufacturer_phone, address, website, products_offered, user_id) VALUES ('$manufacturer_name', '$contact_first_name', '$contact_last_name', '$contact_email', '$contact_phone', '$manufacturer_email', '$manufacturer_phone', '$address', '$website', '$products_offered_string', '$user_id')";
+            $db_connection->query($sql);
         }
 
         echo "New record created successfully";

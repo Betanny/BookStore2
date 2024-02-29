@@ -38,7 +38,7 @@ try {
             // Inserting data into clients table 
             $sql = "INSERT INTO clients (client_type, first_name, last_name, email, phone, address, county, user_id) VALUES ('$user_type', '$first_name', '$last_name', '$email', '$phone', '$address', '$county', '$user_id')";
             $db_connection->query($sql);
-        } elseif ($user_type === "Business") {
+        } elseif ($user_type === "Organization") {
             $email = $_POST["OrgEmail"];
             $organization_name = $_POST["OrgName"];
             $organization_phone = $_POST["OrgPhone"];

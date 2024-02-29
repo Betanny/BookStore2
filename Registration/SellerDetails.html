@@ -38,7 +38,7 @@
                     <button type="button" id="manufacturer-btn"   name="manufacturer-btn" class="btn" onclick="manufacturer()">Manufacturer</button>
 
                 </div>
-                <form action="seller.php" method="post" onsubmit="return submitForm()">
+                <form  method="post" name="form" id="SellerForm" onsubmit="return submitForm()">
                     <input type="hidden" name="user_type">
                 <div id="individual-container" class="client-container">
                     <div id="contHeader" class="sec-cont">
@@ -49,29 +49,29 @@
                     <div class="two-forms">
                         <div class="form-group">
                             <label for="FirstName">First Name</label>
-                            <input type="text" class="input-field" name="fname" />
+                            <input type="text" class="inputfield" name="fname" />
                         </div>
                         <div class="form-group">
                             <label for="LastName">Last Name</label>
-                            <input type="text" class="input-field" name="lname" />
+                            <input type="text" class="inputfield" name="lname" />
                         </div>
                     </div>
                     <div class="input-box">
                         <label for="Email">Email</label>
-                        <input type="text" class="input-field" name="email" />
+                        <input type="text" class="inputfield" name="email" />
                     </div>
                     <div class="input-box">
                         <label for="Phone">Phone</label>
-                        <input type="text" class="input-field" name="phone" />
+                        <input type="text" class="inputfield" name="phone" />
                     </div>
                     <div class="two-forms">
                         <div class="form-group">
                             <label for="Username">Username</label>
-                            <input type="text" class="input-field" name="username" />
+                            <input type="text" class="inputfield" name="username" />
                         </div>
                         <div class="form-group">
                             <label for="Gender">Gender</label>
-                            <select class="input-field" name="gender">
+                            <select class="inputfield" name="gender">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                                 <option value="other">Other</option>
@@ -82,7 +82,7 @@
                     <div class="two-forms">
                         <div class="form-group">
                             <label for="nationality">Nationality</label>
-                            <select class="input-field" name="nationality">
+                            <select class="inputfield" name="nationality">
                                 <option value="Afghan">Afghan</option>
                                 <option value="Albanian">Albanian</option>
                                 <option value="Algerian">Algerian</option>
@@ -280,26 +280,26 @@
                                                     </div>
                         <div class="form-group">
                             <label for="Address">Address</label>
-                            <input type="text" class="input-field" name="address" />
+                            <input type="text" class="inputfield" name="address" />
                         </div>
                     </div>
                     <div class="input-box">
                         <label for="biography">Biography</label>
-                        <textarea class="input-field" name="biography" style="height: 100px;"></textarea>
+                        <textarea class="inputfield" name="biography" style="height: 100px;"></textarea>
                     </div>
                     
                     <div class="two-forms">
                         <div class="form-group1">
                             <label for="website">Website</label>
-                            <input type="text" class="input-field" name="website" />
+                            <input type="text" class="inputfield" name="website" />
                         </div>
                         <div class="form-group1">
                             <label for="instagram">Instagram</label>
-                            <input type="text" class="input-field" name="instagram" />
+                            <input type="text" class="inputfield" name="instagram" />
                         </div>
                         <div class="form-group1">
                             <label for="facebook">Facebook</label>
-                            <input type="text" class="input-field" name="facebook" />
+                            <input type="text" class="inputfield" name="facebook" />
                         </div>
                     </div>
 
@@ -307,11 +307,11 @@
                     <div class="two-forms">
                         <div class="form-group">
                             <label for="Password">Password</label>
-                            <input type="text" class="input-field" name="password" />
+                            <input type="text" class="inputfield" name="password" />
                         </div>
                         <div class="form-group">
                             <label for="password2">Confirm Password</label>
-                            <input type="text" class="input-field" name="password2" />
+                            <input type="text" class="inputfield" name="password2" />
                         </div>
 
                     </div>    
@@ -324,35 +324,35 @@
 
                     <div class="input-box">
                         <label for="Organization">Organization Name</label>
-                        <input type="text" class="input-field" name="OrgName" />
+                        <input type="text" class="inputfield" name="OrgName" />
                     </div>
                     <div class="input-box">
                         <label for="OrgEmail">Organization Email</label>
-                        <input type="text" class="input-field" name="OrgEmail" />
+                        <input type="text" class="inputfield" name="OrgEmail" />
                     </div>
                     <div class="input-box">
                         <label for="OrgPhone">Organization Phone</label>
-                        <input type="text" class="input-field" name="OrgPhone" />
+                        <input type="text" class="inputfield" name="OrgPhone" />
                     </div>
                     <div class="two-forms">
                         <div class="form-group">
                             <label for="Address">Address</label>
-                            <input type="text" class="input-field" name="address1" />
+                            <input type="text" class="inputfield" name="address1" />
                         </div>
                         <div class="form-group">
                             <label for="website">Website-URL</label>
-                            <input type="text" class="input-field" name="website1" />
+                            <input type="text" class="inputfield" name="website1" />
                         </div>
                         </div>
                         <div id="products-container" class="form-group_1">
                             <label for="products">Select all category of Products you offer</label>
-                            <input type="checkbox" class="input-field" name="products[]" id="ClassroomSupplies" value="Classroom Supplies"> Classroom Supplies
-                            <input type="checkbox" class="input-field" name="products[]" id="EducationalTechnology" value="Educational Technology"> Educational Technology
-                            <input type="checkbox" class="input-field" name="products[]" id="TeachingAids" value="Teaching Aids"> Teaching Aids
-                            <input type="checkbox" class="input-field" name="products[]" id="LaboratoryEquipment" value="Laboratory Equipment"> Laboratory Equipment
-                            <input type="checkbox" class="input-field" name="products[]" id="PlaygroundEquipment" value="Playground Equipment"> Playground Equipment
-                            <input type="checkbox" class="input-field" name="products[]" id="Furniture" value="Furniture"> Furniture
-                            <input type="checkbox" class="input-field" name="products[]" id="EducationalToysGames" value="Educational Toys and Games"> Educational Toys and Games
+                            <input type="checkbox" class="inputfield" name="products[]" id="ClassroomSupplies" value="Classroom Supplies"> Classroom Supplies
+                            <input type="checkbox" class="inputfield" name="products[]" id="EducationalTechnology" value="Educational Technology"> Educational Technology
+                            <input type="checkbox" class="inputfield" name="products[]" id="TeachingAids" value="Teaching Aids"> Teaching Aids
+                            <input type="checkbox" class="inputfield" name="products[]" id="LaboratoryEquipment" value="Laboratory Equipment"> Laboratory Equipment
+                            <input type="checkbox" class="inputfield" name="products[]" id="PlaygroundEquipment" value="Playground Equipment"> Playground Equipment
+                            <input type="checkbox" class="inputfield" name="products[]" id="Furniture" value="Furniture"> Furniture
+                            <input type="checkbox" class="inputfield" name="products[]" id="EducationalToysGames" value="Educational Toys and Games"> Educational Toys and Games
                         </div>
                         
                         
@@ -363,29 +363,29 @@
                         <div class="two-forms">
                             <div class="form-group">
                                 <label for="FirstName">First Name</label>
-                                <input type="text" class="input-field" name="cfname" />
+                                <input type="text" class="inputfield" name="cfname" />
                             </div>
                             <div class="form-group">
                                 <label for="LastName">Last Name</label>
-                                <input type="text" class="input-field" name="clname" />
+                                <input type="text" class="inputfield" name="clname" />
                             </div>
                         </div>
                         <div class="input-box">
                             <label for="Email">Email</label>
-                            <input type="text" class="input-field" name="cemail" />
+                            <input type="text" class="inputfield" name="cemail" />
                         </div>
                         <div class="input-box">
                             <label for="Phone">Phone</label>
-                            <input type="text" class="input-field" name="cphone" />
+                            <input type="text" class="inputfield" name="cphone" />
                         </div>
                         <div class="two-forms">
                             <div class="form-group">
                                 <label for="Password">Password</label>
-                                <input type="text" class="input-field" name="password" />
+                                <input type="text" class="inputfield" name="password" />
                             </div>
                             <div class="form-group">
                                 <label for="password2">Confirm Password</label>
-                                <input type="text" class="input-field" name="password2" />
+                                <input type="text" class="inputfield" name="password2" />
                             </div>
                         </div> 
                     </div>

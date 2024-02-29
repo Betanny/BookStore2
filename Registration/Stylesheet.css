@@ -249,7 +249,7 @@ header{
 .two-forms input{
     width: 90%;
 }
-.input-field{
+.inputfield{
     background: rgba(255, 255, 255, 0.8);
     font-size: 15px;
     color: black;
@@ -264,6 +264,31 @@ header{
     margin-bottom: 15px;
 
 
+}
+.inputcontrol input:focus{
+    outline: 0;
+}
+
+.inputcontrol.error input{
+    border-color: #ff3860;
+    
+}
+.inputcontrol.error {
+     color: #ff3860;
+       
+}
+.input-error {
+    border-color: red;
+}
+
+/* CSS for input fields without errors */
+.inputcontrol.success input{
+    border-color: green;
+}
+
+/* CSS for error messages */
+.error-message {
+    color: red;
 }
 
 .client-form{
@@ -290,7 +315,7 @@ header{
 
 
 
-.input-field[type="checkbox"] {
+.inputfield[type="checkbox"] {
     width: 25px;
     height: 12px;
     display: inline-block;

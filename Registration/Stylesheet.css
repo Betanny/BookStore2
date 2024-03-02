@@ -5,9 +5,7 @@
     font-family: 'Alfa Slab One';
 }
 body{
-    display:flex;
     justify-content: center;
-    background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-color:whitesmoke;
@@ -116,10 +114,10 @@ body{
     margin: 0 25px;
 }
 
-
+/* 
 .link:hover, .active{
     border-bottom: 2px solid white;
-}
+} */
 
 .nav-button .btn{
     width:130px;
@@ -206,15 +204,15 @@ body{
     transition: .3 ease;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    border-bottom-left-radius: 0; /* No border radius on the bottom-left corner */
-    border-bottom-right-radius: 0; /* No border radius on the bottom-right corner */
+    border-bottom-left-radius: 0; 
+    border-bottom-right-radius: 0; 
 }
 
 
-.link:hover, .link-active{
+/* .link:hover, .link-active{
     border-bottom: 2px solid white;
     color: white;
-}
+} */
 .top h5{
     text-align: center;
     padding-bottom: 10px;
@@ -228,11 +226,11 @@ body{
     max-width: 1000px;
 }
 
-header{
+h1{
     font-size: 30px;
     color: white;
     text-align: center;
-    padding: 65px 0 0 0;
+    padding: 20px 0 0 0;
     
 }
 .contHeader{

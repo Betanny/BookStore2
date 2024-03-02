@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/Shared Components/style.css">
+    <link rel="stylesheet" href="/Registration/Stylesheet.css">
+    <link rel="stylesheet" href="seller.css">
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="header-container"></div>
+     <div class="productsadd-container">
+    <section class="progress-bar">
+        <ul class="progress-bar-steps">
+            <li class="progress-step">
+                <span class="progress-count">1</span>
+                <span class="progress-label">Basic Details</span>
+            </li>
+            <li class="progress-step current-item">
+                <span class="progress-count">2</span>
+                <span class="progress-label ">Additional Details</span>
+            </li>
+            <li class="progress-step">
+                <span class="progress-count">3</span>
+                <span class="progress-label">Pricing</span>
+            </li>
+            <li class="progress-step">
+                <span class="progress-count">4</span>
+                <span class="progress-label">Upload Images</span>
+            </li>
+        </ul>
+
+    </section>
+    <div class="form">
+        <form method="post" name="form" id="SellerForm">
+            <input type="hidden" name="user_type">
+            <div class="products-container">
+               
+                <div id="basic-details" class="step-container">
+                    <div id="contHeader" class="sec-cont">
+                    <h4>Basic Details</h4>
+                </div>   
+                <div class="input-box">
+                    <div class="inputcontrol">
+                        <label for="BookTitle">Book Title</label>
+                        <input type="text" class="inputfield" name="booktitle" />
+                        <div class="error"></div>
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label for="Author">Author</label>
+                            <input type="text" class="inputfield" name="author" />
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label for="Publisher">Publisher</label>
+                            <input type="text" class="inputfield" name="publisher" />
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label for="Genre">Genre</label>
+                            <select class="dropbtn" name="genre">
+                                <option value="mathematics">Mathematics</option>
+                                <option value="science">Science and Technology</option>
+                                <option value="social_studies">Social Studies</option>
+                                <option value="languages">Languages</option>
+                                <option value="religious_education">Religious Education</option>
+                                <option value="practicals">Practical and Creative Subjects</option>
+                                <option value="physical_health">Physical Education and Health</option>
+                                <option value="environmental">Environmental Studies</option>                                
+                            </select>                     
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label for="Languages">languages</label>
+                            <select class="dropbtn" name="languages">
+                                <option value="english">English</option>
+                                <option value="kiswahili">Kiswahili</option>
+                                <option value="indigenous_luo">Luo</option>
+                                <option value="indigenous_kikuyu">Kikuyu</option>
+                                <option value="indigenous_kalenjin">Kalenjin</option>
+                                <option value="indigenous_luhya">Luhya</option>
+                                <option value="indigenous_kamba">Kamba</option>
+                                <option value="foreign_french">French</option>
+                                <option value="foreign_german">German</option>
+                                <option value="foreign_chinese">Chinese</option>
+                            </select>
+
+                                <div class="error"></div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="two-forms">
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label for="ISBN">ISBN number</label>
+                                <input type="text" class="inputfield" name="ISBN" />
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label for="Edition">Edition</label>
+                                <input type="text" class="inputfield" name="edition" placeholder="1st Edition"/>
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                    </div>
+</div>
+
+                <div id="additional-details" class="step-container">
+                    <div id="contHeader" class="sec-cont">
+                        <h4>Additional Details</h4>
+                    </div> 
+                    <div class="two-forms">
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label for="subjects">Subject</label>
+                                <select class="inputfield" name="subjects">
+                                    
+                                </select>
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label for="Grade">Grade</label>
+                                <select class="dropbtn" name="grade">
+                                    <option value="baby_class">Baby Class</option>
+                                    <option value="pre_primary_1">Pre-Primary 1</option>
+                                    <option value="pre_primary_2">Pre-Primary 2</option>
+                                    <option value="grade_1">Grade 1</option>
+                                    <option value="grade_2">Grade 2</option>
+                                    <option value="grade_3">Grade 3</option>
+                                    <option value="grade_4">Grade 4</option>
+                                    <option value="grade_5">Grade 5</option>
+                                    <option value="grade_6">Grade 6</option>
+                                    <option value="grade_7">Grade 7</option>
+                                    <option value="grade_8">Grade 8</option>
+                                    <option value="form_1">Form 1</option>
+                                    <option value="form_2">Form 2</option>
+                                    <option value="form_3">Form 3</option>
+                                    <option value="form_4">Form 4</option>
+                                    <option value="form_5">Form 5</option>
+                                    <option value="form_6">Form 6</option>
+                                    <option value="year_1">Year 1</option>
+                                    <option value="year_2">Year 2</option>
+                                    <option value="year_3">Year 3</option>
+                                    <option value="year_4">Year 4</option>
+                                    <option value="year_5">Year 5</option>
+                                    <option value="year_6">Year 6</option>
+                                    <option value="year_7">Year 7</option>
+                                    <option value="year_8">Year 8</option>
+                                    <option value="year_9">Year 9</option>
+                                    <option value="year_10">Year 10</option>
+                                    <option value="year_11">Year 11</option>
+                                    <option value="year_12">Year 12</option>
+                                    <option value="year_13">Year 13</option>
+
+                                                                    </select>
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two-forms">
+                        <div class="form-group">
+                            <div class="inputcontrol radio-container">
+                                <label for="series">Is it part of a series?</label>
+                                <input type="radio" class="rdlbutton" id="series" name="series" value="yes" onclick="toggleTextBox(true)"> Yes
+                                <input type="radio" class="rdlbutton" id="series" name="series" value="no" onclick="toggleTextBox(false)"> No
+                                <div id="textBoxContainer" style="display:none;">
+                                    <label for="textBox">Which One:</label>
+                                    <input type="text" class="inputfield" id="textBox" name="textBox">
+                                  </div>
+                                  <div class="error"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="inputcontrol radio-container">
+                                <label for="covertype">Cover Type</label>
+                                <input type="radio"  class="rdlbutton" id="covertype" name="covertype" value="Hardcover" > Hardcover
+                                <input type="radio" class="rdlbutton" id="covertype" name="covertype" value="SoftCover"> SoftCover 
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two-forms">
+                        <div class="form-group">
+                            <div class="inputcontrol radio-container">
+                                <label for="damaged">Is it part of a damaged?</label>
+                                <input type="radio" class="rdlbutton" id="series" name="damaged" value="yes" onclick="toggleTextBox(true)"> Yes
+                                <input type="radio" class="rdlbutton" id="series" name="damaged" value="no" onclick="toggleTextBox(false)"> No
+                                <div id="textBoxContainer" style="display:none;">
+                                    <label for="textBox">What are issues</label>
+                                    <input type="text" id="textBox" name="textBox">
+                                  </div>
+                                  <div class="error"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label for="pages">Number of Pages</label>
+                                <input type="text" class="inputfield" name="pages" />
+                                <div class="error"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="details">Describe the book</label>
+                            <textarea class="inputfield" name="details" style="height: 100px;"></textarea>
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pricing" class="step-container">
+                    <div id="contHeader" class="sec-cont">
+                        <h4>Pricing</h4>
+                    </div> 
+                    <!--Retail-->
+                      <div class="input-box">
+                    <div class="inputcontrol">
+                        <label for="retailprice">Retail Price(1 copy)</label>
+                        <input type="text" class="inputfield" name="retailprice" />
+                        <div class="error"></div>
+                    </div>
+                </div>
+                <h4>Bulk(More than one)</h4>
+                <div class="two-forms">
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="priceinbulk">Price</label>
+                            <input type="text" class="inputfield" name="priceinbulk" />
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label for="mininbulk">Minimum number of copies in Bulk</label>
+                                <input type="text" class="inputfield" name="mininbulk" />
+                                <div class="error"></div>
+                            </div>
+                        </div>
+
+                    
+                    </div>
+                </div>
+
+                <div id="uploading-images" class="step-container">
+
+                </div>
+<div class="scroll-sect">
+    <button type="button" class="button" id="prev" onclick="previousStep()">Previous</button>
+    <button type="button" class="button" id="next" onclick="nextStep()">Next</button>
+</div>
+</div>
+
+
+</form>
+</div>
+</div>
+
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    fetch('/Shared Components/header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+            
+        });
+     
+});
+
+
+
+
+//Subjects based on book category
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('book-categories').addEventListener('change', function() {
+        var bookCategory = this.value;
+        var subjectsDropdown = document.getElementById('subjects');
+
+        // Clear existing options
+        subjectsDropdown.innerHTML = '';
+
+        // Populate subjects based on the selected book category
+        switch(bookCategory) {
+            case 'mathematics':
+                addSubjectsToDropdown(['Algebra', 'Geometry', 'Trigonometry', 'Calculus']);
+                break;
+            case 'science':
+                addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
+                break;
+            case 'social_studies':
+                addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
+                break;
+            case 'languages':
+                addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
+                break;
+            case 'religious_education':
+                addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
+                break;
+            case 'practicals':
+                addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
+                break;
+            case 'physical_health':
+                addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
+                break;
+            case 'environmental':
+                addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
+                break;
+            default:
+                // If no book category matches, display a default message or behavior
+                subjectsDropdown.innerHTML = '<option value="">No subjects available</option>';
+        }
+    });
+
+    function addSubjectsToDropdown(subjects) {
+        var subjectsDropdown = document.getElementById('subjects');
+        subjects.forEach(function(subject) {
+            var option = document.createElement('option');
+            option.value = subject.toLowerCase().replace(/\s+/g, '_'); // Convert subject to lowercase and replace spaces with underscores
+            option.textContent = subject;
+            subjectsDropdown.appendChild(option);
+        });
+    }
+});
+function toggleTextBox(show) {
+  var textBoxContainer = document.getElementById("textBoxContainer");
+  textBoxContainer.style.display = show ? "block" : "none";
+}
+
+
+
+
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     var currentStep = 1; // Current step of the form
+//     var totalSteps = 4; // Total number of steps in the form
+//     var prevbtn = document.getElementById("prev");
+//     var step1 = document.getElementById("basic-details");
+//     var step2 = document.getElementById("additional-details");
+//     var step3 = document.getElementById("pricing");
+//     var step4 = document.getElementById("uploading-images");
+//     prevbtn.click(currentStep);
+//     //console.log('step' + currentStep);
+// });
+
+// function previousStep(currentStep) {
+//     if (currentStep > 1) {
+//         currentStep -= 1;
+//     } else {
+//         currentStep = currentStep;
+//     }
+//     showStep(currentStep);
+
+// }
+
+// function nextStep(currentStep) {
+//     if (currentStep < 4) {
+//         currentStep = currentStep + 1;
+//     } else {
+//         currentStep = currentStep;
+//     }
+//     showStep(currentStep);
+// }
+
+// function showStep(step) {
+//     // Hide all step containers
+//     for (var i = 1; i <= 4; i++) {
+//         var stepContainer = document.getElementById('step' + i);
+//         console.log(stepContainer);
+//         if (stepContainer) {
+//             stepContainer.style.display = i === step ? "block" : "none";
+//         }
+//     }
+// }
+// document.addEventListener("DOMContentLoaded", function() {
+//     var currentStep = 1; // Current step of the form
+//     var totalSteps = 4; // Total number of steps in the form
+//     showStep(currentStep);
+
+//});
+
+    var step1 = document.getElementById("basic-details");
+    var step2 = document.getElementById("additional-details");
+    var step3 = document.getElementById("pricing");
+    var step4 = document.getElementById("uploading-images");
+    var prevbtn = document.getElementById("prev");
+    var nextbtn = document.getElementById("next");
+    var currentStep = 1; // Current step of the form
+
+document.addEventListener("DOMContentLoaded", function() {
+        showStep(currentStep);
+});
+
+function previousStep() {
+        if (currentStep > 1) {
+            currentStep--;
+        }
+        showStep(currentStep);
+    }
+
+    function nextStep() {
+        if (currentStep < 5) {
+            currentStep++;
+        }
+        showStep(currentStep);
+    }
+
+    function showStep(step) {
+        switch(step) {
+            case 1:
+                step1.style.display = "block";
+                step2.style.display = "none";
+                step3.style.display = "none";
+                step4.style.display = "none";
+                prevbtn.style.display = "none";
+                break;
+            case 2:
+                step1.style.display = "none";
+                step2.style.display = "block";
+                step3.style.display = "none";
+                step4.style.display = "none";
+                prevbtn.style.display = "block";
+                nextbtn.style.display = "block";
+
+
+                break;
+            case 3:
+                step1.style.display = "none";
+                step2.style.display = "none";
+                step3.style.display = "block";
+                step4.style.display = "none";
+                prevbtn.style.display = "block";
+                nextbtn.style.display = "block";
+
+
+                break;
+            case 4:
+                step1.style.display = "none";
+                step2.style.display = "none";
+                step3.style.display = "none";
+                step4.style.display = "block";
+                prevbtn.next.display = "none";
+
+
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+
+
+</script>
+</html>

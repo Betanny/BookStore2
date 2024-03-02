@@ -1,0 +1,106 @@
+.productsadd-container{
+        width: 85%;
+        margin: auto; 
+        display:flex; 
+        flex-direction: column;  
+        justify-content: center;
+        align-items: center;        
+    }    
+   
+   
+
+    .form {
+        /* Adjust the form width and margin as needed */
+        width: 85%;
+        margin: auto;
+    }
+    
+.products-container{
+            margin-top: 82px;
+            background: #e6e8ef;
+            border-top-right-radius: 10px;
+            border-radius: 20px;
+        
+        
+        }
+.products-container h4{
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+
+}
+.scroll-sect{
+    justify-content: flex-end;
+    display: flex;
+    gap: 50%;;
+}    
+
+.button{
+    margin: 30px 50px 30px 40px;
+    font-size: 13px;
+    font-weight: 600;
+    height: 35px;
+    width:  150px;
+    cursor: pointer;
+    border-radius: 30px;
+    background: var(--secondary-color);
+    color: #ffffff;
+    cursor: pointer;
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+ }
+
+ .dropbtn{
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 15px;
+    color: black;
+    height: 38px;
+    margin-left: 5%;
+    width: 90%;
+    padding:0 10px 0 10px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    transition: .2s ease;
+    margin-bottom: 15px;
+ }
+ 
+
+ .radio-container {
+    display: flex;
+    flex-wrap:initial;
+    flex-direction: column;
+    align-items: left;
+    justify-content: start;
+
+
+}
+.rdlbutton{
+    margin-left: -00px;
+
+}
+
+/* Style for radio button labels */
+
+
+/* Style for radio buttons */
+/* .radio-container input[type="radio"] {
+    display:list-item;
+} */
+
+/* Style for custom radio buttons */
+
+
+/* Show dot when radio button is checked */
+.radio-container input[type="radio"]:checked + .radio-custom::after {
+    opacity: 1;
+}
+
+    /* .step-container {
+        display: none;
+      }
+      .step-container.active {
+        display: block;
+      } */

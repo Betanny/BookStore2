@@ -1,3 +1,12 @@
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('/Shared Components/header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
+});
+
+
 var x = document.getElementById("author-btn");
 var y = document.getElementById("publisher-btn");
 var z = document.getElementById("manufacturer-btn");

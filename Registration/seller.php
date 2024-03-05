@@ -28,7 +28,7 @@ try {
             $author_address = $_POST["address"]; // Renamed to avoid conflict
             $biography = $_POST["biography"];
             $website = $_POST["website"];
-            $password = $_POST["password"];
+            $password = hash('sha256', $_POST["password"]); // Hashing the password
             $instagram = $_POST["instagram"];
             $facebook = $_POST["facebook"];
 
@@ -55,7 +55,7 @@ try {
             $publisher_phone = $_POST["OrgPhone"];
             $publisher_address = $_POST["address1"]; // Make sure the address input has a unique name
             $publisher_website = $_POST["website1"];
-            $publisher_password = $_POST["password"];
+            $publisher_password = hash('sha256', $_POST["password"]);
 
             // Inserting data into users table
             $sql = "INSERT INTO users (email, password ,role) VALUES ('$publisher_email', '$publisher_password','$role')";
@@ -77,7 +77,7 @@ try {
             $manufacturer_phone = $_POST['OrgPhone'];
             $address = $_POST['address1'];
             $website = $_POST['website1'];
-            $manufacturer_password = $_POST["password"];
+            $manufacturer_password = hash('sha256', $_POST["password"]);
             $products_offered = isset($_POST['products']) ? $_POST['products'] : array();
             $products_offered_string = '{' . implode(",", $products_offered) . '}';
 

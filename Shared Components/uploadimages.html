@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Form</title>
+    <style>
+        /* Your existing CSS styles for .image-container */
+    </style>
+</head>
+<body>
+    <h1>Upload Images</h1>
+    
+<!-- HTML form for uploading images -->
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <div class="image-container">
+        <label for="front-cover">Front Cover:</label>
+        <input type="file" id="front-cover" name="Front-cover">
+        <img id="front-image-preview" src="" alt="Front Cover Preview">
+    </div>
+    <div class="image-container">
+        <label for="back-cover">Back Cover:</label>
+        <input type="file" id="back-cover" name="Back-cover">
+        <img id="back-image-preview" src="" alt="Back Cover Preview">
+    </div>
+    <!-- Add more image containers for other images if needed -->
+    <input type="submit" name="submit" value="Upload Images">
+</form>
+
+<script>
+// Display selected image preview
+document.getElementById('front-cover').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('front-image-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('back-cover').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('back-image-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+</body>
+</html>

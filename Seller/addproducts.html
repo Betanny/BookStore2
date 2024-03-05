@@ -35,7 +35,7 @@
 
     </section>
     <div class="form">
-        <form method="post" name="form" id="SellerForm">
+        <form action="/Shared Components/upload.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="user_type">
             <div class="products-container">
                
@@ -261,11 +261,32 @@
                 </div>
 
                 <div id="uploading-images" class="step-container">
+                    <h4>Front page and Back Page</h4>
+                    <div class="front-back-container">
+                        <div class="image-container">
+                            <label class="regular-label">Add the Front Cover of your book</label>
+                            <label class="img-label" for="front-cover">Upload front cover Image</label>
+                            <input type="file" id="front-cover" name="Front-cover">
+                            <img class="book-images" id="front-image-preview" src="" >
+                        </div>
+                        <div class="image-container">
+                            <label class="regular-label">Add the Back Cover of your book</label>
+                            <label class="img-label" for="back-cover">Select Image</label>
+                            <input type="file" id="back-cover" name="Back-cover">
+                            <img class="book-images" id="back-image-preview" src="">
+                        </div>
+                </div>
+                    
+                
+                
+                     
 
                 </div>
 <div class="scroll-sect">
     <button type="button" class="button" id="prev" onclick="previousStep()">Previous</button>
     <button type="button" class="button" id="next" onclick="nextStep()">Next</button>
+    <input type="submit" class="button" name="submit" id="submit" value="Upload Images">
+
 </div>
 </div>
 
@@ -284,7 +305,29 @@
             document.getElementById('header-container').innerHTML = data;
             
         });
+       
      
+});
+document.getElementById('front-cover').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('front-image-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('back-cover').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('back-image-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
 });
 
 
@@ -349,61 +392,13 @@ function toggleTextBox(show) {
 
 
 
-
-// document.addEventListener("DOMContentLoaded", function() {
-//     var currentStep = 1; // Current step of the form
-//     var totalSteps = 4; // Total number of steps in the form
-//     var prevbtn = document.getElementById("prev");
-//     var step1 = document.getElementById("basic-details");
-//     var step2 = document.getElementById("additional-details");
-//     var step3 = document.getElementById("pricing");
-//     var step4 = document.getElementById("uploading-images");
-//     prevbtn.click(currentStep);
-//     //console.log('step' + currentStep);
-// });
-
-// function previousStep(currentStep) {
-//     if (currentStep > 1) {
-//         currentStep -= 1;
-//     } else {
-//         currentStep = currentStep;
-//     }
-//     showStep(currentStep);
-
-// }
-
-// function nextStep(currentStep) {
-//     if (currentStep < 4) {
-//         currentStep = currentStep + 1;
-//     } else {
-//         currentStep = currentStep;
-//     }
-//     showStep(currentStep);
-// }
-
-// function showStep(step) {
-//     // Hide all step containers
-//     for (var i = 1; i <= 4; i++) {
-//         var stepContainer = document.getElementById('step' + i);
-//         console.log(stepContainer);
-//         if (stepContainer) {
-//             stepContainer.style.display = i === step ? "block" : "none";
-//         }
-//     }
-// }
-// document.addEventListener("DOMContentLoaded", function() {
-//     var currentStep = 1; // Current step of the form
-//     var totalSteps = 4; // Total number of steps in the form
-//     showStep(currentStep);
-
-//});
-
     var step1 = document.getElementById("basic-details");
     var step2 = document.getElementById("additional-details");
     var step3 = document.getElementById("pricing");
     var step4 = document.getElementById("uploading-images");
     var prevbtn = document.getElementById("prev");
     var nextbtn = document.getElementById("next");
+    var submitbtn = document.getElementById("submit");
     var currentStep = 1; // Current step of the form
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -432,6 +427,8 @@ function previousStep() {
                 step3.style.display = "none";
                 step4.style.display = "none";
                 prevbtn.style.display = "none";
+                submitbtn.style.display="none"
+
                 break;
             case 2:
                 step1.style.display = "none";
@@ -440,6 +437,8 @@ function previousStep() {
                 step4.style.display = "none";
                 prevbtn.style.display = "block";
                 nextbtn.style.display = "block";
+                submitbtn.style.display="none"
+
 
 
                 break;
@@ -450,6 +449,8 @@ function previousStep() {
                 step4.style.display = "none";
                 prevbtn.style.display = "block";
                 nextbtn.style.display = "block";
+                submitbtn.style.display="none"
+
 
 
                 break;
@@ -458,7 +459,9 @@ function previousStep() {
                 step2.style.display = "none";
                 step3.style.display = "none";
                 step4.style.display = "block";
-                prevbtn.next.display = "none";
+                nextbtn.style.display = "none";
+                prevbtn.style.display = "block";
+                submitbtn.style.display="block"
 
 
                 break;

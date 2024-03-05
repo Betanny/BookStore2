@@ -24,7 +24,7 @@ try {
             $phone = $_POST["phone"];
             $address = $_POST["address"];
             $county = $_POST["county"];
-            $password = $_POST["password"];
+            $password = hash('sha256', $_POST["password"]); // Hashing the password
 
 
             // Inserting data into users table  
@@ -48,7 +48,7 @@ try {
             $contact_phone = $_POST["cphone"];
             $address = $_POST["address"];
             $county = $_POST["county"];
-            $password = $_POST["password"];
+            $password = hash('sha256', $_POST["password"]); // Hashing the password
 
 
             // Inserting data into users table  

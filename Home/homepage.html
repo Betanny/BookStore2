@@ -149,23 +149,8 @@
         </div>
        
     </div>
-    <div class="footer">
-        <div class="social">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-snapchat"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+    <div id="footer-container"></div>
 
-        </div>
-        <ul class="list">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Terms and conditions</a></li>
-
-        </ul>
-        <p class="copyright"> CBCentral @ 2024</p>
-    </div>
     
 </body>
 <script>
@@ -174,6 +159,11 @@
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
+        });
+        fetch('/Shared Components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-container').innerHTML = data;
         });
 });
 </script>

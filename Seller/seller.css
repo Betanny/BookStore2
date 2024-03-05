@@ -104,3 +104,101 @@
       .step-container.active {
         display: block;
       } */
+
+      .step-container {
+        padding-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    
+    .image-container {
+        width: 50%;
+        margin-bottom: 10px;
+        text-align: center;
+        position: relative;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .front-back-container{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        
+    }
+    
+    .image-container .regular-label{
+        text-align: center;
+        position: absolute;
+        top: 10px;
+        right: 10%;
+        transform: translateX(-50%);
+    }
+    .image-container h4 {
+        text-align: center;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 20px;
+    }
+    
+    .img-label {
+        position: absolute;
+        font-size: medium;
+        bottom: 65%;
+        left: 42%;
+        transform: translateX(-50%);
+        z-index: 1;
+        cursor: pointer;
+        color: #000; /* Initial label color */
+    }
+    
+    .img-label:hover {
+        font-weight: bolder;
+    }
+    
+    input[type="file"] {
+        display: none;
+    }
+    
+    .book-images {
+        border-radius: 20px;
+        width: 80%;
+        height: 80%;
+        display: block;
+        position: absolute;
+        background-size:50%;       
+        background-repeat: no-repeat;
+        background-image: url('/Images/Illustrations/upload-image.svg'); /* Default background image */
+        background-position-x: 60%;
+        background-position-y:40%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto; /* Center the image inside the container */
+    }
+    
+    .image-container::before {
+        content: "";
+        display: block;
+        width: 100%;
+        padding-top: 100%; /* Maintain aspect ratio for square */
+        cursor: pointer;
+        border-radius: 20px;
+    }
+    
+    .book-images:hover::before {
+        background-color: white; /* Background color on hover */
+    }
+    
+    input[type="file"]:valid {
+        border: 2px solid green;
+        background-color: #f0f8ff; /* Light blue */
+    }
+    

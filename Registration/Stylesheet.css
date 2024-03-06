@@ -222,8 +222,9 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 118vh;
-    background:rgba(187, 187, 187, 0.3);
-    max-width: 1000px;
+    /* background:rgba(13, 116, 156, 0.1); */
+    background: #e6e8ef;
+    width: 100%;
 }
 
 h1{
@@ -265,6 +266,10 @@ h1{
 }
 .inputcontrol input:focus{
     outline: 0;
+}
+.inputcontrol label::after{
+    content: '*';
+    color: red;
 }
 
 .inputcontrol.error input{
@@ -338,6 +343,16 @@ label {
     color: rgb(74, 74, 74);
     margin-bottom: 3px;
 }
+.inputcontrol label.no-asterisk::after {
+    content: none;
+}
 .h4{
     margin-bottom: 20px;
 }
+
+.inputcontrol input:invalid + .error {
+    display: inline-block;
+    color: red;
+    margin-left: 5px; 
+}
+

@@ -35,7 +35,7 @@
 
     </section>
     <div class="form">
-        <form action="/Shared Components/upload.php" method="post" enctype="multipart/form-data">
+        <form action="/Shared Components/upload.php" method="post"  id="Add-products" enctype="multipart/form-data">
             <input type="hidden" name="user_type">
             <div class="products-container">
                
@@ -70,9 +70,10 @@
                     <div class="form-group">
                         <div class="inputcontrol">
                             <label for="Genre">Genre</label>
-                            <select class="dropbtn" name="genre">
-                                <option value="mathematics">Mathematics</option>
+                            <select class="dropbtn" id="book-categories" name="genre">
+                                <option style="display: none;" value=""></option>
                                 <option value="science">Science and Technology</option>
+                                <option value="mathematics">Mathematics</option>
                                 <option value="social_studies">Social Studies</option>
                                 <option value="languages">Languages</option>
                                 <option value="religious_education">Religious Education</option>
@@ -129,7 +130,7 @@
                         <div class="form-group">
                             <div class="inputcontrol">
                                 <label for="subjects">Subject</label>
-                                <select class="inputfield" name="subjects">
+                                <select class="inputfield"id="subjects" name="subjects">
                                     
                                 </select>
                                 <div class="error"></div>
@@ -201,8 +202,8 @@
                         <div class="form-group">
                             <div class="inputcontrol radio-container">
                                 <label for="damaged">Is it part of a damaged?</label>
-                                <input type="radio" class="rdlbutton" id="series" name="damaged" value="yes" onclick="toggleTextBox(true)"> Yes
-                                <input type="radio" class="rdlbutton" id="series" name="damaged" value="no" onclick="toggleTextBox(false)"> No
+                                <input type="radio" class="rdlbutton" id="damaged" name="damaged" value="yes" onclick="toggleTextBox(true)"> Yes
+                                <input type="radio" class="rdlbutton" id="damaged" name="damaged" value="no" onclick="toggleTextBox(false)"> No
                                 <div id="textBoxContainer" style="display:none;">
                                     <label for="textBox">What are issues</label>
                                     <input type="text" id="textBox" name="textBox">
@@ -232,7 +233,7 @@
                         <h4>Pricing</h4>
                     </div> 
                     <!--Retail-->
-                      <div class="input-box">
+                     <div class="input-box">
                     <div class="inputcontrol">
                         <label for="retailprice">Retail Price(1 copy)</label>
                         <input type="text" class="inputfield" name="retailprice" />
@@ -264,18 +265,58 @@
                     <h4>Front page and Back Page</h4>
                     <div class="front-back-container">
                         <div class="image-container">
+                            <div class="inputcontrol">
                             <label class="regular-label">Add the Front Cover of your book</label>
                             <label class="img-label" for="front-cover">Upload front cover Image</label>
-                            <input type="file" id="front-cover" name="Front-cover">
+                            <input type="file" id="front-cover" name="Front-cover"  accept=".jpg,.jpeg,.png,gif"/>
                             <img class="book-images" id="front-image-preview" src="" >
-                        </div>
+                        <div class="error"></div>
+                    </div>
+                 </div>
+
                         <div class="image-container">
+                            <div class="inputcontrol">
                             <label class="regular-label">Add the Back Cover of your book</label>
                             <label class="img-label" for="back-cover">Select Image</label>
-                            <input type="file" id="back-cover" name="Back-cover">
+                            <input type="file" id="back-cover" name="Back-cover" accept=".jpg,.jpeg,.png,gif">
                             <img class="book-images" id="back-image-preview" src="">
-                        </div>
+                        <div class="error"></div>
+                    </div>
+                    </div>
+
                 </div>
+                <h4>Please upload other relevant images of your  Book</h4>
+                <h5>If the book is damaged please include the damaged page</h5>
+                    <div class="other-pages-container">
+                        <div class="image-container">
+                            <div class="inputcontrol">
+                            <label class="regular-label">Relevant page</label>
+                            <label class="img-label" for="relevant-page1">Upload Image</label>
+                            <input type="file" id="relevant-page1" name="relevant-page1" accept=".jpg,.jpeg,.png,gif">
+                            <img class="book-images" id="relevant-page1-preview" src="" >
+                        <div class="error"></div>
+                    </div>
+                 </div>
+
+                        <div class="image-container">
+                            <div class="inputcontrol">
+                            <label class="regular-label">Relevant page</label>
+                            <label class="img-label" for="relevant-page2">Select Image</label>
+                            <input type="file" id="relevant-page2" name="relevant-page2" accept=".jpg,.jpeg,.png,gif">
+                            <img class="book-images" id="relevant-page2-preview" src="">
+                        <div class="error"></div>
+                    </div>
+                    </div>
+                    <div class="image-container">
+                        <div class="inputcontrol">
+                        <label class="regular-label">Relevant page</label>
+                        <label class="img-label" for="relevant-page3">Select Image</label>
+                        <input type="file" id="relevant-page3" name="relevant-page3" accept=".jpg,.jpeg,.png,gif">
+                        <img class="book-images" id="relevant-page3-preview" src="">
+                    <div class="error"></div>
+                </div>
+                </div>
+                    </div>
                     
                 
                 
@@ -285,7 +326,7 @@
 <div class="scroll-sect">
     <button type="button" class="button" id="prev" onclick="previousStep()">Previous</button>
     <button type="button" class="button" id="next" onclick="nextStep()">Next</button>
-    <input type="submit" class="button" name="submit" id="submit" value="Upload Images">
+    <button type="submit" class="button" name="submit" id="submit">Submit</button>
 
 </div>
 </div>
@@ -306,84 +347,149 @@
             
         });
        
-     
-});
-document.getElementById('front-cover').addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('front-image-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
+        handleImageChange(document.getElementById('front-cover'), 'front-image-preview');
+    handleImageChange(document.getElementById('back-cover'), 'back-image-preview');
+    handleImageChange(document.getElementById('relevant-page1'), 'relevant-page1-preview');
+    handleImageChange(document.getElementById('relevant-page2'), 'relevant-page2-preview');
+    handleImageChange(document.getElementById('relevant-page3'), 'relevant-page3-preview');
+
+    // You can add more image inputs and their respective preview IDs here if needed
+
 });
 
-document.getElementById('back-cover').addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('back-image-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-
-
-
-//Subjects based on book category
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('book-categories').addEventListener('change', function() {
-        var bookCategory = this.value;
-        var subjectsDropdown = document.getElementById('subjects');
-
-        // Clear existing options
-        subjectsDropdown.innerHTML = '';
-
-        // Populate subjects based on the selected book category
-        switch(bookCategory) {
-            case 'mathematics':
-                addSubjectsToDropdown(['Algebra', 'Geometry', 'Trigonometry', 'Calculus']);
-                break;
-            case 'science':
-                addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
-                break;
-            case 'social_studies':
-                addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
-                break;
-            case 'languages':
-                addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
-                break;
-            case 'religious_education':
-                addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
-                break;
-            case 'practicals':
-                addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
-                break;
-            case 'physical_health':
-                addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
-                break;
-            case 'environmental':
-                addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
-                break;
-            default:
-                // If no book category matches, display a default message or behavior
-                subjectsDropdown.innerHTML = '<option value="">No subjects available</option>';
+// Function to handle image changes for any image input element
+function handleImageChange(inputElement, imagePreviewId) {
+    inputElement.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(imagePreviewId).src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     });
+}
 
-    function addSubjectsToDropdown(subjects) {
-        var subjectsDropdown = document.getElementById('subjects');
-        subjects.forEach(function(subject) {
-            var option = document.createElement('option');
-            option.value = subject.toLowerCase().replace(/\s+/g, '_'); // Convert subject to lowercase and replace spaces with underscores
-            option.textContent = subject;
-            subjectsDropdown.appendChild(option);
+
+ 
+
+
+// // //Subjects based on book category
+// // Function to add subjects to the dropdown
+// function addSubjectsToDropdown(subjects) {
+//     var subjectsDropdown = document.getElementById('subjects');
+
+//     // Clear existing options
+//     subjectsDropdown.innerHTML = '';
+
+//     // Add new options based on the subjects array
+//     subjects.forEach(function(subject) {
+//         var option = document.createElement('option');
+//         option.value = subject.toLowerCase().replace(/\s/g, '_'); // Convert subject name to lowercase and replace spaces with underscores
+//         option.textContent = subject; // Set the visible text (e.g., "Algebra")
+//         subjectsDropdown.appendChild(option);
+//     });
+// }
+
+// // Event listener for the book category selection change
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('book-categories').addEventListener('change', function() {
+//         var bookCategory = this.value;
+
+//         // Call the function to populate subjects based on the selected book category
+//         switch(bookCategory) {
+//             case 'mathematics':
+//                 addSubjectsToDropdown(['Algebra', 'Geometry', 'Trigonometry', 'Calculus']);
+//                 break;
+//             case 'science':
+//                 addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
+//                 break;
+//             case 'social_studies':
+//                 addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
+//                 break;
+//             case 'languages':
+//                 addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
+//                 break;
+//             case 'religious_education':
+//                 addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
+//                 break;
+//             case 'practicals':
+//                 addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
+//                 break;
+//             case 'physical_health':
+//                 addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
+//                 break;
+//             case 'environmental':
+//                 addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
+//                 break;
+//             default:
+//                 // If no book category matches, display a default message or behavior
+//                 var defaultOption = document.createElement('option');
+//                 defaultOption.value = "";
+//                 defaultOption.text = "No subjects available";
+//                 subjectsDropdown.appendChild(defaultOption);
+//         }
+//     });
+// });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('book-categories').addEventListener('change', function() {
+                var bookCategory = this.value;
+                var subjectsDropdown = document.getElementById('subjects');
+
+                // Clear existing options
+                subjectsDropdown.innerHTML = '';
+
+                // Populate subjects based on the selected book category
+                switch(bookCategory) {
+                    case 'mathematics':
+                        addSubjectsToDropdown(['Mathematics']);
+                        break;
+                    case 'science':
+                        addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
+                        break;
+                    case 'social_studies':
+                        addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
+                        break;
+                    case 'languages':
+                        addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
+                        break;
+                    case 'religious_education':
+                        addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
+                        break;
+                    case 'practicals':
+                        addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
+                        break;
+                    case 'physical_health':
+                        addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
+                        break;
+                    case 'environmental':
+                        addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
+                        break;
+                    default:
+                        // If no book category matches, display a default message or behavior
+                        var defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.text = 'No subjects available. Please go back and pick the correct Genre';
+                        subjectsDropdown.appendChild(defaultOption);
+                        break;
+                }
+            });
+
+            function addSubjectsToDropdown(subjects) {
+                var subjectsDropdown = document.getElementById('subjects');
+                subjects.forEach(function(subject) {
+                    var option = document.createElement('option');
+                    option.value = subject.toLowerCase();
+                    option.textContent = subject;
+                    subjectsDropdown.appendChild(option);
+                });
+            }
         });
-    }
-});
+
+
 function toggleTextBox(show) {
   var textBoxContainer = document.getElementById("textBoxContainer");
   textBoxContainer.style.display = show ? "block" : "none";
@@ -412,12 +518,37 @@ function previousStep() {
         showStep(currentStep);
     }
 
-    function nextStep() {
-        if (currentStep < 5) {
+// function nextStep() {
+//     if (validateCurrentStep()==true) {
+//         if (currentStep < 4) {
+//             currentStep++;
+//             showStep(currentStep);
+//         }
+//         // If the current step is the last step, submit the form
+//         else if (currentStep === 4) {
+//             document.getElementById('Add-products').submit();
+//         }
+//     }
+// }
+
+function nextStep() {
+    var isValid = validateCurrentStep();
+    console.log('isValid:', isValid);
+    console.log('currentStep:', currentStep);
+    if (isValid) {
+        if (currentStep < 4) {
             currentStep++;
+            console.log('Moving to step', currentStep);
+            showStep(currentStep);
+        } else if (currentStep === 4) {
+            console.log('Submitting form');
+            // If the current step is the last step, submit the form
+            document.getElementById('Add-products').submit();
         }
-        showStep(currentStep);
     }
+}
+
+
 
     function showStep(step) {
         switch(step) {
@@ -472,7 +603,144 @@ function previousStep() {
 
 
 
+    /*--------------------Form validation --------------------*/
+//     document.getElementById("Add-products").addEventListener('submit', function (e) {
+//     e.preventDefault();
+//     // Determine user type based on UI state
+//     validateFileUploads();
+// });
+
+    function validateField(fieldName, errorMessage) {
+    var inputField = document.getElementsByName(fieldName)[0];
+    var inputControl = inputField.parentElement;
+    var errorDisplay = inputControl.querySelector('.error');
+    var fieldValue = inputField.value.trim();
+    if (fieldValue === '') {
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = errorMessage;
+        return false;
+    } else {
+        errorDisplay.textContent = "";
+        return true;
+    }
+}
+function validateRequiredNumber(fieldName, errorMessage) {
+    var inputField = document.getElementsByName(fieldName)[0];
+    var fieldValue = inputField.value.trim();
+    var inputControl = inputField.parentElement;
+    var errorDisplay = inputControl.querySelector('.error');
+    var numberPattern = /^\d+$/; // Regular expression to match only digits
+    
+    // Check if the field is empty or not a valid number
+    if (fieldValue === '' || !numberPattern.test(fieldValue)) {
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = errorMessage;
+        return false;
+    } else {
+        errorDisplay.textContent = "";
+        return true;
+    }
+}
+
+function validateFileUpload(fieldName, errorMessage) {
+    var fileInput = document.getElementsByName(fieldName);
+    var inputControl = fileInput.parentElement;
+    // var errorDisplay = inputControl.querySelector('.error');
+    var files = fileInput.files;
+    
+    if (files.length === 0) {
+        // errorDisplay.textContent = errorMessage;
+        return false;
+    } else {
+        // errorDisplay.textContent = "";
+        return true;
+    }
+}
+// function validateFileUpload(fieldName, errorMessage) {
+//     var fileInputs = document.getElementsByName(fieldName);
+//     if (fileInputs.length === 0) {
+//         console.error("No elements found with name:", fieldName);
+//         return false;
+//     }
+    
+//     var fileInput = fileInputs[0]; // Assuming you only have one file input with the given name
+//     var errorDisplay = fileInput.parentElement.querySelector('.error');
+    
+//     if (!errorDisplay) {
+//         console.error("Error display element not found.");
+//         return false;
+//     }
+
+//     var files = fileInput.files;
+    
+//     if (files.length === 0) {
+//         errorDisplay.textContent = errorMessage;
+//         return false;
+//     } else {
+//         errorDisplay.textContent = "";
+//         return true;
+//     }
+// }
 
 
+
+function validateCurrentStep() {
+    switch (currentStep) {
+        case 1:
+            return validateBasicDetails();
+        case 2:
+            return validateAdditionalDetails();
+        case 3:
+            return validatePricing();
+        case 4:
+            return validateFileUploads();
+        default:
+            return true;
+    }
+}
+
+function validateBasicDetails() {
+    var isValid = true;
+    isValid = validateField('booktitle', 'Book Title is required') && isValid;
+    isValid = validateField('author', 'Author is required') && isValid;
+    isValid = validateField('publisher', 'Publisher is required') && isValid;
+    isValid = validateField('ISBN', 'ISBN number is required') && isValid;
+    isValid = validateRequiredNumber('ISBN', 'ISBN must be a number') && isValid;
+    isValid = validateField('edition', 'Edition is required') && isValid;
+    return isValid;
+}
+
+function validateAdditionalDetails() {
+    var isValid = true;
+    isValid = validateField('pages', 'Number of Pages is required') && isValid;
+    isValid = validateRequiredNumber('pages', 'Number of pages must be a number') && isValid;
+    isValid = validateField('details', 'Description is required') && isValid;
+    isValid = validateField('subjects', 'Subject is required') && isValid;
+    isValid = validateField('grade', 'Grade is required') && isValid;
+    return isValid;
+}
+
+function validatePricing() {
+    var isValid = true;
+    isValid = validateField('retailprice', 'Retail Price is required') && isValid;
+    isValid = validateRequiredNumber('retailprice', 'Retail Price must be a number') && isValid;
+    isValid = validateField('priceinbulk', 'Price in Bulk is required') && isValid;
+    isValid = validateRequiredNumber('priceinbulk', 'Price in Bulk must be a number') && isValid;
+    isValid = validateField('mininbulk', 'Minimum number of copies in Bulk is required') && isValid;
+    isValid = validateRequiredNumber('mininbulk', 'Minimum number of copies in Bulk must be a number') && isValid;
+    return isValid;
+}
+
+function validateFileUploads() {
+    var isValid = true;
+    isValid = validateFileUpload('Front-cover', 'Front cover image is required') && isValid;
+    isValid = validateFileUpload('Back-cover', 'Back cover image is required') && isValid;
+    isValid = validateFileUpload('relevant-page1', 'Relevant page 1 image is required') && isValid;
+    isValid = validateFileUpload('relevant-page2', 'Relevant page 2 image is required') && isValid;
+    isValid = validateFileUpload('relevant-page3', 'Relevant page 3 image is required') && isValid;
+    return isValid;
+}
 </script>
 </html>

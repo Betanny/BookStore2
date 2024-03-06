@@ -4,48 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="regStyle.css">
+    <link rel="stylesheet" href="/Shared Components/style.css">
+    <link rel="stylesheet" href="Stylesheet.css">
     <title>Registration</title>
 </head>
 <body>
-    <div class="wrapper">
-        <nav class="nav">
-            <div class="nav-logo">
-                <p>LOGO .</p>
-            </div>
-            <div class="nav-menu">
-                <ul>
-                    <li><a href="#" class="link active">Home</a></li>
-                    <li><a href="#" class="link">Home</a></li>
-                    <li><a href="#" class="link">Home</a></li>
-                    <li><a href="#" class="link">Home</a></li>
-                </ul>
-            </div>
-            <div class="nav-button">
-                <button class="btn" id="loginBtn">Sign In</button>
-                <button class="btn" id="registerBtn">Sign Up</button>
-            </div>
-            <div class="nav-menu-btn"></div>
-        </nav>
+    <div id="header-container"></div>
 
-        <div class="form-box">
-            <div class="register-container" >
+    <div class="wrapper">
+        <div class="client-form">
+            <div class="register-container">
                 <div class="top">
-                    <header>Welcome Back!</header>
+                    <h1>Welcome Back!!</h1>
                     <h5>Login to continue</h5>
                 </div>
+  
                 <form action="login.php" method="post" id="LoginForm" name="form" autocomplete="true">
                     <div class="input-box">
-                        <label for="email">Email</label>
-                        <input type="text" class="input-field" name="email" id="email" required>
-                        <i class="bx bx-envelope"></i>
+                        <div class="inputcontrol">
+                            <label for="Email">Email</label>
+                            <input type="text" class="inputfield" name="email" />
+                            <div class="error"></div>
+                        </div>
                     </div>
                     <div class="input-box">
-                        <label for="password">Password</label>
-                        <input type="password" class="input-field" name="password" id="password" required>
-                        <i class="bx bx-key"></i>
+                        <div class="inputcontrol">
+                            <label for="Password">Password</label>
+                            <input type="password" class="inputfield" name="password" />
+                            <div class="error"></div>
+                        </div>
                     </div>
-                    <div class="input-box">
+                    <div class="submit-sect">
                         <button type="submit" class="register-button">Submit</button>
                     </div>
                 </form>
@@ -55,5 +44,22 @@
             </div>
         </div>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('/Shared Components/header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
+        fetch('/Shared Components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-container').innerHTML = data;
+        });
+
+});
+</script>
+<div id="footer-container"></div>
 </body>
+
 </html>

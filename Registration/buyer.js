@@ -1,9 +1,8 @@
-var x = document.getElementById("author-btn");
-var y = document.getElementById("publisher-btn");
-var z = document.getElementById("manufacturer-btn");
+var x = document.getElementById("individual-btn"); // Accessing the first element with the name "individual-btn"
+var y = document.getElementById("organization-btn"); // Accessing the first element with the name "organization-btn"
 var indivCont = document.getElementById("individual-container");
 var orgCont = document.getElementById("organization-container");
-var prodCont = document.getElementById("products-container");
+// var user_type = document.getElementsByName("user_type");
 var user_type = document.querySelector("input[name='user_type']");
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -17,79 +16,71 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             document.getElementById('footer-container').innerHTML = data;
         });
-        x.click();
+        x.click(); // Simulate click on individual button when the document is loaded
 
 });
 
 
 
 
-function author() {
+
+
+    // Get the form element
+
+    // Add event listener for form submission
+    
+
+function individual() {
     x.classList.remove('btn');
     x.classList.add('active');
     y.classList.remove('active');
     y.classList.add('btn');
-    z.classList.remove('active');
-    z.classList.add('btn');
-    indivCont.style.display = 'block';
-    orgCont.style.display = 'none';
-    user_type.value = "Author";
+    indivCont.style.display = 'block'; // Set display property to block
+    orgCont.style.display = 'none'; // Set display property to none
+    // var user_type= "Individual";
+    user_type.value="Individual";
+
+
+
 }
 
-function publisher() {
+function organization() {
     y.classList.remove('btn');
     y.classList.add('active');
     x.classList.remove('active');
     x.classList.add('btn');
-    z.classList.remove('active');
-    z.classList.add('btn');
-    indivCont.style.display = 'none';
-    orgCont.style.display = 'block';
-    prodCont.style.display = 'none';
-    user_type.value = "Publisher";
+    indivCont.style.display = 'none'; // Set display property to none
+    orgCont.style.display = 'block'; // Set display property to block
+    user_type.value="Organization";
 }
-
-function manufacturer() {
-    z.classList.remove('btn');
-    z.classList.add('active');
-    x.classList.remove('active');
-    x.classList.add('btn');
-    y.classList.remove('active');
-    y.classList.add('btn');
-    indivCont.style.display = 'none';
-    orgCont.style.display = 'block';
-    prodCont.style.display = 'block';
-    user_type.value = "Manufacturer";
-}
+localStorage.setItem('user_type', user_type.value);
 
 
 
 
-
-// Common functions for form validation
-document.getElementById("SellerForm").addEventListener('submit', function (e) {
+// Add event listener for form submission
+document.getElementById("BuyerForm").addEventListener('submit', function(e) {
+    // Prevent the default form submission
     e.preventDefault();
-    // Determine user type based on UI state
-    var userType = user_type.value;
-    submitForm(userType);
+    submitForm(user_type.value)
 });
-function submitForm(userType) {
-    var isValid = false;
-    switch (userType) {
-        case "Author":
-            isValid = validateAuthorForm();
+function submitForm(user_type){
+    var isValid= false;
+    switch(user_type){
+        case "Individual":
+            isValid = validateIndividualForm();
             break;
-        case "Publisher":
-            isValid = validatePublisherForm();
+        case "Organization":
+            isValid = validateOrganizationForm();
             break;
-        case "Manufacturer":
-            isValid = validateManufacturerForm();
-            break;
+
     }
-    if (isValid) {
-        document.getElementById("SellerForm").submit();
-    }
+  if (isValid){
+    document.getElementById("BuyerForm").submit();
 }
+
+}
+
 function validateField(fieldName, errorMessage) {
     var inputField = document.getElementsByName(fieldName)[0];
     var inputControl = inputField.parentElement;
@@ -131,21 +122,17 @@ function validateEmail(fieldName) {
         return true;
     }
 }
-
-// Author form functions
-function validateAuthorForm() {
+// Individual form functions
+function validateIndividualForm() {
     var isValid = true;
-    // Validate fields for Author form
+    // Validate fields for Individual form
     isValid = validateField('fname', 'First Name is required') && isValid;
     isValid = validateField('lname', 'Last Name is required') && isValid;
     isValid = validateEmail('email') && isValid;
     isValid = validateField('phone', 'Phone is required') && isValid;
     isValid = validatePhoneNumber('phone') && isValid; // Validate phone number field
-    isValid = validateField('username', 'Username is required') && isValid;
-    isValid = validateField('gender', 'Gender is required') && isValid;
-    isValid = validateField('nationality', 'Nationality is required') && isValid;
+    isValid = validateField('county', 'County of residence is required') && isValid;
     isValid = validateField('address', 'Address is required') && isValid;
-    isValid = validateField('biography', 'Biography is required') && isValid;
     isValid = validateField('password', 'Password is required') && isValid;
     isValid = validateField('password2', 'Confirm Password is required') && isValid;
     isValid = validatePassword('password', 'password2') && isValid;
@@ -153,49 +140,26 @@ function validateAuthorForm() {
     return isValid;
 }
 
-// Publisher form functions
-function validatePublisherForm() {
+// Organization form functions
+function validateOrganizationForm() {
     var isValid = true;
-    // Validate fields for Publisher form
+    // Validate fields for Organization form
     isValid = validateField('OrgName', 'Organization Name is required') && isValid;
     isValid = validateEmail('OrgEmail') && isValid;
     isValid = validateField('OrgPhone', 'Organization Phone is required') && isValid;
     isValid = validatePhoneNumber('OrgPhone') && isValid; // Validate phone number field
+    isValid = validateField('county', 'Organization County of residence is required') && isValid;
     isValid = validateField('address', 'Organization Address is required') && isValid;
     isValid = validateField('cfname', 'Contact Person First Name is required') && isValid;
     isValid = validateField('clname', 'Contact Person Last Name is required') && isValid;
-    isValid = validateEmail('cemail') && isValid;
+    isValid = validateEmail('cemail', 'Contact Person Email is required') && isValid;
     isValid = validateField('cphone', 'Contact Person Phone is required') && isValid;
-    isValid = validatePhoneNumber('cphone') && isValid; // Validate phone number field
     isValid = validateField('password', 'Password is required') && isValid;
     isValid = validateField('password2', 'Confirm Password is required') && isValid;
     isValid = validatePassword('password', 'password2') && isValid;
 
     return isValid;
 }
-
-// Manufacturer form functions
-function validateManufacturerForm() {
-    var isValid = true;
-    // Validate fields for Manufacturer form
-    isValid = validateField('OrgName', 'Organization Name is required') && isValid;
-    isValid = validateEmail('OrgEmail') && isValid;
-    isValid = validateField('OrgPhone', 'Organization Phone is required') && isValid;
-    isValid = validatePhoneNumber('OrgPhone') && isValid; // Validate phone number field
-    isValid = validateField('address', 'Organization Address is required') && isValid;
-    isValid = validateField('cfname', 'Contact Person First Name is required') && isValid;
-    isValid = validateField('clname', 'Contact Person Last Name is required') && isValid;
-    isValid = validateEmail('cemail') && isValid;
-    isValid = validateField('cphone', 'Contact Person Phone is required') && isValid;
-    isValid = validatePhoneNumber('cphone') && isValid; // Validate phone number field
-    isValid = validateField('password', 'Password is required') && isValid;
-    isValid = validateField('password2', 'Confirm Password is required') && isValid;
-    isValid = validatePassword('password', 'password2') && isValid;
-
-    return isValid;
-}
-
-
 function validatePassword(fieldName1, fieldName2) {
     var password1 = document.getElementsByName(fieldName1)[0].value.trim();
     var password2 = document.getElementsByName(fieldName2)[0].value.trim();

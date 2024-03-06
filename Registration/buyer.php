@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 $host = "localhost";
 $port = "5432";
 $dbname = "MyBookstore";
@@ -28,7 +30,7 @@ try {
 
 
             // Inserting data into users table  
-            $query = "INSERT INTO users (email, password, role) VALUES ('$email', '$password','$role')";
+            $query = "INSERT INTO users (email, password, role, category) VALUES ('$email', '$password','$role', '$user_type')";
             $db_connection->query($query);
 
             // Retrieve the last inserted user ID
@@ -52,7 +54,7 @@ try {
 
 
             // Inserting data into users table  
-            $query = "INSERT INTO users (email, password, role) VALUES ('$email', '$password','$role')";
+            $query = "INSERT INTO users (email, password, role, category) VALUES ('$email', '$password','$role', '$user_type')";
             $db_connection->query($query);
 
             // Retrieve the last inserted user ID
@@ -63,6 +65,11 @@ try {
             $db_connection->query($sql);
         }
         echo "New record created successfully";
+        $session_id = session_id();
+
+        // Redirect to buyer dashboard
+        header("Location: buyer_dashboard.php?session_id=$session_id");
+        exit();
 
     }
 } catch (PDOException $e) {

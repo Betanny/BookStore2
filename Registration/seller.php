@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 $host = "localhost";
 $port = "5432";
 $dbname = "MyBookstore";
@@ -36,9 +38,11 @@ try {
             $social_media_handles = implode(', ', array_filter([$instagram, $facebook]));
 
             // Inserting data into users table
-            $sql = "INSERT INTO users (email, password ,role) VALUES ('$email', '$password','$role')";
+            $sql = "INSERT INTO users (email, password ,role,category) VALUES ('$email', '$password','$role','$user_type')";
             $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
+            $_SESSION['user_id'] = $user_id;
+
 
             // Inserting data into the authors table
             $sql = "INSERT INTO authors (first_name, last_name, email, phone, username, gender, nationality, address, biography, website, socialmedia_handles, user_id) VALUES ('$fname', '$lname', '$email', '$phone', '$username', '$gender', '$nationality', '$author_address', '$biography', '$website', '$social_media_handles', '$user_id')";
@@ -58,9 +62,12 @@ try {
             $publisher_password = hash('sha256', $_POST["password"]);
 
             // Inserting data into users table
-            $sql = "INSERT INTO users (email, password ,role) VALUES ('$publisher_email', '$publisher_password','$role')";
+            $sql = "INSERT INTO users (email, password ,role,category) VALUES ('$publisher_email', '$publisher_password','$role','$user_type')";
             $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
+
+            $_SESSION['user_id'] = $user_id;
+
 
             // Inserting data into publishers table
             $sql = "INSERT INTO publishers (publisher_name, contact_first_name, contact_last_name, contact_email, contact_phone, publisher_email, publisher_phone, address, website, user_id) VALUES ('$publisher_name', '$contact_first_name', '$contact_last_name', '$contact_email', '$contact_phone', '$publisher_email', '$publisher_phone', '$publisher_address', '$publisher_website', '$user_id')";
@@ -82,9 +89,11 @@ try {
             $products_offered_string = '{' . implode(",", $products_offered) . '}';
 
             // Inserting data into users table
-            $sql = "INSERT INTO users (email, password,role) VALUES ('$manufacturer_email', '$manufacturer_password','$role')";
+            $sql = "INSERT INTO users (email, password,role,category) VALUES ('$manufacturer_email', '$manufacturer_password','$role','$user_type')";
             $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
+            $_SESSION['user_id'] = $user_id;
+
 
             // Inserting data into manufacturers table
             $sql = "INSERT INTO manufacturers (manufacturer_name, contact_first_name, contact_last_name, contact_email, contact_phone, manufacturer_email, manufacturer_phone, address, website, products_offered, user_id) VALUES ('$manufacturer_name', '$contact_first_name', '$contact_last_name', '$contact_email', '$contact_phone', '$manufacturer_email', '$manufacturer_phone', '$address', '$website', '$products_offered_string', '$user_id')";
@@ -92,6 +101,13 @@ try {
         }
 
         echo "New record created successfully";
+        $session_id = session_id();
+
+        // Store session ID in a session variable
+        $_SESSION['session_id'] = $session_id;
+        // Redirect to buyer dashboard
+        header("Location: ../../Seller/addproducts.html?session_id=$session_id");
+        exit();
     }
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

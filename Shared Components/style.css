@@ -260,19 +260,22 @@ nav ul li a:hover {
 
 /*..............FOOTER.............................*/
 .footer{
-    padding: 40px;
+    padding: 20px 0 10px 0;
     background: var(--primary-color);
     color:#44b89d;
+    position:relative;
+    bottom: 0;
+    width: 100%;
 
 }
 .footer .social{
     text-align: center;
-    padding-bottom: 25px;
+    padding-bottom: 15px;
     color: #ffffff;
 
 }
 .footer .social a{
-    font-size: 24px;
+    font-size: 20px;
     color: inherit;
     border: 1px solid white;
     width:40px;
@@ -285,6 +288,7 @@ nav ul li a:hover {
     opacity: 1;
 }
 .footer .social a:hover{
+    font-size: small;
     color: #44b89d;
 }
 .footer ul{
@@ -316,3 +320,7 @@ nav ul li a:hover {
     font-weight: lighter;
     color: var(--background-color);
 }
+
+
+
+

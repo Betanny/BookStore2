@@ -25,9 +25,9 @@
                     <button type="button" id="publisher-btn" name="publisher-btn" class="btn" onclick="publisher()">Publisher</button>
                     <button type="button" id="manufacturer-btn" name="manufacturer-btn" class="btn" onclick="manufacturer()">Manufacturer</button>
                 </div>
-                <form action="seller.php" method="post" name="form" id="SellerForm">
-                    <input type="hidden" name="user_type">
-                    <div id="individual-container" class="client-container">
+                <form action="seller.php" method="post" class="client-container" name="form" id="SellerForm">
+                    <input type="hidden" name="user_type" >
+                    <div id="individual-container" >
                         <div id="contHeader" class="sec-cont">
                             <h4>Personal</h4>
                         </div>
@@ -338,7 +338,7 @@
                         </div>
                     </div>
 
-                    <div id="organization-container" class="client-container">
+                    <div id="organization-container" >
                         <div id="contHeader" class="sec-cont">
                             <h4>Organization Details</h4>
                         </div>
@@ -444,6 +444,8 @@
                     </div>
                     <div class="submit-sect">
                         <button type="submit" class="register-button">Submit</button>
+                        <div class="login-text">Have an account? <a href="login.html">Login</a></div>
+
                     </div>
                 </form>
             </div>

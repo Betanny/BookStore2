@@ -101,10 +101,7 @@ try {
         }
 
         echo "New record created successfully";
-        $session_id = session_id();
-
-        // Store session ID in a session variable
-        $_SESSION['session_id'] = $session_id;
+        
         // Redirect to buyer dashboard
         header("Location: ../../Seller/addproducts.html?session_id=$session_id");
         exit();

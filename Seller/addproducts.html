@@ -35,7 +35,7 @@
 
     </section>
     <div class="form">
-        <form action="/Shared Components/upload.php" method="post"  id="Add-products" enctype="multipart/form-data">
+        <form action="addproducts.php" method="post"  id="Add-products" enctype="multipart/form-data">
             <input type="hidden" name="user_type">
             <div class="products-container">
                
@@ -340,7 +340,7 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Shared Components/header.html')
+    fetch('/Shared Components/header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;

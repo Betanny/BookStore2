@@ -6,7 +6,7 @@ var orgCont = document.getElementById("organization-container");
 var user_type = document.querySelector("input[name='user_type']");
 
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Shared Components/header.html')
+    fetch('/Shared Components/header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
@@ -154,8 +154,8 @@ function validateOrganizationForm() {
     isValid = validateField('clname', 'Contact Person Last Name is required') && isValid;
     isValid = validateEmail('cemail', 'Contact Person Email is required') && isValid;
     isValid = validateField('cphone', 'Contact Person Phone is required') && isValid;
-    isValid = validateField('password', 'Password is required') && isValid;
-    isValid = validateField('password2', 'Confirm Password is required') && isValid;
+    isValid = validateField('org-password', 'Password is required') && isValid;
+    isValid = validateField('org-password2', 'Confirm Password is required') && isValid;
     isValid = validatePassword('password', 'password2') && isValid;
 
     return isValid;

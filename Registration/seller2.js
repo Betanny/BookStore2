@@ -7,7 +7,7 @@ var prodCont = document.getElementById("products-container");
 var user_type = document.querySelector("input[name='user_type']");
 
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Shared Components/header.html')
+    fetch('/Shared Components/header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;

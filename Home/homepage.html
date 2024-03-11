@@ -26,7 +26,7 @@
                         <p><br>Grab discounted stationery to gear up for your academic adventures!</p>
                         <p><br>Ready to dive into the world of educational excellence? Let's set sail! 🚀</p>
                     </div>
-                    <input type="submit" onclick="window.location.href='BuyerDetails.html'" class="register-button" value="Register">
+                    <input type="submit" onclick="window.location.href='/Registration/buyer.html'" class="register-button" value="Register">
                 </div>
             </div>
         
@@ -42,7 +42,7 @@
                         <p>Manufacturers, looking for a stage to showcase your innovative stationery?</p><br>
                         <p>Well, look no further! Join our vibrant marketplace today!</p><br>
                          </div>
-                    <input type="submit" onclick="window.location.href='SellerDetails.html'" class="register-button" value="Register">
+                    <input type="submit" onclick="window.location.href='/Registration/dealer.html'" class="register-button" value="Register">
                 </div>
             </div>
     
@@ -155,7 +155,7 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Shared Components/header.html')
+    fetch('/Shared Components/header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;

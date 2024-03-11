@@ -29,10 +29,13 @@ body{
 
 
 .submit-sect{
-    margin-top: 80px;
+    padding-bottom: 20px;
+    margin-top: 50px;
     margin-left: 40px;
     padding-top: 10px;
+    left: 20px;
     justify-content: center;
+    
 
 }
 
@@ -134,7 +137,9 @@ body{
     font-weight: 500;
     color: black;
     bottom: 20px;
-    transform: translateX(100%); /* Center the button horizontally */
+    transform: translateY(-55%);
+    left: 38%;
+    /* transform: translateX(100%); Center the button horizontally */
     height: 35px;
     width:  25%;
     cursor: pointer;
@@ -148,6 +153,11 @@ body{
     text-decoration: none;
     position: absolute; 
 }
+.register-button:hover {
+    background-color: var(--background-color2); /* Change background color to white on hover */
+    color: var(--primary-color); /* Change text color to primary color on hover */
+}
+
     
     
 .button-container {
@@ -301,9 +311,11 @@ h1{
     display: flex;
     align-items: center;
     width: 700px;
-    height: 420;
+    height:fit-content;
     overflow: hidden;
     z-index: 2;
+  
+
 }
 
 
@@ -356,3 +368,21 @@ label {
     margin-left: 5px; 
 }
 
+.login-text {
+    display: flex;
+    justify-content: center;
+    margin-left: -30px;
+    text-align: center; /* Adjust alignment as needed */
+    margin-top: 20px; /* Add margin to separate from the button */
+    font-size: 14px; /* Adjust font size as needed */
+    color: #555; /* Adjust color as needed */
+}
+
+.login-text a {
+    color: var(--primary-color); /* Adjust link color as needed */
+    text-decoration: none; /* Remove underline from the link */
+}
+
+.login-text a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}

@@ -1,3 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Alfa Slab One';
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --primary-color: #063547; /* Navy Blue */
+    --secondary-color: #44b89d; /* Royal Blue */
+    --accent-color: #000000; /* Blue */
+   --background-color: #ffffff; /*  Light Blue */
+    --text-color: #0c0c0c; /* Light Sky Blue */
+    --background-color2 : #e6e8ef;
+    --accent-color2:#0d749c1a;
+    /* --accent-color2:#ffffff;
+    --background-color: #0d749c1a; Light Blue */
+
+
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
+/*--------------------------------Header.php----------------------------------------------*/
+/*navbar*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------productsform----------------------------------------------*/
+
 .productsadd-container{
         width: 85%;
         margin: auto; 
@@ -202,3 +250,182 @@
         background-color: #f0f8ff; /* Light blue */
     }
     
+
+
+    /* Dashboard*/
+  
+    
+    .dashboard-container{
+        display: flex;
+        width: 98%;
+        justify-content: space-around;
+        margin: 10px;
+    
+    }
+    .reports-container {
+        display: grid;
+        width:73%;
+        background-color: var(--background-color);
+
+    
+    }
+    .welcome-container{
+        margin: 10px 40px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    .welcome-container h4{
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 25px;
+        font-weight: 400;
+
+    }
+    .welcome-container i{
+        color: var(--primary-color);
+    }
+    .two-reports{
+        background-color: var(--accent-color2);
+        border-radius: 20px;
+        height: 200px;
+        justify-content: space-around;
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+    }
+    .report1{
+        width:60%;
+        background-color: var(--background-color);
+        /* background-color: var(--accent-color2); */
+        padding: 0;
+        margin: 0;
+        border-radius: 10px;
+        height: 100%;
+
+
+
+    }
+    .report1 h4{
+        padding:5px 5px 5px 20px;
+        /* background-color: var(--background-color);
+        width: fit-content; */
+
+
+
+    }
+    .report2{
+        width: 35%;
+        padding: 10px;
+        background-color: var(--background-color);
+        border-radius: 10px;
+        height: 100%;
+
+
+
+    }
+    .report2 h4{
+        padding:0 20px 5px 20px;
+
+    }
+    .products{
+        /* background-color: var(--background-color); */
+        justify-content: space-around;
+        height: 80%;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+
+       
+        
+    }
+    .product{
+        background-color:#0d749c1a;
+        height: 20%;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-right: 5px;
+        height: 30%;
+        align-items: center;
+
+    }
+    .product h4{
+        font-weight: normal;
+
+    }
+    /* .product h5{
+        padding: 10px;
+
+    } */
+    
+    .sales-report{
+        margin-top: 10px;
+        width: 100%;
+        background-color: var(--accent-color2);
+        height: 300px;
+        padding: 20px;
+        border-radius: 10px;
+
+
+    }
+    .sales-report img{
+        width:98%;
+        height: 90%;
+    }
+    .sales-report h4{
+        padding-bottom: 10px;
+    }
+    
+    /*Task panel*/
+    .task-panel{
+        flex: 0 0 25%;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0;
+        /* padding: 20px; */
+        /* background-color: var(--secondary-color); */
+    }
+    .task-panel h3{
+        padding: 10px;
+        font-weight: 400;
+        font-size: 15px;
+    }
+
+    .calendar-container{
+        height: 180px;
+        background-color: var(--accent-color2);
+        margin: 10px;
+        border-radius: 10px;
+
+
+    }
+
+    .pending-task{
+        margin: 10px;
+        height:200px;
+        background-color: var(--accent-color2);
+        border-radius: 10px;
+    }
+
+    .notifications-container{
+        height: 100px;
+        margin: 10px;
+        background-color: var(--accent-color2);
+        border-radius: 10px;
+
+
+    }
+    /* .top-reports{
+        width:90%;
+        background-color: white;
+        justify-content: space-evenly;
+        display: flex;
+        flex-direction: row;
+    }
+    .report{
+        width:20%;
+        background-color: var(--accent-color2);
+    
+    } */
+  

@@ -1,0 +1,48 @@
+.header-container{
+    background-color: var(--background-color2);
+    display: block;
+
+}
+/* .reports-container{
+    flex:0 0 70%;
+    background-color: var(--accent-color2);
+} */
+
+.dashboard-container{
+    display: flex;
+    width: 98%;
+    justify-content: space-around;
+
+}
+.reports-container {
+    display: grid;
+    width:70%;
+    gap: 20px; /* Gap between sections */
+    background-color: var(--accent-color2);
+
+}
+
+
+
+.task-panel{
+    flex: 0 0 25%;
+    background-color: var(--secondary-color);
+}
+.top-reports{
+    width:90%;
+    background-color: white;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+}
+.report{
+    width:20%;
+    background-color: var(--accent-color2);
+
+}
+.task{
+    
+}
+.calendar-container{
+    width:90%;
+}

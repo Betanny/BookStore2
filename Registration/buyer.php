@@ -18,6 +18,9 @@ try {
         $user_type = $_POST["user_type"];
         $role = "Client";
 
+
+
+
         // Check user type
         if ($user_type === "Individual") {
             $email = $_POST["email"];
@@ -27,6 +30,9 @@ try {
             $address = $_POST["address"];
             $county = $_POST["county"];
             $password = hash('sha256', $_POST["password"]); // Hashing the password
+
+
+
 
 
             // Inserting data into users table  
@@ -50,11 +56,11 @@ try {
             $contact_phone = $_POST["cphone"];
             $address = $_POST["address"];
             $county = $_POST["county"];
-            $password = hash('sha256', $_POST["password"]); // Hashing the password
+            $password_organization = hash('sha256', $_POST["org-password"]); // Hashing the password
 
 
             // Inserting data into users table  
-            $query = "INSERT INTO users (email, password, role, category) VALUES ('$email', '$password','$role', '$user_type')";
+            $query = "INSERT INTO users (email, password, role, category) VALUES ('$email', '$password_organization','$role', '$user_type')";
             $db_connection->query($query);
 
             // Retrieve the last inserted user ID
@@ -67,9 +73,9 @@ try {
         echo "New record created successfully";
         $session_id = session_id();
 
-        // Redirect to buyer dashboard
-        header("Location: buyer_dashboard.php?session_id=$session_id");
-        exit();
+        // // Redirect to buyer dashboard
+        // header("Location: buyer_dashboard.php?session_id=$session_id");
+        // exit();
 
     }
 } catch (PDOException $e) {

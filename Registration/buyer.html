@@ -26,8 +26,8 @@
                     <button type="button"  id="individual-btn" name="individual-btn" class="btn" onclick="individual()">Individual</button>
                     <button type="button" id="organization-btn"   name="organization-btn" class="btn" onclick="organization()">Organization</button>
                 </div>
-                <form action="buyer.php" method="post" name="form" id="BuyerForm">
-                    <div id="individual-container" class="client-container">
+                <form action="buyer.php" class ="client-container" method="post" name="form" id="BuyerForm">
+                    <div id="individual-container" >
                         <div id="contHeader" class="sec-cont">
                             <h4>Personal</h4>
                         </div>
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 
-                    <div id="organization-container" class="client-container">
+                    <div id="organization-container" >
                         <div id="contHeader" class="sec-cont">
                             <h4>Organization Details</h4>
                         </div>
@@ -178,14 +178,14 @@
                                     <div class="inputcontrol">
                                         <div class="error"></div>
                                         <label for="Password">Password</label>
-                                        <input type="password" class="inputfield" name="password" />
+                                        <input type="password" class="inputfield" name="org-password" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="inputcontrol">
                                         <div class="error"></div>
                                         <label for="password2">Confirm Password</label>
-                                        <input type="password" class="inputfield" name="password2" />
+                                        <input type="password" class="inputfield" name="org-password2" />
                                     </div>
                                 </div>
                             </div>
@@ -193,6 +193,8 @@
                     </div>
                     <div class="submit-sect">
                         <button type="submit" class="register-button">Submit</button>
+                        <div class="login-text">Have an account? <a href="login.html">Login</a></div>
+
                     </div>
                 </form>
                 

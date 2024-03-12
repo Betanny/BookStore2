@@ -27,23 +27,20 @@ try {
             echo "<script>alert('Please enter both email and password.')</script>";
         } else {
             // Fetch the hashed password and user category from the database based on the provided email
-            $stmt = $db_connection->prepare("SELECT password, user_id, category FROM users WHERE email = ?");
+            $stmt = $db_connection->prepare("SELECT password, user_id, category, role FROM users WHERE email = ?");
             $stmt->execute([$email]);
             $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
             $dbpass = $user_data['password'];
             $role = $user_data['role'];
-            echo "<script>console.log($dbpass);</script>";
-            echo "<script>console.log($category);</script>";
+            $category = $user_data['category'];
 
-
+            echo "<script>console.log('$dbpass');</script>";
+            echo "<script>console.log('$category');</script>";
 
             if ($user_data) {
                 // Hash the provided password using SHA256 for comparison
                 $hashed_input_password = hash('sha256', $password);
                 echo "<script>console.log($hashed_input_password);</script>";
-
-
-
 
                 // Compare the hashed input password with the hashed password from the database
                 if ($hashed_input_password === $dbpass) {
@@ -54,6 +51,9 @@ try {
 
                     // Store user_id in the session
                     $_SESSION['user_id'] = $user_data['user_id'];
+                    $_SESSION['category'] = $category;
+
+
 
                     // Redirect based on user category
                     switch ($role) {
@@ -67,7 +67,7 @@ try {
                         case 'Dealer':
                             // Redirect to the HTML file with session ID
                             $session_id = session_id();
-                            header("Location: ../Seller/addproducts.html?session_id=$session_id");
+                            header("Location: ../Seller/dashboard.php?session_id=$session_id");
                             break;
                         default:
                             // Handle other user categories or redirect to a generic dashboard

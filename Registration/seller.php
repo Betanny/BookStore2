@@ -59,7 +59,7 @@ try {
             $publisher_phone = $_POST["OrgPhone"];
             $publisher_address = $_POST["address1"]; // Make sure the address input has a unique name
             $publisher_website = $_POST["website1"];
-            $publisher_password = hash('sha256', $_POST["password"]);
+            $publisher_password = hash('sha256', $_POST["org-password"]);
 
             // Inserting data into users table
             $sql = "INSERT INTO users (email, password ,role,category) VALUES ('$publisher_email', '$publisher_password','$role','$user_type')";
@@ -84,7 +84,7 @@ try {
             $manufacturer_phone = $_POST['OrgPhone'];
             $address = $_POST['address1'];
             $website = $_POST['website1'];
-            $manufacturer_password = hash('sha256', $_POST["password"]);
+            $manufacturer_password = hash('sha256', $_POST["org-password"]);
             $products_offered = isset($_POST['products']) ? $_POST['products'] : array();
             $products_offered_string = '{' . implode(",", $products_offered) . '}';
 
@@ -101,7 +101,7 @@ try {
         }
 
         echo "New record created successfully";
-        
+
         // Redirect to buyer dashboard
         header("Location: ../../Seller/addproducts.html?session_id=$session_id");
         exit();

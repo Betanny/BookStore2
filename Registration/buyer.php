@@ -72,6 +72,8 @@ try {
         }
         echo "New record created successfully";
         $session_id = session_id();
+        header("Location: ../Buyer/buyerdashboard.php");
+        $session_id = session_id();
 
         // // Redirect to buyer dashboard
         // header("Location: buyer_dashboard.php?session_id=$session_id");

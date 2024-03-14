@@ -36,11 +36,15 @@ try {
 
             echo "<script>console.log('$dbpass');</script>";
             echo "<script>console.log('$category');</script>";
+            echo "<script>console.log('$role');</script>";
+
 
             if ($user_data) {
                 // Hash the provided password using SHA256 for comparison
                 $hashed_input_password = hash('sha256', $password);
                 echo "<script>console.log($hashed_input_password);</script>";
+                echo "<script>console.log($dbpass);</script>";
+
 
                 // Compare the hashed input password with the hashed password from the database
                 if ($hashed_input_password === $dbpass) {
@@ -57,9 +61,6 @@ try {
 
                     // Redirect based on user category
                     switch ($role) {
-                        case 'Admin':
-                            header("Location: admindashboard.php");
-                            break;
                         case 'Client':
                             $session_id = session_id();
                             header("Location: ../Buyer/buyerdashboard.php");
@@ -67,7 +68,11 @@ try {
                         case 'Dealer':
                             // Redirect to the HTML file with session ID
                             $session_id = session_id();
-                            header("Location: ../Seller/dashboard.php?session_id=$session_id");
+                            header("Location: ../Seller/sellerdashboard.php");
+                            break;
+                        case 'Admin':
+                            $session_id = session_id();
+                            header("Location: ../Admin/admindashboard.php");
                             break;
                         default:
                             // Handle other user categories or redirect to a generic dashboard

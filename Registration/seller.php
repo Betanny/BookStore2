@@ -101,6 +101,8 @@ try {
         }
 
         echo "New record created successfully";
+        $session_id = session_id();
+        header("Location: ../Seller/sellerdashboard.php?session_id=$session_id");
 
         // Redirect to buyer dashboard
         header("Location: ../../Seller/addproducts.html?session_id=$session_id");

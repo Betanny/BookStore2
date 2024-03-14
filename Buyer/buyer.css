@@ -2,15 +2,14 @@
 .dashboard-container{
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: 10px;
     background-color: var(--accent-color2);
-
 
 }
 .reports-container {
     display: grid;
-    width:73%;
+    width: 73%; /* Adjust width to accommodate margins */
 }
 .welcome-container{
     background-color: var(--background-color);
@@ -57,7 +56,7 @@
 .order-container{
     background-color: var(--background-color);
     padding: 10px;
-    height: auto;
+    max-height: 250px;
     margin: 10px;
     border-radius: 15px;
     width: 99%;
@@ -84,8 +83,43 @@
 }
 .items-container{
     border: solid var(--accent-color2) 1px;
+    max-height: 250px;
+    min-height: auto;
+   
+
+
 }
 .row-header{
+    display: flex;
+    flex-direction: row;
+    background-color: var(--accent-color2);
+    border-bottom: #063547 2px solid;
+    padding: 2px;
+    padding-right: 0;
+    align-items: center;
+    height: 35px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    position: sticky;
+
+
+}
+.rows{
+    overflow-y: auto;
+    max-height: 150px;
+    min-height: auto;
+    scrollbar-width:thin;
+    scrollbar-color: var(--accent-color);
+
+
+
+}
+
+
+
+
+.row{
+    padding-left: 5px;
     display: flex;
     flex-direction: row;
     background-color: var(--accent-color2);
@@ -94,7 +128,7 @@
     align-items: center;
     height: 35px;
     border-radius: 5px;
-
+    margin-bottom: 5px;
 }
 .row-header .name-cell{
     width: 50%;
@@ -104,6 +138,10 @@
     width: 15%;
     font-size: 15px;
     /* border-right: var(--primary-color) 1px solid; */
+
+}
+.row .name-cell{
+    width: 50%;
 
 }
 
@@ -126,21 +164,35 @@
     border-radius: 15px;
     margin: 10px;
     padding: 10px;
-    width: 18%;
+    width: auto;
     align-items: center;
     text-align: center;
-    background-color: var(--background-color);
     
 }
-.book img{
-    width: 100px;
+.book-img{
+    width: auto;
+    background-color: transparent;
+}
+.book-img img{
+    width: auto;
+    height: 120px;
+
+}
+
+.star {
+    color: goldenrod; /* Set star color */
+}
+
+.half-star {
+    color:goldenrod;
+   /* color: linear-gradient(to right, gold 50%, white 50%); Yellow-transparent gradient */
 }
 .book p{
     font-size: 12px;
 }
 /*Task panel*/
 .task-panel{
-    flex: 0 0 25%;
+    width: 25%; /* Adjust width to accommodate margins */
     flex-direction: column;
     justify-content: space-between;
     margin: 0;

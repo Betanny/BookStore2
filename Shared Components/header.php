@@ -23,10 +23,10 @@ session_start()
         <nav>
 
             <ul>
-                <li><a href="#" class="link-active">Home</a></li>
-                <li><a href="#" class="link">Products</a></li>
-                <li><a href="#" class="link">About us</a></li>
-                <li><a href="#" class="link">Contact us</a></li>
+                <li><a href="/Home/homepage.html" class="link light-text active-link">Home</a></li>
+                <li><a href="#" class="link light-text">Products</a></li>
+                <li><a href="#" class="link light-text">About us</a></li>
+                <li><a href="#" class="link-active">Contact us</a></li>
             </ul>
 
         </nav>

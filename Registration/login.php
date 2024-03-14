@@ -62,7 +62,7 @@ try {
                             break;
                         case 'Client':
                             $session_id = session_id();
-                            header("Location: ../Buyer/buyerdashboard.html");
+                            header("Location: ../Buyer/buyerdashboard.php");
                             break;
                         case 'Dealer':
                             // Redirect to the HTML file with session ID

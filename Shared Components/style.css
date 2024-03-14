@@ -43,7 +43,7 @@ img {
 header {
     width: 100%;
     height: 60px;
-    background: var(--primary-color);
+    /* background: var(--primary-color); */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -81,10 +81,27 @@ nav ul li a:hover {
     color: var(--accent-color);
 }
 
+
 .link-active {
     background: var(--accent-color);
 }
 
+.link-active:hover{
+    background-color: #000000;
+    color:white;
+}
+
+.light-text{
+    color:gray;
+}
+
+.active-link{
+    color:var(--primary-color);
+    font-weight: 700;
+}
+link{
+    color: var(--primary-color);
+}
 .hamburger {
     display: none;
     height: fit-content;

@@ -30,38 +30,6 @@ body {
 /*--------------------------------Header.php----------------------------------------------*/
 /*navbar*/
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Alfa Slab One';
-    list-style: none;
-    text-decoration: none;
-}
-
-:root {
-    --primary-color: #063547; /* Navy Blue */
-    --secondary-color: #44b89d; /* Royal Blue */
-    --accent-color: #000000; /* Blue */
-   --background-color: #ffffff; /*  Light Blue */
-    --text-color: #0c0c0c; /* Light Sky Blue */
-    --background-color2 : #e6e8ef;
-    --accent-color2:#0d749c1a;
-    /* --accent-color2:#ffffff;
-    --background-color: #0d749c1a; Light Blue */
-
-
-}
-
-body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-
-/*--------------------------------Header.php----------------------------------------------*/
-/*navbar*/
-
 
 
 
@@ -284,36 +252,26 @@ body {
     
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /* Dashboard*/
   
     
     .dashboard-container{
         display: flex;
-        width: 100%;
-        margin: auto;
-        margin-top: 10px;
+        width: 98%;
         justify-content: space-around;
+        margin: 10px;
+    
+    }
+    .reports-container {
+        display: grid;
+        width:73%;
         background-color: var(--background-color);
 
     
     }
-   
     .welcome-container{
         margin: 10px 40px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
     }
     .welcome-container h4{
         font-family: Georgia, 'Times New Roman', Times, serif;
@@ -324,114 +282,23 @@ body {
     .welcome-container i{
         color: var(--primary-color);
     }
-
-    .reports-container {
-        width:70%;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        justify-content: space-around;
-
-
-    }
-    
-    .reports-container2 {
-        width:28%;
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        background-color: var(--accent-color2);
-        top: 0;
-        justify-content: space-between;
-
-
-    }
-
-    .report{
-        width:25%;
-        height: 70px;
-        padding: 15px;
-        background-color: var(--accent-color2);
-        align-items: center;
-        border-radius: 20px;
-        margin-right: 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-    
-    }
-    .content{
-        width: 50%;
-        text-align: right;
-        align-items: right;
-        justify-content: right;
-    }
-    .report h4{
-        font-size: 10px;
-        font-weight: lighter;
-        text-align: right;
-    }
-    .report p{
-        font-weight: bold;
-        font-size: 30px;
-        text-align: right;
-
-    }
-    
-    .report i{
-        color: var(--primary-color);
-        text-align: left;
-        font-size: 24px;
-    }
-
-
-    .pie-chart-container{
-        background-color: var(--background-color);
-        height: auto;
-        width: 98%;
-        margin:5px auto;
-        border-radius: 10px;
-    }
-    .pie-chart-container h4{
-        padding: 10px;
-        background-color: var(--accent-color2);
-        font-size: large;
-
-    }
-    canvas {
-        width: 220px; /* Adjust width as needed */
-        height: 200px; /* Adjust height as needed */
-        margin: 20px auto;
-    }
-    .pendingtasks-container{
-        margin: 0;
-        width: 100%;
-        background-color: var(--accent-color2);
-        height: 280px;
-        margin-top: 10px;
-        margin-left: 5px;
-        padding: 10px;
-    }
-
-
-    /* .two-reports{
+    .two-reports{
         background-color: var(--accent-color2);
         border-radius: 20px;
         height: 200px;
         justify-content: space-around;
         display: flex;
         flex-direction: row;
-        width: 98%;
         padding: 10px;
-    } */
+    }
     .sales-report{
-        width:70%;
+        width:60%;
         background-color: var(--accent-color2);
+        /* background-color: var(--accent-color2); */
         padding: 10px;
         margin: 0;
         border-radius: 10px;
-        height:250px;
+        height: 100%;
 
 
 
@@ -447,15 +314,14 @@ body {
         height: 90%;
     }
     
-    .general-report{
-        width: 100%;
+    .report2{
+        width: 35%;
         padding: 10px;
         border-radius: 10px;
-        height: 90px;
+        height: 100%;
         display: flex;
-        /* flex-wrap: wrap; */
+        flex-wrap: wrap;
         justify-content: space-between;
-        flex-direction: row;
 
 
 
@@ -465,47 +331,31 @@ body {
 
     }
 
-   
+    .report{
+        width:45%;
+        height: 45%;
+        background-color: var(--background-color);
+        align-items: center;
     
+    }
+    .report h4{
+        font-size: 20px;
+        text-align: left;
+        font-weight:100;
 
-
-.products-report-container{
-    margin: 0;
-    width: 80%;
-    background-color: var(--accent-color2);
-    height: 180px;
-    margin-top: 10px;
-    margin-left: 5px;
-    padding: 10px;
-}
+    }
     .products{
         /* background-color: var(--background-color); */
         justify-content: space-around;
-        height: 90%;
+        height: 80%;
         padding: 5px;
         display: flex;
         flex-direction: column;
         border-radius: 10px;
-        width: auto;
-        
 
        
         
     }
-    .tasks-container{
-        /* background-color: var(--background-color); */
-        justify-content: space-around;
-        height: 90%;
-        padding: 5px;
-        display: flex;
-        flex-direction: column;
-        border-radius: 10px;
-        width: auto;
-        overflow-y: auto;
-        max-height:100%;
-        scrollbar-width:thin;
-    }
-
     .product{
         background-color:#0d749c1a;
         height: 20%;
@@ -513,36 +363,68 @@ body {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 5px;
+        padding-right: 5px;
         height: 30%;
         align-items: center;
-
-    }
-    .task{
-        background-color:#0d749c1a;
-        height: 20%;
-        border-radius: 10px;
-        /* display: flex;
-        flex-direction: row; */
-        justify-content: space-between;
-        margin-top: 5px;
-        padding: 5px;
-        height: 30%;
-        align-items: center;
-
-    }
-    .task h4{
-        font-weight: lighter;
-        font-size: 13px;
-
-    }
-    .task h5{
-        font-weight: bold;
-        font-size: 10px;
 
     }
     .product h4{
         font-weight: normal;
 
     }
+    /* .product h5{
+        padding: 10px;
+
+    } */
+    
+  
+    /*Task panel*/
+    .task-panel{
+        flex: 0 0 25%;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0;
+        /* padding: 20px; */
+        /* background-color: var(--secondary-color); */
+    }
+    .task-panel h3{
+        padding: 10px;
+        font-weight: 400;
+        font-size: 15px;
+    }
+
+    .calendar-section{
+        height: 250px;
+        background-color: var(--accent-color2);
+        margin: 10px;
+        border-radius: 10px;
+        width: 100%;
+
+
+    }
+
+    .pending-task{
+        margin: 10px;
+        height:200px;
+        background-color: var(--accent-color2);
+        border-radius: 10px;
+    }
+
+    .notifications-container{
+        height: 100px;
+        margin: 10px;
+        background-color: var(--accent-color2);
+        border-radius: 10px;
+
+
+    }
+    /* .top-reports{
+        width:90%;
+        background-color: white;
+        justify-content: space-evenly;
+        display: flex;
+        flex-direction: row;
+    }
+    */
   

@@ -246,4 +246,195 @@
     text-decoration: underline; /* Add underline on hover */
 }
  
-/*Footer*/
+/*-------------------Products--------------------------------*/
+.products-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    
+    /* display: flex; */
+
+
+}
+.filters-container{
+    width: 25%;
+    height: 100%;
+    padding: 20px;
+    cursor: pointer;
+    background-color: var(--accent-color2);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 10px;
+    position: static;
+
+
+
+
+}
+.filters-container h3{
+    text-align: left;
+    margin: 10px;
+}
+
+.main-category{
+    padding: 5px;
+}
+
+
+    
+
+
+
+.main-category p{
+    font-weight: 700;
+    padding-bottom: 10px;
+    font-size: 17px;
+
+
+}
+.sub-categories {
+    display: none;
+    margin-left: 20px; /* Indentation */
+}
+
+.sub-categories ul{
+    margin-left: 25px; 
+    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
+    padding-bottom: 20px;
+}
+.sub-categories li{
+    
+    padding-bottom: 10px;
+}
+
+
+.sub-categories ul ul {
+    margin-left: 20px; 
+    font-size: 14px;
+    font-weight: 300;
+    padding-bottom: 10px;
+
+
+}
+
+.maincontent{
+    width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+
+.slideshow-container{
+    width: 95%;
+    background-color: var(--accent-color2);
+    height: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+
+}
+.bookshow-container{
+
+    margin: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: var(--accent-color2) 1px solid;
+    border-radius: 10px;
+}
+
+/* .books-container{
+    background-color: var(--accent-color2);
+
+} */
+.booksheader{
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: var(--accent-color2) 0.2px solid;
+
+    
+}
+.search-bar{
+    height: 30px;
+    border-radius: 30px;
+    color: var(--primary-color);
+    width: 250px;
+    border-color: var(--primary-color);
+}
+.fa-magnifying-glass {
+    transform: translateY(-50%);
+    position: absolute;
+    right: 10px; /* Adjust the distance from the right side */
+    top: 50%; 
+}
+
+.filter-bar{
+    margin-left: 10px;
+    height: 25px;
+    border-radius: 5px;
+    width: 100px;
+
+
+}
+
+
+
+
+
+
+.all-books{
+    background-color: var(--accent-color2);
+    margin: 10px;
+
+}
+/* Adjust the width of .book to fit three books in a row */
+.book {
+    border-radius: 15px;
+    margin: 10px;
+    padding: 10px;
+    width: calc(25% - 20px); /* Three books in a row with 20px margin */
+    float:left;
+    text-align: center;
+    /* margin-right: 20px; /* Margin between books */
+    /* margin-bottom: 20px; Margin at the bottom of books */
+}
+
+
+
+/* Clear fix to prevent floating issues */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.book-img{
+    width: auto;
+    background-color: transparent;
+}
+.book-img img{
+    width: auto;
+    height: 120px;
+
+}
+
+.star {
+    color: goldenrod; /* Set star color */
+}
+
+.half-star {
+    color:goldenrod;
+   /* color: linear-gradient(to right, gold 50%, white 50%); Yellow-transparent gradient */
+}
+.book p{
+    font-size: 12px;
+}
+
+
+
+

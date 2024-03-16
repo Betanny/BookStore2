@@ -31,7 +31,7 @@ try {
     $last_name = $data['last_name'];
     $full_name = $first_name . ' ' . $last_name;
     global $full_name;
-    
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -50,14 +50,17 @@ try {
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <title>Document</title>
 </head>
 
-<body>
+<body class="montserrat-23">
     <header>
         <div class="logo">
-            <img src="logo.png" alt="LOGO">
+            <img src="smartcbc.svg" style="width:150px !important" alt="LOGO">
 
         </div>
         <input type="checkbox" id="nav_check" hidden>
@@ -87,7 +90,9 @@ try {
 
                 </div>
                 <div class="user-name">
-                    <h4><?php echo $full_name; ?></h4>
+                    <h4>
+                        <?php echo $full_name; ?>
+                    </h4>
                     <a href="#"><i class="fa-solid fa-angle-down"></i></a>
 
                 </div>

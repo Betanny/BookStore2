@@ -453,6 +453,7 @@
     font-size: 30px;
 }
 
+
 .contact-container{
     padding: 30px;
     width: 65%;
@@ -553,7 +554,7 @@
 
 .faq {
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     width: 90%;
     margin: auto;
@@ -562,17 +563,21 @@
     background-color: var(--accent-color2);
     color: var(--accent-color);
     justify-content: space-between;
+    text-align: left;
 
 
 }
 
 .faq i{
-    position: relative;
-    transform: translateX(100%); /* Center the button horizontally */
+    margin-right: 30px;
+    padding-left: 10px;
 }
 .question {
-    font-weight: bold;
+    font-weight:600;
 }
 .answer {
     margin-top: 5px;
+    margin-left: 65px;
+    font-weight:lighter;
+
 }

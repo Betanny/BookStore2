@@ -581,3 +581,99 @@
     font-weight:lighter;
 
 }
+
+
+
+
+
+/*******************************************About us****************************************/
+.introduction-container{
+    background-color: var(--accent-color2);
+    height: 200px;
+    text-align: center;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+
+}
+
+.introduction-container h4{
+    color: var(--primary-color);
+    font-size: 30px;
+    text-align: center;
+}
+.introduction-txt{
+    padding-top: 20px;
+    width: 80%;
+    padding-left: 50px;
+    text-align: center;
+    margin: auto;
+
+
+}
+/* .intro-image{
+    width: 20%;
+} */
+
+
+
+
+.users-container{
+    padding: 10px;
+    width: 75%;  
+    height: 380px;
+    margin: auto;
+    margin-top: 20px;
+}
+.users-container h4{
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 30px;
+}
+.Our-users{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+   
+}
+
+.author,
+.publisher{
+    width:auto;
+    background-color: var(--accent-color2);
+    color: var(--accent-color);
+    text-align: justify;
+    padding: 40px;
+    margin: 15px 0;
+}
+
+.client{
+    background-color: var(--primary-color);
+    color: white;
+    justify-content: center;
+    text-align: justify;
+    padding: 40px;
+    width: auto;
+
+}
+.client h4{
+    color: #ffffff;
+    text-align: center;
+}
+
+.mission-container{
+    /* background-color: var(--accent-color2); */
+    padding: 20px 70px;
+    margin-top: 100px;
+
+}
+.mission-container h4{
+  padding: 20px 30px;
+    text-align: center;
+    font-size: 30px;
+    color: var(--primary-color);
+}
+
+

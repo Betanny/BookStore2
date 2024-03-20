@@ -6,7 +6,7 @@ require_once '../Shared Components/dbconnection.php';
 session_start();
 //
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset ($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
@@ -85,9 +85,9 @@ try {
         <nav>
 
             <ul>
-                <li><a href="#" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="#" class="link light-text">Products</a></li>
-                <li><a href="#" class="link light-text">Orders</a></li>
+                <li><a href="sellerdashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
+                <li><a href="orders.php" class="link light-text">Orders</a></li>
                 <li><a href="#" class="link light-text">Transactions</a></li>
             </ul>
 

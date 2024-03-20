@@ -366,6 +366,7 @@
     color: var(--primary-color);
     width: 250px;
     border-color: var(--primary-color);
+    padding-left: 20px;
 }
 .fa-magnifying-glass {
     transform: translateY(-50%);
@@ -541,6 +542,8 @@
     align-items: center;
 }
 
+
+
 .faqs-container{
     margin-top: 100px;
     background-color: var(--accent-color2);
@@ -664,7 +667,7 @@
 }
 
 .mission-container{
-    /* background-color: var(--accent-color2); */
+    background-color: var(--accent-color2);
     padding: 20px 70px;
     margin-top: 100px;
 
@@ -675,5 +678,4 @@
     font-size: 30px;
     color: var(--primary-color);
 }
-
 

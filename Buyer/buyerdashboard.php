@@ -5,9 +5,9 @@ require_once '../Shared Components/dbconnection.php';
 // Start session
 session_start();
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset ($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: login.php");
+    header("Location: ../Registration/login.html");
     exit();
 }
 
@@ -52,7 +52,7 @@ try {
     $statusFilter = 'All';
 
     // Check if a filter has been selected
-    if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+    if (isset ($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
         $statusFilter = $_GET['status'];
     }
 

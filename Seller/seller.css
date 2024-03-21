@@ -640,15 +640,11 @@ body {
     }
 
     
-/* .blank-cell{
-    width: 10%;
-} */
 
     .row-header{
         display: flex;
         flex-direction: row;
-        /* background-color: var(--accent-color2); */
-        background-color: var(--background-color);
+       background-color: var(--background-color);
         border-bottom: #063547 2px solid;
         padding: 20px;
         align-items: center;
@@ -675,6 +671,8 @@ body {
     
     
     }
+
+    
     .order-rows{
         width: 99%;
         overflow-y: auto;

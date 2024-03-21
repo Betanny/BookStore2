@@ -5,7 +5,7 @@ require_once '../Shared Components/dbconnection.php';
 // Start session
 session_start();
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset ($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
@@ -67,10 +67,10 @@ try {
         <nav>
 
             <ul>
-                <li><a href="#" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
                 <li><a href="#" class="link light-text">Products</a></li>
-                <li><a href="#" class="link light-text">My orders</a></li>
-                <li><a href="#" class="link light-text">Feedback</a></li>
+                <li><a href="myorders.php" class="link light-text">My orders</a></li>
+                <li><a href="" class="link light-text" id="showFeedbackForm">Feedback</a></li>
                 <li><a href="#" class="link light-text">Review a book</a></li>
             </ul>
 
@@ -110,6 +110,32 @@ try {
 
 
     </header>
-</body>
+    <!-- Feedback form container -->
+    <div class="container" id="feedbackContainer" style="display: none;">
+        <?php include 'Shared Components\feedback.php'; ?>
+    </div>
+    <!-- <script>
+    // Function to open feedback form popup
+    function openFeedbackPopup() {
+        document.getElementById('feedbackPopup').style.display = 'block';
+        document.getElementById('popupOverlay').style.display = 'block';
+    }
+
+        // Close the feedback form popup when clicking outside the popup
+        document.getElementById('popupOverlay').addEventListener('click', function() {
+        document.getElementById('feedbackPopup').style.display = 'none';
+        document.getElementById('popupOverlay').style.display = 'none';
+        });
+        </script>> -->
+    <script>
+        document.getElementById('showFeedbackForm').addEventListener('click', function () {
+            var feedbackContainer = document.getElementById('feedbackContainer');
+            if (feedbackContainer.style.display === 'none') {
+                feedbackContainer.style.display = 'block';
+            } else {
+                feedbackContainer.style.display = 'none';
+            }
+        });
+    </script>
 
 </html>

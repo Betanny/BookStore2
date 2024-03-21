@@ -88,20 +88,20 @@ try {
                 <div class="order-rows">
                     <!-- Adding the order items -->
                     <?php foreach ($orders as $order): ?>
-                    <div class="row">
-                        <div class="ordername-cell">
-                            <?php echo $order['title']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $order['order_date']; ?>
-                        </div>
-                        <div class="bigger-cell2">
-                            <?php echo $order['shipping_address']; ?>
-                        </div>
-                        <div class="small-cell">
-                            <?php echo $order['quantity']; ?>
-                        </div>
-                        <div class="cell" style="background-color:
+                        <div class="row">
+                            <div class="ordername-cell">
+                                <?php echo $order['title']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $order['order_date']; ?>
+                            </div>
+                            <div class="bigger-cell2">
+                                <?php echo $order['shipping_address']; ?>
+                            </div>
+                            <div class="small-cell">
+                                <?php echo $order['quantity']; ?>
+                            </div>
+                            <div class="cell" style="background-color:
     <?php
     // Determine background color based on status
     $status = strtolower($order['status']);
@@ -117,25 +117,25 @@ try {
     ?>
 ; border-radius: 15px; padding: 5px;
                             ">
-                            <?php echo $order['status']; ?>
+                                <?php echo $order['status']; ?>
+                            </div>
+
+
+                            <div class="cell">
+                                <?php echo $order['delivery_date']; ?>
+                            </div>
+                            <?php if ($status === 'pending'): ?>
+                                <button type="submit" id="update-btn" class="update-button">Update</button>
+
+                                <!-- <button class="update-button">Update</button> -->
+                            <?php endif; ?>
+
+
+
+
+
+
                         </div>
-
-
-                        <div class="cell">
-                            <?php echo $order['delivery_date']; ?>
-                        </div>
-                        <?php if ($status === 'pending'): ?>
-                        <button type="submit" id="update-btn" class="update-button">Update</button>
-
-                        <!-- <button class="update-button">Update</button> -->
-                        <?php endif; ?>
-
-
-
-
-
-
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -144,16 +144,16 @@ try {
 </body>
 
 <script>
-// var update-btn =document.getElementById('update-btn');
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
+    // var update-btn =document.getElementById('update-btn');
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
 
 
-});
+    });
 </script>
 
 </html>

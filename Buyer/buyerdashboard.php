@@ -116,7 +116,7 @@ try {
     </style>
 </head>
 
-<body class="poppins-regular">
+<body>
     <div id="header-container"></div>
     <div class="dashboard-container">
         <div class="reports-container">

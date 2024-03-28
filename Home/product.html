@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="/Shared Components/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="header-container"></div>
+  <div class="file-path">
+
+  </div>
+
+  <div class="product-container">
+    <div class="product-image">
+        <div class="img-section">
+            <img src="/Images/Book categories/mathematics.png" alt="">
+
+        </div>
+        <div class="img-nav">
+            <p>  1 > </p>
+        </div>
+
+
+
+    </div>
+
+    <div class="product-details">
+        <h4> Book Title</h4>
+        <h5> By Author/Publisher   </h5>
+        <p>Description Thidsuvd  sidgusd sdsgudh cisxgcd ziji dcgixgcidc dcohgdcubhsc dckjbcuhudwd ccydw cgdiyd ddsdbcdhc sidogsiucgx xzcoxidsdixd dxicdigcx xdizdbxidszdx dckxjwidsgz dbxjchbdwwuhdhfuf  difiwedfbd cdxchdifipcgdisxc dscidgxcewdsicb cbdjvdvxcvuds dgidgcx ddijdgdihedf didjibs dcxihicygds dijxcgdsx dwsxidcudusyx dwxbucdgsxj edcihdgc dscxigedicxjec dfiojhoadb ahhgadsdf dfhgudygfuwf wdfiuhdf doigqdiud dhfgdwdi duhhfgvuwd duoxgcoya icdcsidygfd</p>
+        <div class="other-details">
+            <h5> Author : Not Mentioned </h5>
+            <h5> Publisher : Spotlight Publishers </h5>
+            <h5> ISBN : 67872725829262827 </h5>
+            <h5> Language : English </h5>
+            <h5>Rating : * * * * * </h5>
+            <h5>Price : 680</h5>
+            <h5>Price in Bulk : 650 </h5>
+            <h5>Minimum pieces in bulk : 50</h5>
+
+
+        </div>
+        <div class="product-review">
+            What do others say about it:
+            <div class="wholereview">
+            
+                <div class="review">
+                    <p>"I'm incredibly impressed with the diverse range of educational materials available on [Your Company Name].</p>
+                    <div class="profile">
+                        <p>By John Doe</p>
+                        
+                    </div>
+                </div>
+              
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="other-products">
+        <!-- <div class="suggestions">
+            <h4>Other books you might like</h4>
+            <div class="book-suggestions">
+                <?php
+                foreach ($books as $book) {
+                    $front_image = str_replace('D:\xammp2\htdocs\BookStore2', '', $book['front_page_image']);
+
+
+                    echo '<div class="book">';
+                    echo '<div class="book-img">';
+                    echo '<a href=""><img src="' . $front_image . '"></a>';
+                    echo '</div>';
+
+                    echo '<p>' . $book['title'] . '</p>';
+                    echo '<p>Price: ksh.' . $book['price'] . '</p>';
+                    echo '<p>Rating: ';
+                    // Get integer part of the rating
+                    $integer_rating = floor($book['bookrating']);
+                    // Get decimal part of the rating
+                    $decimal_rating = $book['bookrating'] - $integer_rating;
+                    // Generate full stars based on the integer part of the rating
+                    for ($i = 1; $i <= $integer_rating; $i++) {
+                        echo '<span class="star">&#9733;</span>'; // Full star
+                    }
+
+                    // // If decimal part is greater than 0, add a half star
+                    // if ($decimal_rating > 0) {
+                    //     echo '<span class="half-star">&#9733;</span>'; // Half star
+                    // }
+                
+                    // Generate empty stars for remaining
+                    for ($i = $integer_rating + 1; $i <= 5; $i++) {
+                        echo '<span class="star">&#9734;</span>'; // Empty star
+                    }
+                    echo '</p>';
+                    echo '</div>';
+                }
+                ?>
+            </div> -->
+            <p> otht</p>
+
+        </div>
+
+    </div>
+  </div>
+
+
+
+
+  
+
+</body>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch('/Shared Components/header.php')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-container').innerHTML = data;
+      });
+    fetch('/Shared Components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer-container').innerHTML = data;
+      });
+  });
+  const categoryToggles = document.querySelectorAll('.category-toggle');
+
+  categoryToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const subCategories = toggle.nextElementSibling;
+      subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+</script>
+
+</html>

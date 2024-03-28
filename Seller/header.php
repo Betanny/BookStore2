@@ -78,7 +78,7 @@ try {
 <body>
     <header>
         <div class="logo">
-            <img src="logo.png" alt="LOGO">
+            <img src="/Shared Components\smartcbc.svg" style="width:150px !important" alt="LOGO">
 
         </div>
         <input type="checkbox" id="nav_check" hidden>
@@ -89,6 +89,8 @@ try {
                 <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
                 <li><a href="orders.php" class="link light-text">Orders</a></li>
                 <li><a href="#" class="link light-text">Transactions</a></li>
+                <li><a href="feedback.php" class="link light-text">Feedback</a>
+
             </ul>
 
         </nav>

@@ -60,7 +60,7 @@ try {
 <body class="montserrat-23">
     <header>
         <div class="logo">
-            <img src="smartcbc.svg" style="width:150px !important" alt="LOGO">
+            <img src="/Shared Components\smartcbc.svg" style="width:150px !important" alt="LOGO">
 
         </div>
         <input type="checkbox" id="nav_check" hidden>
@@ -68,10 +68,11 @@ try {
 
             <ul>
                 <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="#" class="link light-text">Products</a></li>
+                <li><a href="\Home\products.php" class="link light-text">Products</a></li>
                 <li><a href="myorders.php" class="link light-text">My orders</a></li>
-                <li><a href="" class="link light-text" id="showFeedbackForm">Feedback</a></li>
-                <li><a href="#" class="link light-text">Review a book</a></li>
+                <li><a href="feedback.php" class="link light-text">Feedback</a>
+                </li>
+                <li><a href="bookreview.php" class="link light-text">Review a book</a></li>
             </ul>
 
         </nav>
@@ -110,32 +111,14 @@ try {
 
 
     </header>
-    <!-- Feedback form container -->
-    <div class="container" id="feedbackContainer" style="display: none;">
-        <?php include 'Shared Components\feedback.php'; ?>
+    <!-- <div id="feedbackContainer" style="display: none;">
+       include 'D:\xammp2\htdocs\BookStore2\Shared Components\feedback.php'; ?>
     </div>
-    <!-- <script>
-    // Function to open feedback form popup
-    function openFeedbackPopup() {
-        document.getElementById('feedbackPopup').style.display = 'block';
-        document.getElementById('popupOverlay').style.display = 'block';
-    }
+    <script src="/Shared Components/Feedback.php"></script> -->
 
-        // Close the feedback form popup when clicking outside the popup
-        document.getElementById('popupOverlay').addEventListener('click', function() {
-        document.getElementById('feedbackPopup').style.display = 'none';
-        document.getElementById('popupOverlay').style.display = 'none';
-        });
-        </script>> -->
+
     <script>
-        document.getElementById('showFeedbackForm').addEventListener('click', function () {
-            var feedbackContainer = document.getElementById('feedbackContainer');
-            if (feedbackContainer.style.display === 'none') {
-                feedbackContainer.style.display = 'block';
-            } else {
-                feedbackContainer.style.display = 'none';
-            }
-        });
+
     </script>
 
 </html>

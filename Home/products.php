@@ -170,7 +170,7 @@ global $books;
   </div>
 
 
-  </div>
+
 
 
 

@@ -16,7 +16,7 @@ session_start()
 <body>
     <header>
         <div class="logo">
-            <img src="logo.png" alt="LOGO">
+            <img src="/Shared Components\smartcbc.svg" style="width:150px !important" alt="LOGO">
 
         </div>
         <input type="checkbox" id="nav_check" hidden>

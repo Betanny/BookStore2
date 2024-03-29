@@ -266,10 +266,9 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 10px;
     position: static;
-
-
-
-
+    overflow-y: auto;
+    max-height: 150vh;
+    min-height: 85vh;
 }
 .filters-container h3{
     text-align: left;
@@ -334,8 +333,36 @@
     height: 200px;
     border-radius: 10px;
     margin-bottom: 10px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    justify-content: space-evenly;
+    padding-top: 20px;
 
 }
+
+
+.slideshow-book {
+    flex: 0 0 30%; /* Each book takes 33.33% of the container width */
+    transition: transform 0.5s ease;
+    text-align: center;
+    /* background-color: var(--background-color); */
+}
+
+.slideshow-book img {
+    width: 45%;
+    height: 60%;
+margin: auto;
+}
+
+.slideshow-book p {
+    margin: 10px 0;
+}
+
+.active {
+    transform: translateX(-100%);
+}
+
 .bookshow-container{
 
     margin: 20px;
@@ -694,14 +721,16 @@
 
 
 .product-image{
-width: 35%;
+width: 30%;
 margin: 20px;
+height: 87vh;
+
 
 }
 
 .img-section{
     width: 80%;
-    height: 90%;
+    height: 82vh;
     text-align: center;
     margin: auto;
 }
@@ -716,10 +745,10 @@ margin: 20px;
 
 
 .product-details{
-    width: 40%;
+    width: 50%;
     padding: 10px;
     overflow-y: auto;
-    max-height: 100%;
+    height: 87vh;
     min-height: auto;
     scrollbar-width:thin;
     scrollbar-color: var(--accent-color);
@@ -780,9 +809,40 @@ margin: 20px;
 }
 
 
+
+.other-products h4{
+    padding: 10px;
+    font-size: 15px;
+    color: var(--primary-color);
+}
 .other-products{
-    width: 15%;
-    background-color: #063547;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 14%;
+    background-color: var(--accent-color2);
+    overflow-y: auto;
+    height: 87vh;
+    scrollbar-width:thin;
+    scrollbar-color: var(--accent-color);
+}
+.book{
+    border-radius: 15px;
+    margin: 10px;
+    padding: 10px;
+    width: auto;
+    align-items: center;
+    text-align: center;
+    background-color: var(--background-color);
+
+    
+}
+.book-img{
+    width: auto;
+    background-color: transparent;
+}
+.book-img img{
+    width: auto;
+    height: 120px;
 
 }

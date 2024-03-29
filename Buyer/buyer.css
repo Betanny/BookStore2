@@ -695,6 +695,14 @@ input#rate-5:checked~label {
     font-size: 20px;
     color: var(--primary-color);
 }
+.product-details h4{
+    text-align: left;
+    margin: auto;
+    padding: 30px 0;
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
 
 .book-selection  .allProducts-container .row .ordername-cell,
 .book-selection  .allProducts-container .row-header1 .ordername-cell{

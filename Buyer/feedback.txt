@@ -1,0 +1,46 @@
+<?php
+
+// Include database connection file
+require_once '../Shared Components/dbconnection.php';
+
+// Start session
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: ../Registration/login.html");
+    exit();
+}
+
+// Get user ID and category from session
+$user_id = $_SESSION['user_id'];
+$category = $_SESSION['category'];
+
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_POST['submit'])) {
+    try {
+        // Get feedback text from the form
+        $feedback_text = $_POST["feedback_text"];
+        $rating = $_POST['rating'];
+        $rating = intval($rating);
+
+
+
+        // Prepare SQL statement with parameterized query
+        $stmt = $db->prepare("INSERT INTO feedback (user_id, feedback_text, rating) VALUES (:user_id, :feedback_text, :rating)");
+
+        // Bind parameters
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':feedback_text', $feedback_text);
+        $stmt->bindParam(':rating', $rating); // Assuming $rating_int holds the integer rating value
+
+
+        // Execute SQL statement
+        $stmt->execute();
+
+    } catch (PDOException $e) {
+        // Handle database errors
+        echo "Error: " . $e->getMessage();
+    }
+}

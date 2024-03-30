@@ -7,28 +7,67 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../Registration/login.html");
 }
 
-if (!isset($_POST['product_id'])) {
-    header("Location: bookselect.php");
-}
+// if (!isset($_POST['product_id'])) {
+//     header("Location: bookselect.php");
+// }
 
 $user_id = $_SESSION['user_id'];
-$selected_product_id = $_POST['product_id'];
-$rating = $_POST['rate'];
-$review = $_POST['review'];
-$likes = $_POST['likes'];
-$dislikes = $_POST['dislikes'];
-$comments = $_POST['comments'];
+$selected_product_id = $_GET['product_id'];
+
+
+
 
 try {
-    // Insert the review into the database
-    $stmt = $db->prepare("INSERT INTO reviews (product_id, user_id, rating, review_text, likes, dislikes, additional_comments) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$selected_product_id, $user_id, $rating, $review, $likes, $dislikes, $comments]);
 
+
+    $selected_book_sql = "SELECT * FROM books WHERE bookid = :bookid";
+    $selected_book_stmt = $db->prepare($selected_book_sql);
+    $selected_book_stmt->bindParam(':bookid', $selected_product_id);
+    $selected_book_stmt->execute();
+    $selected_book = $selected_book_stmt->fetch(PDO::FETCH_ASSOC);
+    global $selected_book;
+
+    // $bookssql = "SELECT * FROM books WHERE bookid IN (
+    //     SELECT product_id FROM orders 
+    //     WHERE client_id = ? AND status = 'Delivered'
+    // )";
+
+    // $bookstmt = $db->prepare($bookssql);
+    // $bookstmt->execute([$user_id]);
+    // $books = $bookstmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //other book suggestions
+    $bookrecsql = "
+    SELECT DISTINCT b.bookid, b.front_page_image, b.title, b.price, b.bookrating, RANDOM() as rand 
+    FROM books b 
+    JOIN orders o ON b.bookid = o.product_id 
+    WHERE o.status = 'Delivered' AND o.client_id = :user_id ";
+
+
+    $bookrecomendationstmt = $db->prepare($bookrecsql);
+    $bookrecomendationstmt->bindParam(':user_id', $user_id);
+    $bookrecomendationstmt->execute();
+    $bookrec = $bookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
+    global $bookrec;
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $rating = intval($_POST['rate']);
+        $review = $_POST['review'];
+        $likes = $_POST['likes'];
+        $dislikes = $_POST['dislikes'];
+        $comments = $_POST['comments'];
+
+
+        // Insert the review into the database
+        $stmt = $db->prepare("INSERT INTO reviews (product_id, user_id, product_type, rating, review_text, likes, dislikes, additional_comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$selected_product_id, $user_id, "Book", $rating, $review, $likes, $dislikes, $comments]);
+    }
     // Redirect to a success page
 } catch (PDOException $e) {
     error_log("Error: " . $e->getMessage());
     // Redirect to an error page
-    header("Location: review_error.php");
+    // header("Location: review_error.php");
 }
 
 ?>
@@ -72,7 +111,7 @@ try {
                 <?php echo $selected_book['title']; ?>
             </h4>
 
-            <form action="productreview.php" method="post" id="Add-products">
+            <form action="" method="post" id="Add-products">
                 <div class="input-box">
                     <div class="input-control">
                         <label for="Rating">What would you rate the book?</label><br>
@@ -126,9 +165,51 @@ try {
             </form>
         </div>
 
+
         <div class="other-products">
-            <h5>Review other Books</h5>
+            <h4>Other Books you might like</h4>
+
+            <?php
+            foreach ($bookrec as $book) {
+                $front_image = str_replace('D:\xammp2\htdocs\BookStore2', '', $book['front_page_image']);
+
+
+                echo '<div class="book">';
+                echo '<div class="book-img">';
+                echo '<a href=""><img src="' . $front_image . '"></a>';
+                echo '</div>';
+
+                echo '<p>' . $book['title'] . '</p>';
+                echo '<p>Price: ksh.' . $book['price'] . '</p>';
+                echo '<p>Rating: ';
+                // Get integer part of the rating
+                $integer_rating = floor($book['bookrating']);
+                // Get decimal part of the rating
+                $decimal_rating = $book['bookrating'] - $integer_rating;
+                // Generate full stars based on the integer part of the rating
+                for ($i = 1; $i <= $integer_rating; $i++) {
+                    echo '<span class="star">&#9733;</span>'; // Full star
+                }
+
+                // // If decimal part is greater than 0, add a half star
+                // if ($decimal_rating > 0) {
+                //     echo '<span class="half-star">&#9733;</span>'; // Half star
+                // }
+            
+                // Generate empty stars for remaining
+                for ($i = $integer_rating + 1; $i <= 5; $i++) {
+                    echo '<span class="star">&#9734;</span>'; // Empty star
+                }
+                echo '</p>';
+                echo '</div>';
+            }
+            ?>
+
+
         </div>
+
+
+
     </div>
     <script>
     document.addEventListener("DOMContentLoaded", function() {

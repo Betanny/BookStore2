@@ -637,6 +637,14 @@ details{
 }
 
 /************************book review********************/
+.stars{
+    height: max-content;
+    padding-bottom: 40px;
+    margin: auto;
+    justify-content: space-around;
+
+}
+
 .star-widget{
     text-align: center;
     left: 0;
@@ -647,7 +655,7 @@ details{
     font-size: 30px;
     color: var(--primary-color);
     padding: 10px;
-    float:none;
+    float:right;
     transition: all 0.2s ease;
 
 

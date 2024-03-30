@@ -63,13 +63,15 @@ try {
                     <div class="ordername-cell">Title</div>
                 </div>
                 <div class="order-rows">
-                    <?php foreach ($orders as $order): ?>
-                    <div class="row" onclick="setpid(<?php echo $order['product_id']; ?>)">
-                        <div class=" ordername-cell">
-                            <?php echo $order['title']; ?>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
+                    <?php
+                    foreach ($orders as $order) {
+                        echo '<a href="/Buyer/bookreview.php?product_id=' . $order['product_id'] . '" class="row">';
+                        echo '<div class="ordername-cell">';
+                        echo $order['title'];
+                        echo '</div>';
+                        echo '</a>';
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -84,9 +86,9 @@ try {
             });
     });
 
-    function setpid(productId) {
-        window.location.href = "bookreview.php?product_id=" + productId;
-    }
+    // function setpid(productId) {
+    //     window.location.href = "bookreview.php?product_id=" + productId;
+    // }
     </script>
 </body>
 

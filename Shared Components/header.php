@@ -24,9 +24,9 @@ session_start()
 
             <ul>
                 <li><a href="/Home/homepage.html" class="link light-text active-link">Home</a></li>
-                <li><a href="#" class="link light-text">Products</a></li>
-                <li><a href="#" class="link light-text">About us</a></li>
-                <li><a href="#" class="link-active">Contact us</a></li>
+                <li><a href="/Home/products.php" class="link light-text">Products</a></li>
+                <li><a href="/Home/Aboutus.html" class="link light-text">About us</a></li>
+                <li><a href="/Home/contactus.html" class="link-active">Contact us</a></li>
             </ul>
 
         </nav>

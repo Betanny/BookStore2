@@ -15,26 +15,26 @@ global $book;
 
 function processAndAggregateImageURLs($book)
 {
-  // Extract the base path from the first image URL
-  $basePath = 'D:\xammp2\htdocs\BookStore2';
+    // Extract the base path from the first image URL
+    $basePath = 'D:\xammp2\htdocs\BookStore2';
 
-  // Initialize an array to store processed image URLs
-  $imageURLs = array();
+    // Initialize an array to store processed image URLs
+    $imageURLs = array();
 
-  // Process and aggregate the front page image URL
-  $imageURLs[] = str_replace($basePath, '', $book['front_page_image']);
+    // Process and aggregate the front page image URL
+    $imageURLs[] = str_replace($basePath, '', $book['front_page_image']);
 
-  // Process and aggregate the back page image URL
-  $imageURLs[] = str_replace($basePath, '', $book['back_page_image']);
+    // Process and aggregate the back page image URL
+    $imageURLs[] = str_replace($basePath, '', $book['back_page_image']);
 
-  // Process and aggregate the other images
-  $otherImages = explode(',', $book['other_images']);
-  foreach ($otherImages as $otherImage) {
-    // Process and aggregate each other image URL
-    $imageURLs[] = str_replace($basePath, '', $otherImage);
-  }
+    // Process and aggregate the other images
+    $otherImages = explode(',', $book['other_images']);
+    foreach ($otherImages as $otherImage) {
+        // Process and aggregate each other image URL
+        $imageURLs[] = str_replace($basePath, '', $otherImage);
+    }
 
-  return $imageURLs;
+    return $imageURLs;
 }
 
 $imageURLs = processAndAggregateImageURLs($book);
@@ -42,7 +42,7 @@ $imageURLs = processAndAggregateImageURLs($book);
 
 global $imageURLs;
 
-//other book suggestions
+
 
 //Getting books from the books table
 $bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
@@ -154,40 +154,40 @@ global $books;
             <h4>Other Books you might like</h4>
 
             <?php
-      foreach ($books as $book) {
-        $front_image = str_replace('D:\xammp2\htdocs\BookStore2', '', $book['front_page_image']);
+            foreach ($books as $book) {
+                $front_image = str_replace('D:\xammp2\htdocs\BookStore2', '', $book['front_page_image']);
 
 
-        echo '<div class="book">';
-        echo '<div class="book-img">';
-        echo '<a href=""><img src="' . $front_image . '"></a>';
-        echo '</div>';
+                echo '<div class="book">';
+                echo '<div class="book-img">';
+                echo '<a href=""><img src="' . $front_image . '"></a>';
+                echo '</div>';
 
-        echo '<p>' . $book['title'] . '</p>';
-        echo '<p>Price: ksh.' . $book['price'] . '</p>';
-        echo '<p>Rating: ';
-        // Get integer part of the rating
-        $integer_rating = floor($book['bookrating']);
-        // Get decimal part of the rating
-        $decimal_rating = $book['bookrating'] - $integer_rating;
-        // Generate full stars based on the integer part of the rating
-        for ($i = 1; $i <= $integer_rating; $i++) {
-          echo '<span class="star">&#9733;</span>'; // Full star
-        }
+                echo '<p>' . $book['title'] . '</p>';
+                echo '<p>Price: ksh.' . $book['price'] . '</p>';
+                echo '<p>Rating: ';
+                // Get integer part of the rating
+                $integer_rating = floor($book['bookrating']);
+                // Get decimal part of the rating
+                $decimal_rating = $book['bookrating'] - $integer_rating;
+                // Generate full stars based on the integer part of the rating
+                for ($i = 1; $i <= $integer_rating; $i++) {
+                    echo '<span class="star">&#9733;</span>'; // Full star
+                }
 
-        // // If decimal part is greater than 0, add a half star
-        // if ($decimal_rating > 0) {
-        //     echo '<span class="half-star">&#9733;</span>'; // Half star
-        // }
-      
-        // Generate empty stars for remaining
-        for ($i = $integer_rating + 1; $i <= 5; $i++) {
-          echo '<span class="star">&#9734;</span>'; // Empty star
-        }
-        echo '</p>';
-        echo '</div>';
-      }
-      ?>
+                // // If decimal part is greater than 0, add a half star
+                // if ($decimal_rating > 0) {
+                //     echo '<span class="half-star">&#9733;</span>'; // Half star
+                // }
+            
+                // Generate empty stars for remaining
+                for ($i = $integer_rating + 1; $i <= 5; $i++) {
+                    echo '<span class="star">&#9734;</span>'; // Empty star
+                }
+                echo '</p>';
+                echo '</div>';
+            }
+            ?>
 
 
         </div>

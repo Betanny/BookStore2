@@ -68,7 +68,7 @@ try {
 
             <ul>
                 <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="\Home\products.php" class="link light-text">Products</a></li>
+                <li><a href="products.php" class="link light-text">Products</a></li>
                 <li><a href="myorders.php" class="link light-text">My orders</a></li>
                 <li><a href="feedback.html" class="link light-text">Feedback</a>
                 </li>
@@ -83,8 +83,12 @@ try {
             </div>
             <div class="icon">
                 <a href="#"><i class="fa-regular fa-bell"></i></a>
+            </div>
+            <div class="icon">
+                <a href="CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
 
             </div>
+
             <div class="profile">
                 <div class="user-image">
                     <img src="/Images/Illustrations/profile.svg" class="img-profile">

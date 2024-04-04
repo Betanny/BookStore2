@@ -126,7 +126,7 @@ global $books;
                 <h5>Minimum pieces in Bulk:
                     <?php echo $book['mininbulk']; ?>
                 </h5>
-                <button id="addToCartButton" onclick="addToCart(<?php echo $bookid; ?>)">Add to Cart</button>
+                <button id="addToCartButton" data-bookid="<?php echo $bookid; ?>">Add to Cart</button>
 
 
 
@@ -250,29 +250,6 @@ global $books;
             subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
         });
     });
-
-    function addToCart(bookId) {
-        // Check if user is logged in
-        <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'add_to_cart.php');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    console.log(xhr.responseText);
-                    alert('Book added to cart successfully!');
-                } else {
-                    alert('Error adding book to cart!');
-                }
-            };
-            xhr.send('bookid=' + bookId);
-        <?php else: ?>
-            // User is not logged in, show alert or redirect to login page
-            window.location.href = '/Registration/login.html';
-            // You can redirect user to the login page using JavaScript or HTML anchor tag
-            // window.location.href = 'login.php';
-        <?php endif; ?>
-    }
 </script>
 
 </html>

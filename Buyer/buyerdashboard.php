@@ -5,7 +5,7 @@ require_once '../Shared Components/dbconnection.php';
 // Start session
 session_start();
 // Check if user is logged in
-if (!isset ($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
     exit();
@@ -52,7 +52,7 @@ try {
     $statusFilter = 'All';
 
     // Check if a filter has been selected
-    if (isset ($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+    if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
         $statusFilter = $_GET['status'];
     }
 
@@ -109,10 +109,10 @@ try {
 
     <title>Document</title>
     <style>
-    .task {
-        height: 100%;
-        /* Set the height of the calendar container to 100% */
-    }
+        .task {
+            height: 100%;
+            /* Set the height of the calendar container to 100% */
+        }
     </style>
 </head>
 
@@ -170,20 +170,20 @@ try {
                         <div class="rows">
                             <!-- Adding the order items -->
                             <?php foreach ($orders as $order): ?>
-                            <div class="row">
-                                <div class="name-cell">
-                                    <?php echo $order['book_title']; ?>
+                                <div class="row">
+                                    <div class="name-cell">
+                                        <?php echo $order['book_title']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['unit_price']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['status']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['delivery_date']; ?>
+                                    </div>
                                 </div>
-                                <div class="cell">
-                                    <?php echo $order['unit_price']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $order['status']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $order['delivery_date']; ?>
-                                </div>
-                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -308,15 +308,15 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
 
 
-});
+    });
 </script>
 
 </html>

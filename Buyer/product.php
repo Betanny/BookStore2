@@ -60,7 +60,7 @@ global $books;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="/Home/home.css">
     <link rel="stylesheet" href="/Shared Components/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -126,7 +126,10 @@ global $books;
                 <h5>Minimum pieces in Bulk:
                     <?php echo $book['mininbulk']; ?>
                 </h5>
-                <button id="addToCartButton" onclick="addToCart(<?php echo $bookid; ?>)">Add to Cart</button>
+                <form id="addToCartForm" action="add_to_cart.php" method="post">
+                    <input type="hidden" name="bookid" id="bookidInput" value="<?php echo $book['bookid']; ?>">
+                    <button type="submit">Add to Cart</button>
+                </form>
 
 
 
@@ -252,26 +255,10 @@ global $books;
     });
 
     function addToCart(bookId) {
-        // Check if user is logged in
-        <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'add_to_cart.php');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    console.log(xhr.responseText);
-                    alert('Book added to cart successfully!');
-                } else {
-                    alert('Error adding book to cart!');
-                }
-            };
-            xhr.send('bookid=' + bookId);
-        <?php else: ?>
-            // User is not logged in, show alert or redirect to login page
-            window.location.href = '/Registration/login.html';
-            // You can redirect user to the login page using JavaScript or HTML anchor tag
-            // window.location.href = 'login.php';
-        <?php endif; ?>
+        console.log(bookId);
+        console.log("No book id")
+        document.getElementById("addToCartForm").submit();
+
     }
 </script>
 

@@ -10,6 +10,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 $book_id = $_POST['bookid'];
+$book_id = $_POST['price'];
+
 $quantity = 1;
 $quantity = 1; // Assuming default quantity is 1
 $productType = "retail";

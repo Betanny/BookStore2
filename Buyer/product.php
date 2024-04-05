@@ -128,6 +128,8 @@ global $books;
                 </h5>
                 <form id="addToCartForm" action="add_to_cart.php" method="post">
                     <input type="hidden" name="bookid" id="bookidInput" value="<?php echo $book['bookid']; ?>">
+                    <input type="hidden" name="price" id="bookidInput" value="<?php echo $book['price']; ?>">
+
                     <button type="submit">Add to Cart</button>
                 </form>
 

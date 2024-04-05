@@ -20,10 +20,16 @@ try {
     $cartdatastmt->execute();
     $cartItems = $cartdatastmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve form data
         $shippingAddress = $_POST['DeliveryAddress']; // Retrieve shipping address from the form
         $paymentMethod = $_POST['paymentMethod'];
+        error_log('Payment Method: ' . $paymentMethod);
+        var_dump($paymentMethod);
+
+
 
         // Fetch cart data with product details from the database
         $cartdatastmt = $db->prepare("
@@ -162,7 +168,7 @@ try {
 
 <body>
     <div id="header-container"></div>
-    <form id="order-form" action="" method="post">
+    <form id="order-form" action="place_order.php" method="post">
 
         <div class="checkout-container">
 
@@ -178,41 +184,41 @@ try {
                     </div>
                     <div class="cart-details">
                         <?php foreach ($cartItems as $item): ?>
-                        <div class="cart-row">
-                            <div class="Product-cell">
-                                <div class="product_image">
-                                    <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $item['front_page_image']); ?>"
-                                        alt=" Product Image">
+                            <div class="cart-row">
+                                <div class="Product-cell">
+                                    <div class="product_image">
+                                        <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $item['front_page_image']); ?>"
+                                            alt=" Product Image">
+                                    </div>
+                                    <div class="product-name">
+                                        <?php echo $item['title']; ?>
+                                    </div>
                                 </div>
-                                <div class="product-name">
-                                    <?php echo $item['title']; ?>
+
+                                <div class="quantity reg-cell">
+                                    <!-- Pass the cart ID to JavaScript -->
+                                    <input type="number" id="quantity" class=" input" min="1"
+                                        value="<?php echo $item['quantity']; ?>"
+                                        data-cart-id=" <?php echo $item['cart_id']; ?>">
                                 </div>
-                            </div>
-
-                            <div class="quantity reg-cell">
-                                <!-- Pass the cart ID to JavaScript -->
-                                <input type="number" id="quantity" class=" input" min="1"
-                                    value="<?php echo $item['quantity']; ?>"
-                                    data-cart-id=" <?php echo $item['cart_id']; ?>">
-                            </div>
 
 
-                            <div class="reg-cell">
-                                <?php echo $item['product_type']; ?>
+                                <div class="reg-cell">
+                                    <?php echo $item['product_type']; ?>
+                                </div>
+                                <div class="reg-cell">
+                                    <?php echo $item['price']; ?>
+                                </div>
+                                <div class="reg-cell">
+                                    <?php echo $item['quantity'] * $item['price']; ?>
+                                </div>
+                                <i class="fa-solid fa-trash-can"
+                                    onclick="deleteCartItem(<?php echo $item['cart_id']; ?>)"></i>
                             </div>
-                            <div class="reg-cell">
-                                <?php echo $item['price']; ?>
-                            </div>
-                            <div class="reg-cell">
-                                <?php echo $item['quantity'] * $item['price']; ?>
-                            </div>
-                            <i class="fa-solid fa-trash-can"
-                                onclick="deleteCartItem(<?php echo $item['cart_id']; ?>)"></i>
-                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="cart-total">
+                <div class=" cart-total">
                     <div class="return-container">
                         <button id="return-button" class="return-button"><i class="fa-solid fa-angle-left"></i>Continue
                             Shopping</button>
@@ -245,7 +251,7 @@ try {
                             <img src="card_icon.png" alt="Card">
                         </button>
                     </div>
-                    <input type="hidden" name="paymentMethod">
+                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="Mpesa">
 
 
                     <div id="mpesaFields" class="input-box" style="display:none;">
@@ -354,92 +360,98 @@ try {
     </form>
 
     <script>
-    // Define a function to submit the form
-    function submitOrderForm() {
-        document.getElementById('order-form').submit();
-    }
-
-    // Define a function to toggle payment fields
-    function togglePaymentFields(paymentMethod) {
-        console.log("Function called with payment method:", paymentMethod);
-
-        var mpesaFields = document.getElementById("mpesaFields");
-        var airtelmoneyFields = document.getElementById("airtelmoneyFields");
-        var cardFields = document.getElementById("cardFields");
-
-        mpesaFields.style.display = "none";
-        airtelmoneyFields.style.display = "none";
-        cardFields.style.display = "none";
-
-        if (paymentMethod === "mpesa") {
-            mpesaFields.style.display = "block";
-            document.getElementById('paymentMethod').value = 'mpesa';
-            console.log("mpesa");
-
-        } else if (paymentMethod === "airtelmoney") {
-            airtelmoneyFields.style.display = "block";
-            document.getElementById('paymentMethod').value = 'airtelmoney';
-
-        } else if (paymentMethod === "card") {
-            cardFields.style.display = "block";
-            document.getElementById('paymentMethod').value = 'card';
-
-        }
-        // document.getElementById('paymentMethod').value = paymentMethod;
-
-
-
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-
-        // Attach event listener to all quantity input fields
-        var quantityInputs = document.querySelectorAll('.quantity input');
-        quantityInputs.forEach(function(input) {
-            input.addEventListener('input', function() {
-                var cartId = this.dataset.cartId;
-                var newQuantity = this.value;
-                var price = parseFloat(document.querySelector('.reg-cell[data-cart-id="' +
-                    cartId + '"][data-type="price"]').innerText);
-                var totalPriceElement = document.querySelector('.reg-cell[data-cart-id="' +
-                    cartId + '"][data-type="total-price"]');
-                var subtotal = document.getElementById('subtotal');
-                var total = document.getElementById('total');
-
-                // Calculate total price
-                var totalPrice = parseFloat(price * newQuantity).toFixed(2);
-                totalPriceElement.innerText = totalPrice; // Update total price display
-
-                // Update subtotal and total
-                updateSubtotalAndTotal();
-
-                // Send asynchronous request to update quantity in the database
-                updateQuantityInDatabase(cartId, newQuantity);
-            });
-        });
-
-        // Attach event listener to submit button
-        var submitButton = document.getElementById('order-button');
-        submitButton.addEventListener('click', submitOrderForm);
-
-        function updateSubtotalAndTotal() {
-            var total = 0;
-            var totalElements = document.querySelectorAll('.reg-cell[data-type="total-price"]');
-            totalElements.forEach(function(element) {
-                total += parseFloat(element.innerText);
-            });
-            document.getElementById('subtotal').innerText = total.toFixed(2);
-            document.getElementById('total').innerText = total.toFixed(2);
+        // Define a function to submit the form
+        function submitOrderForm() {
+            console.log("Starting to submit the form");
+            document.getElementById('order-form').submit();
         }
 
-        function deleteCartItem(cartId) {
-            if (confirm("Are you sure you want to delete this item from your cart?")) {
-                fetch('delete_cart_item.php', {
+        // Define a function to toggle payment fields
+        function togglePaymentFields(paymentMethod) {
+            console.log("Function called with payment method:", paymentMethod);
+            document.getElementById('paymentMethod').value = paymentMethod;
+            console.log(paymentMethod);
+
+
+
+            var mpesaFields = document.getElementById("mpesaFields");
+            var airtelmoneyFields = document.getElementById("airtelmoneyFields");
+            var cardFields = document.getElementById("cardFields");
+
+            mpesaFields.style.display = "none";
+            airtelmoneyFields.style.display = "none";
+            cardFields.style.display = "none";
+
+            if (paymentMethod === "mpesa") {
+                mpesaFields.style.display = "block";
+                document.getElementById('paymentMethod').value = 'mpesa';
+                console.log("mpesa");
+
+            } else if (paymentMethod === "airtelmoney") {
+                airtelmoneyFields.style.display = "block";
+                document.getElementById('paymentMethod').value = 'airtelmoney';
+
+            } else if (paymentMethod === "card") {
+                cardFields.style.display = "block";
+                document.getElementById('paymentMethod').value = 'card';
+
+            }
+            // document.getElementById('paymentMethod').value = paymentMethod;
+
+
+
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+
+            // Attach event listener to all quantity input fields
+            var quantityInputs = document.querySelectorAll('.quantity input');
+            quantityInputs.forEach(function (input) {
+                input.addEventListener('input', function () {
+                    var cartId = this.dataset.cartId;
+                    var newQuantity = this.value;
+                    var price = parseFloat(document.querySelector('.reg-cell[data-cart-id="' +
+                        cartId + '"][data-type="price"]').innerText);
+                    var totalPriceElement = document.querySelector('.reg-cell[data-cart-id="' +
+                        cartId + '"][data-type="total-price"]');
+                    var subtotal = document.getElementById('subtotal');
+                    var total = document.getElementById('total');
+
+                    // Calculate total price
+                    var totalPrice = parseFloat(price * newQuantity).toFixed(2);
+                    totalPriceElement.innerText = totalPrice; // Update total price display
+
+                    // Update subtotal and total
+                    updateSubtotalAndTotal();
+
+                    // Send asynchronous request to update quantity in the database
+                    updateQuantityInDatabase(cartId, newQuantity);
+                });
+            });
+
+            // Attach event listener to submit button
+            var submitButton = document.getElementById('order-button');
+            submitButton.addEventListener('click', submitOrderForm);
+
+            function updateSubtotalAndTotal() {
+                var total = 0;
+                var totalElements = document.querySelectorAll('.reg-cell[data-type="total-price"]');
+                totalElements.forEach(function (element) {
+                    total += parseFloat(element.innerText);
+                });
+                document.getElementById('subtotal').innerText = total.toFixed(2);
+                document.getElementById('total').innerText = total.toFixed(2);
+            }
+
+            function deleteCartItem(cartId) {
+                console.log('deleteCartItem: ', cartId);
+                if (confirm("Are you sure you want to delete this item from your cart?")) {
+                    fetch('delete_cart_item.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -448,20 +460,20 @@ try {
                             cartId: cartId
                         })
                     })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.reload();
-                        } else {
-                            alert('Failed to delete item from cart.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error deleting item from cart:', error);
-                        alert('An error occurred while deleting item from cart.');
-                    });
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Failed to delete item from cart.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting item from cart:', error);
+                            alert('An error occurred while deleting item from cart.');
+                        });
+                }
             }
-        }
-    });
+        });
     </script>
 
 

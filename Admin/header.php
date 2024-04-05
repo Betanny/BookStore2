@@ -71,10 +71,11 @@ try {
         <nav>
 
             <ul>
-                <li><a href="#" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="#" class="link light-text">Products</a></li>
-                <li><a href="#" class="link light-text">Orders</a></li>
-                <li><a href="#" class="link light-text">Transactions</a></li>
+                <li><a href="admindashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="products.php" class="link light-text">Products</a></li>
+                <li><a href="users.php" class="link light-text">Users</a></li>
+                <li><a href="orders.php" class="link light-text">Orders</a></li>
+                <li><a href="transactions.php" class="link light-text">Transactions</a></li>
             </ul>
 
         </nav>

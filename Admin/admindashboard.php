@@ -48,6 +48,13 @@ try {
     $num_clients = $num_clients_result['num_clients'];
     global $num_clients;
 
+    // Execute the query to fetch the number of dealers
+    $sql_num_dealers = "SELECT COUNT(DISTINCT user_id) as num_dealers FROM users WHERE role='Dealer'";
+    $sql_num_dealers = $db->query($sql_num_dealers);
+    $num_dealers_result = $sql_num_dealers->fetch(PDO::FETCH_ASSOC);
+    $num_dealers = $num_dealers_result['num_dealers'];
+    global $num_dealers;
+
 
 
 
@@ -67,6 +74,45 @@ try {
         $status_labels[] = $row['status'];
         $order_data[] = $row['count'];
     }
+
+    //sql to get best rated
+    $sql_best_rated = "SELECT * FROM books ORDER BY bookrating DESC LIMIT 1";
+    // Execute the query to fetch the best-rated book
+    $stmt_best_rated = $db->query($sql_best_rated);
+    $best_rated_book = $stmt_best_rated->fetch(PDO::FETCH_ASSOC);
+    $best_rated_title = $best_rated_book['title'];
+    global $best_rated_title;
+
+    $sql_best_selling = "
+    SELECT b.title, SUM(o.total_amount) AS total_sales
+    FROM public.orders o
+    JOIN public.books b ON o.product_id = b.bookid
+    GROUP BY b.title
+    ORDER BY total_sales DESC
+    LIMIT 1
+";
+
+    // Execute the query to fetch the best-selling book
+    $stmt_best_selling = $db->query($sql_best_selling);
+    $best_selling_book = $stmt_best_selling->fetch(PDO::FETCH_ASSOC);
+    $best_selling_title = $best_selling_book['title'];
+    global $best_selling_title;
+
+    // SQL to get the most popular book
+    $sql_most_popular = "
+    SELECT b.title, COUNT(*) AS total_orders
+    FROM public.orders o
+    JOIN public.books b ON o.product_id = b.bookid
+    GROUP BY b.title
+    ORDER BY total_orders DESC
+    LIMIT 1
+";
+
+    // Execute the query to fetch the most popular book
+    $stmt_most_popular = $db->query($sql_most_popular);
+    $most_popular_book = $stmt_most_popular->fetch(PDO::FETCH_ASSOC);
+    $most_popular_title = $most_popular_book['title'];
+    global $most_popular_title;
 
 
 
@@ -130,13 +176,13 @@ try {
                     </div>
                 </div>
                 <div class="report">
-                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <i class="fa-solid fa-users"></i>
                     <div class="content">
                         <h4>
-                            Total Income
+                            Dealers
                         </h4>
                         <p>
-                            <?php echo (int) $total_income; ?>
+                            <?php echo (int) $num_dealers; ?>
                         </p>
                     </div>
                 </div>
@@ -146,7 +192,9 @@ try {
                         <h4>
                             Total Income
                         </h4>
-                        <p>110</p>
+                        <p>
+                            <?php echo (int) $total_income; ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -168,21 +216,21 @@ try {
                 <div class="products">
                     <div class="product">
                         <h4>
-                            <?php echo $title; ?>
+                            <?php echo $best_rated_title; ?>
                         </h4>
                         <h5>Highest rated</h5>
 
                     </div>
                     <div class="product">
                         <h4>
-                            <?php echo $title; ?>
+                            <?php echo $best_selling_title; ?>
                         </h4>
                         <h5>Best Selling</h5>
 
                     </div>
                     <div class="product">
                         <h4>
-                            <?php echo $title; ?>
+                            <?php echo $most_popular_title; ?>
                         </h4>
                         <h5>Most Popular</h5>
 

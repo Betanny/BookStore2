@@ -212,13 +212,13 @@ try {
 
     </div>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        });
     </script>
 </body>
 

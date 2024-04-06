@@ -5,7 +5,7 @@ require_once '../Shared Components/dbconnection.php';
 // Start session
 session_start();
 // Check if user is logged in
-if (!isset ($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
     exit();
@@ -34,7 +34,7 @@ try {
     $statusFilter = 'All';
 
     // Check if a filter has been selected
-    if (isset ($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+    if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
         $statusFilter = $_GET['status'];
     }
 
@@ -192,8 +192,95 @@ try {
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
+    <div class="update-container">
+        <div class="update-popup">
+            <div class="select-update-action">
+                <button type="button" class="action-button" id="Delivered">Confirm Delivery</button>
+                <button type="button" class="action-button" id="Decline">Decline Order</button>
+            </div>
+            <div class="Delivered-container">
+                <form action="#" method="post">
+                    <div class="input-box">
+
+                        <div class="inputcontrol">
+                            <div class="toggle-buttons">
+                                <label class="question-label" for="all-items">Did you receive all the items in your
+                                    order?</label>
+                                <input type="radio" id="all-items-yes" name="all-items" value="yes">
+                                <label for="all-items-yes">Yes</label>
+                                <input type="radio" id="all-items-no" name="all-items" value="no">
+                                <label for="all-items-no">No</label>
+                            </div>
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                    <div class="inputcontrol">
+                        <div class="toggle-buttons">
+
+                            <label class="question-label" for="delivery-timeliness">Were the items delivered within the
+                                expected
+                                timeframe?</label>
+                            <input type="radio" id="delivery-timeliness-yes" name="delivery-timeliness" value="yes">
+                            <label for="delivery-timeliness-yes">Yes</label>
+                            <input type="radio" id="delivery-timeliness-no" name="delivery-timeliness" value="no">
+                            <label for="delivery-timeliness-no">No</label>
+                        </div>
+                        <div class="error"></div>
+                    </div>
+                    <div class="inputcontrol">
+                        <div class="toggle-buttons">
+
+                            <label class="question-label" for="item-condition">Did the items arrive in good condition
+                                and as described on our
+                                website?</label>
+                            <input type="radio" id="item-condition-yes" name="item-condition" value="yes">
+                            <label for="item-condition-yes">Yes</label>
+                            <input type="radio" id="item-condition-no" name="item-condition" value="no">
+                            <label for="item-condition-no">No</label>
+                        </div>
+                        <div class="error"></div>
+                    </div>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="comments" class="no-asterisk">Any additional comments?</label>
+                            <textarea class="inputfield" style="height: 70px;width: 90%;" class="inputfield"
+                                name="comments"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Confirm Delivery</button>
+
+                </form>
+
+            </div>
+            <div class="Decline-container">
+                <form action="#" method="post">
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="reason" class="no-asterisk">Reason for declining:</label><br>
+                            <textarea id="reason" style="height: 60px;width: 90%;" name="reason"></textarea>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="improvement" class="no-asterisk">Anything specific we could improve:</label>
+                            <textarea id="improvement" style="height: 60px;width: 90%;" name="improvement"></textarea>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="assistance" class="no-asterisk">How can we assist you further:</label>
+                            <textarea id="assistance" style="height: 60px;width: 90%;" name="assistance"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Decline Order</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 
 
@@ -205,6 +292,54 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // Get the update button
+    var updateButton = document.getElementById('update-btn');
+    // Get the Delivered button
+    var deliveredButton = document.getElementById('Delivered');
+
+    // Get the Decline button
+    var declineButton = document.getElementById('Decline');
+    document.querySelector('.update-container').style.display = 'none';
+
+
+
+
+    // Add click event listener to the update button
+    updateButton.addEventListener('click', function() {
+        // Hide the viewproducts-container
+        document.querySelector('.viewproducts-container').style.display = 'none';
+        document.querySelector('.Decline-container').style.display = 'none';
+        document.querySelector('.Delivered-container').style.display = 'none';
+        document.querySelector('.update-container').style.display = 'block';
+
+    });
+
+
+
+    // Add click event listener to the Delivered button
+    deliveredButton.addEventListener('click', function() {
+        // Show the Delivered container and hide the Decline container
+        document.querySelector('.Delivered-container').style.display = 'block';
+        document.querySelector('.Decline-container').style.display = 'none';
+        deliveredButton.classList.add('active');
+        deliveredButton.classList.remove('inactive');
+        declineButton.classList.add('inactive');
+        declineButton.classList.remove('active');
+    });
+
+
+    // Add click event listener to the Decline button
+    declineButton.addEventListener('click', function() {
+        // Show the Decline container and hide the Delivered container
+        document.querySelector('.Delivered-container').style.display = 'none';
+        document.querySelector('.Decline-container').style.display = 'block';
+        declineButton.classList.add('active');
+        declineButton.classList.remove('inactive');
+        deliveredButton.classList.add('inactive');
+        deliveredButton.classList.remove('active');
+    });
 });
 </script>
 

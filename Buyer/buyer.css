@@ -900,4 +900,133 @@ input#rate-5:checked~label {
 
 
 
+/***************************************Order Confirmation *******************************************/
+.toggle-buttons {
+    display: flex;
+    justify-content: space-between;
 
+}
+
+.toggle-buttons input[type="radio"] {
+    display: none;
+}
+.toggle-buttons input:checked~label {
+    color: var(--primary-color);
+}
+.toggle-buttons input:not(:checked)~label:hover, input:not(:checked)~label:hover~label {
+    color: var(--primary-color);
+}
+.toggle-buttons label {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 20px;
+    height: 40px;
+    padding: 10px;
+
+}
+.toggle-buttons .question-label{
+    cursor: none;
+    border: none;
+    border-radius: 0px;
+    padding-right: 20px;
+    width: 65%;
+
+}
+
+.toggle-buttons input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color:var(--primary-color);
+}
+.update-container{
+    background-color: var(--accent-color2);
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center; /* Horizontally center the update-popup */
+    align-items: center; 
+    padding-top: 10px;
+}
+.update-popup{
+    background-color: var(--background-color);
+    width: 60%;
+    height: max-content;
+    padding: 40px;
+    padding-top: 20px;
+    margin: 20px auto;
+    border-radius: 15px;
+}
+.select-update-action{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 10px;
+    text-align: center;
+    margin: 10px;
+    margin-bottom: 30px;
+
+
+
+}
+
+.update-popup .inputcontrol{
+    margin-top: 20px;
+    padding: 8px 16px;
+
+}
+
+.action-button{
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    height: 35px;
+    width: 40%;
+    border:none;
+    cursor: pointer;
+    border-radius: 8px;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin: auto;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.inactive {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+
+.submit-btn{
+    font-size: 13px;
+    font-weight: 500;
+    height: 30px;
+    width:  15%;
+    cursor: pointer;
+    border-radius: 30px;
+    right: 50%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    position: absolute;  
+    align-items: center;
+
+}

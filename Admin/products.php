@@ -105,33 +105,38 @@ try {
                 <div class="rows">
                     <!-- Adding the product items -->
                     <?php foreach ($products as $product): ?>
-                    <div class="row">
-                        <input type="checkbox" class="checkbox" name="product_id" value="<?php $product['bookid']; ?>">
-                        <div class=" name-cell">
-                            <?php echo $product['title']; ?>
+                        <div class="row">
+                            <input type="checkbox" class="checkbox" name="product_id" value="<?php $product['bookid']; ?>">
+                            <div class=" name-cell">
+                                <?php echo $product['title']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['isbn']; ?>
+                            </div>
+                            <div class="bigger-cell">
+                                <?php echo $product['subject']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['bookrating']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['copies_bought']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['total_values_generated']; ?>
+                            </div>
+                            <!-- Add the icon with a class to handle click events -->
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-eye-slash toggle-icon"></i>
+                            </div>
+
+                            <div class="icon-cell">
+                                <a href="#" class="delete-link" data-table="books"
+                                    data-pk="<?php echo $product['bookid']; ?>" data-pk-name="bookid">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="cell">
-                            <?php echo $product['isbn']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['subject']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $product['bookrating']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $product['copies_bought']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $product['total_values_generated']; ?>
-                        </div>
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-eye-slash"></i>
-                        </div>
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-trash"></i>
-                        </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -143,17 +148,69 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
 
+            });
+    });
+    <?php foreach ($products as $product): ?>
+        console.log(<?php echo json_encode($product['bookid']); ?>);
+    <?php endforeach; ?>
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements with the class "delete-link"
+        var deleteLinks = document.querySelectorAll('.delete-link');
+
+        // Loop through each delete link
+        deleteLinks.forEach(function (link) {
+            // Add click event listener to each delete link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (i.e., following the href)
+                event.preventDefault();
+
+                // Get the table name, primary key column name, and primary key value from the data attributes
+                var tableName = link.getAttribute('data-table');
+                var primaryKey = link.getAttribute('data-pk');
+                var pkName = link.getAttribute('data-pk-name');
+
+                // Perform AJAX request to the delete script
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+                    primaryKey +
+                    '&pk_name=' + pkName, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Handle successful deletion (if needed)
+                        // For example, you can remove the deleted row from the DOM
+                        link.parentElement.parentElement.remove();
+                    } else {
+                        // Handle error (if needed)
+                        console.error('Error:', xhr.statusText);
+                    }
+                };
+                xhr.onerror = function () {
+                    // Handle network errors (if needed)
+                    console.error('Request failed');
+                };
+                xhr.send();
+            });
         });
-});
-<?php foreach ($products as $product): ?>
-console.log(<?php echo json_encode($product['bookid']); ?>);
-<?php endforeach; ?>
+    });
+
+    //hide view button feature
+
+    // Get the icon element
+    const hideviewicon = document.querySelector('.toggle-icon');
+
+    // Add a click event listener
+    icon.addEventListener('click', () => {
+        // Toggle visibility (hide/show)
+        hideviewicon.classList.toggle('hidden');
+    });
 </script>
 
 </html>

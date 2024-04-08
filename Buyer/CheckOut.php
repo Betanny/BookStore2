@@ -2,16 +2,19 @@
 require_once '../Shared Components/dbconnection.php';
 session_start();
 
+// Check if user is logged in and if the role is "client"
 if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in or if the role is not "client"
     header("Location: ../Registration/login.html");
 }
+
 
 $user_id = $_SESSION['user_id'];
 
 try {
     // Fetch cart data with product details from the database
     $cartdatastmt = $db->prepare("
-        SELECT c.*, b.title, b.front_page_image, b.price, b.priceinbulk, b.mininbulk
+        SELECT c.*, b.title, b.front_page_image, b.price, b.priceinbulk, b.mininbulk, b.seller_id
         FROM cart c
         JOIN books b ON c.product_id = b.bookid
         WHERE c.client_id = :client_id
@@ -20,128 +23,19 @@ try {
     $cartdatastmt->execute();
     $cartItems = $cartdatastmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $subtotal = 0;
+    $discount = 0;
 
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Retrieve form data
-        $shippingAddress = $_POST['DeliveryAddress']; // Retrieve shipping address from the form
-        $paymentMethod = $_POST['paymentMethod'];
-        error_log('Payment Method: ' . $paymentMethod);
-        var_dump($paymentMethod);
-
-
-
-        // Fetch cart data with product details from the database
-        $cartdatastmt = $db->prepare("
-        SELECT c.*, b.product_type, b.unit_price, b.seller_id
-        FROM cart c
-        JOIN books b ON c.product_id = b.bookid
-        WHERE c.client_id = :client_id
-    ");
-        $cartdatastmt->bindParam(':client_id', $clientId);
-        $cartdatastmt->execute();
-        $cartItems = $cartdatastmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Start transaction
-        $db->beginTransaction();
-        $status = "Pending";
-        try {
-            foreach ($cartItems as $item) {
-                // Calculate total amount for each item
-                $totalAmount = $item['quantity'] * $item['unit_price'];
-
-                // Insert order details into the orders table
-                $stmt = $db->prepare("
-                INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
-                VALUES (:client_id, :total_amount, :status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
-            ");
-                $stmt->bindParam(':client_id', $clientId);
-                $stmt->bindParam(':total_amount', $totalAmount);
-                $stmt->bindParam(':status', $status);
-                $stmt->bindParam(':payment_method', $paymentMethod);
-                $stmt->bindParam(':shipping_address', $shippingAddress);
-                $stmt->bindParam(':product_type', $item['product_type']);
-                $stmt->bindParam(':product_id', $item['product_id']);
-                $stmt->bindParam(':unit_price', $item['unit_price']);
-                $stmt->bindParam(':quantity', $item['quantity']);
-                $stmt->bindParam(':seller_id', $item['seller_id']);
-                $stmt->execute();
-
-                // Retrieve the order ID of the newly inserted order
-                $orderId = $db->lastInsertId();
-
-                // Insert transaction details into the transactions table
-                $stmt = $db->prepare("
-                INSERT INTO transactions (client_id, amount, transaction_type, payment_method, order_id)
-                VALUES (:client_id, :amount, 'Order', :payment_method, :order_id)
-            ");
-                $stmt->bindParam(':client_id', $clientId);
-                $stmt->bindParam(':amount', $totalAmount);
-                $stmt->bindParam(':payment_method', $paymentMethod);
-                $stmt->bindParam(':order_id', $orderId);
-                $stmt->execute();
-            }
-
-            // Remove the order from the cart
-            $stmt = $db->prepare("DELETE FROM cart WHERE client_id = :client_id");
-            $stmt->bindParam(':client_id', $clientId);
-            $stmt->execute();
-
-            // Commit transaction
-            $db->commit();
-
-            // Redirect to a success page or perform further actions after successful order submission
-            // Example: header("Location: order_success.php");
-        } catch (PDOException $e) {
-            // Rollback transaction if an error occurs
-            $db->rollBack();
-            // Handle errors if order submission fails
-            error_log("Error submitting order: " . $e->getMessage());
-            // Redirect to an error page or display an error message
-            // Example: header("Location: order_error.php");
-        }
-    } else {
-        // If the request method is not POST, redirect to an error page or display an error message
-        // Example: header("Location: order_error.php");
+    // Calculate subtotal
+    foreach ($cartItems as $item) {
+        // Calculate total price for each item
+        $totalPrice = $item['quantity'] * $item['price'];
+        // Add total price to subtotal
+        $subtotal += $totalPrice;
     }
 
-    //     $stmt = $db->prepare("
-//     INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity)
-//     VALUES (:client_id, :total_amount, 'Pending', :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity)
-// ");
-//     $stmt->bindParam(':client_id', $_SESSION['user_id']);
-//     $stmt->bindParam(':total_amount', $totalAmount);
-//     $stmt->bindParam(':payment_method', $_POST['payment_method']); // Make sure to sanitize user input
-//     $stmt->bindParam(':shipping_address', $_POST['shipping_address']); // Make sure to sanitize user input
 
-    //     foreach ($cartItems as $item) {
-//         $stmt->bindParam(':product_type', $item['product_type']);
-//         $stmt->bindParam(':product_id', $item['product_id']);
-//         $stmt->bindParam(':unit_price', $item['price']);
-//         $stmt->bindParam(':quantity', $item['quantity']);
-//         $stmt->execute();
-//     }
 
-    //     // Insert transaction into the transactions table
-//     $orderId = $db->lastInsertId();
-//     $stmt = $db->prepare("
-//     INSERT INTO transactions (client_id, amount, transaction_type, payment_method, order_id)
-//     VALUES (:client_id, :amount, 'Order', :payment_method, :order_id)
-// ");
-//     $stmt->bindParam(':client_id', $_SESSION['user_id']);
-//     $stmt->bindParam(':amount', $totalAmount);
-//     $stmt->bindParam(':payment_method', $_POST['payment_method']); // Make sure to sanitize user input
-//     $stmt->bindParam(':order_id', $orderId);
-//     $stmt->execute();
-
-    //     // Clear the cart after successful order placement
-//     $stmt = $db->prepare("DELETE FROM cart WHERE client_id = :client_id");
-//     $stmt->bindParam(':client_id', $_SESSION['user_id']);
-//     $stmt->execute();
-
-    //     // Redirect to order success page
-//     header("Location: order_success.php");
-//     exit(); // Terminate script execution
 
 } catch (PDOException $e) {
     error_log("Error: " . $e->getMessage());
@@ -169,6 +63,8 @@ try {
 <body>
     <div id="header-container"></div>
     <form id="order-form" action="place_order.php" method="post">
+        <input type="hidden" name="cart_items" value='<?php echo json_encode($cartItems); ?>'>
+
 
         <div class="checkout-container">
 
@@ -183,8 +79,14 @@ try {
                         <div class="reg-cell">TotalPrice</div>
                     </div>
                     <div class="cart-details">
+
                         <?php foreach ($cartItems as $item): ?>
-                            <div class="cart-row">
+                            <input type="hidden" id="product_id" name="product_id"
+                                value="<?php echo $item['product_id']; ?>">
+                            <input type="hidden" id="seller_id" name="seller_id" value="<?php echo $item['seller_id']; ?>">
+
+
+                            <div class=" cart-row">
                                 <div class="Product-cell">
                                     <div class="product_image">
                                         <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $item['front_page_image']); ?>"
@@ -220,13 +122,21 @@ try {
                 </div>
                 <div class=" cart-total">
                     <div class="return-container">
-                        <button id="return-button" class="return-button"><i class="fa-solid fa-angle-left"></i>Continue
+                        <button type="button" id="return-button" class="return-button"><i
+                                class="fa-solid fa-angle-left"></i>Continue
                             Shopping</button>
                     </div>
                     <div class="totals">
-                        <p>SubTotal : 5623</p>
-                        <p>Discount : 0</p>
-                        <h4>Total : 5623</h4>
+                        <p>SubTotal:
+                            <?php echo $subtotal; ?>
+                        </p>
+                        <p> Discount:
+                            <?php echo $discount; ?>
+                        </p>
+                        <h4>
+                            Total:
+                            <?php echo $subtotal - $discount; ?>
+                        </h4>
                     </div>
                 </div>
 
@@ -251,7 +161,9 @@ try {
                             <img src="card_icon.png" alt="Card">
                         </button>
                     </div>
-                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="Mpesa">
+                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
+                    <input type="hidden" id="paymentNumber" name="paymentNumber" value="">
+
 
 
                     <div id="mpesaFields" class="input-box" style="display:none;">
@@ -316,7 +228,6 @@ try {
                 <div class="delivery-details">
 
                     <h4>Delivery Info.</h4>
-                    <!-- <form action="" method="post" id="LoginForm" name="form" autocomplete="true"> -->
                     <div class="input-box">
                         <div class="inputcontrol">
                             <label for="RecipientName">Recipient Name</label>
@@ -326,8 +237,8 @@ try {
                     </div>
                     <div class="input-box">
                         <div class="inputcontrol">
-                            <label for="DeliveryAddress">Delivery Address</label>
-                            <input type="text" class="inputfield" name="DeliveryAddress" />
+                            <label for="shipping_address">Delivery Address</label>
+                            <input type="text" class="inputfield" name="shipping_address" />
                             <div class="error"></div>
                         </div>
                     </div>
@@ -385,15 +296,20 @@ try {
             if (paymentMethod === "mpesa") {
                 mpesaFields.style.display = "block";
                 document.getElementById('paymentMethod').value = 'mpesa';
+                document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value.trim();
                 console.log("mpesa");
 
             } else if (paymentMethod === "airtelmoney") {
                 airtelmoneyFields.style.display = "block";
                 document.getElementById('paymentMethod').value = 'airtelmoney';
+                document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value.trim();
+
 
             } else if (paymentMethod === "card") {
                 cardFields.style.display = "block";
                 document.getElementById('paymentMethod').value = 'card';
+                document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value.trim();
+
 
             }
             // document.getElementById('paymentMethod').value = paymentMethod;

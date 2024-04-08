@@ -70,7 +70,7 @@ try {
                 <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
                 <li><a href="products.php" class="link light-text">Products</a></li>
                 <li><a href="myorders.php" class="link light-text">My orders</a></li>
-                <li><a href="feedback.html" class="link light-text">Feedback</a>
+                <li><a href="feedback.php" class="link light-text">Feedback</a>
                 </li>
                 <li><a href="bookselect.php" class="link light-text">Review a book</a></li>
             </ul>

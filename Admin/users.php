@@ -16,20 +16,18 @@ $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
 try {
-    // Initialize $name variable
-    $name = '';
-
     // SQL command to select all columns from the users table
     $sql = "
-        SELECT 
-            ROW_NUMBER() OVER() AS serialno,
-            email,
-            role,
-            category,
-            DATE(createdat) AS date_joined
-        FROM 
-            users
-    ";
+    SELECT 
+    user_id,
+        ROW_NUMBER() OVER() AS serialno,
+        email,
+        role,
+        category,
+        DATE(createdat) AS date_joined
+    FROM 
+        users
+";
 
     // Prepare the SQL statement
     $stmt = $db->prepare($sql);
@@ -41,85 +39,7 @@ try {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Check category and retrieve name accordingly
-    switch ($category) {
-        case 'individual':
-            // SQL command to concatenate first name and last name from clients table
-            $namesql = "
-                SELECT 
-                    CONCAT(first_name, ' ', last_name) AS name
-                FROM
-                    clients
-                WHERE
-                    client_id = :user_id
-            ";
-            break;
-        case 'organization':
-            // SQL command to select organization name from clients table
-            $namesql = "
-                SELECT 
-                    organization_name AS name
-                FROM
-                    clients
-                WHERE
-                    client_id = :user_id
-            ";
-            var_dump($user_id);
-            break;
-        case 'Author':
-            // SQL command to concatenate first name and last name from authors table
-            $namesql = "
-                SELECT 
-                    CONCAT(first_name, ' ', last_name) AS name
-                FROM
-                    authors
-                WHERE
-                    author_id = :user_id
-            ";
-            break;
-        case 'publisher':
-            // SQL command to select publisher name from publishers table
-            $namesql = "
-                SELECT 
-                    publisher_name AS name
-                FROM
-                    publishers
-                WHERE
-                    publisher_id = :user_id
-            ";
-            break;
-        case 'manufacturer':
-            // SQL command to select manufacturer name from manufacturers table
-            $namesql = "
-                SELECT 
-                    manufacturer_name AS name
-                FROM
-                    manufacturers
-                WHERE
-                    manufacturer_id = :user_id
-            ";
-            break;
-        default:
-            // Handle unknown category
-            $name = 'Unknown Category';
-            break;
-    }
 
-    // Prepare and execute the SQL statement to fetch the name
-    $namestmt = $db->prepare($namesql);
-    $namestmt->bindParam(':user_id', $user_id);
-    $namestmt->execute();
-
-    // Fetch name from the result
-    $nameData = $namestmt->fetch(PDO::FETCH_ASSOC);
-
-    // Check if $nameData is empty
-    if ($nameData) {
-        // Assign the retrieved name to $name variable
-        $name = $nameData['name'];
-    } else {
-        // Handle case when no matching record is found
-        $name = 'No Name Found';
-    }
 } catch (PDOException $e) {
     // Handle PDO exception
     echo "Error: " . $e->getMessage();
@@ -200,39 +120,113 @@ try {
                 <div class="rows">
                     <!-- Adding the user items -->
                     <?php foreach ($users as $user): ?>
-                    <div class="row">
-                        <div class="cell">
-                            <?php echo $user['serialno']; ?>
-                        </div>
-                        <div class="bigger-cell2">
-                            <?php echo $name; ?>
-                        </div>
-                        <div class="bigger-cell2">
-                            <?php echo $user['email']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $user['role']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $user['category']; ?>
-                        </div>
+                        <div class="row">
+                            <div class="cell">
+                                <?php echo $user['serialno'];
+                                ?>
+                            </div>
 
-                        <div class="bigger-cell">
-                            <?php echo $user['date_joined']; ?>
-                        </div>
-                        <!-- <div class="cell">
+                            <div class="bigger-cell2">
+                                <?php
+
+                                // Check category and retrieve name accordingly
+                                switch ($user['category']) {
+                                    case 'Individual':
+                                        // SQL command to concatenate first name and last name from clients table
+                                        $namesql = "
+                                            SELECT CONCAT(first_name, ' ', last_name) AS name
+                                            FROM clients
+                                            WHERE user_id = :user_id
+                                        ";
+                                        break;
+                                    case 'Organization':
+                                        // SQL command to select organization name from clients table
+                                        $namesql = "
+                                            SELECT organization_name AS name
+                                            FROM clients
+                                            WHERE user_id = :user_id
+                                        ";
+                                        break;
+                                    case 'Author':
+                                        // SQL command to concatenate first name and last name from authors table
+                                        $namesql = "
+                                            SELECT CONCAT(first_name, ' ', last_name) AS name
+                                            FROM authors
+                                            WHERE user_id = :user_id
+                                        ";
+                                        break;
+                                    case 'Publisher':
+                                        // SQL command to select publisher name from publishers table
+                                        $namesql = "
+                                            SELECT publisher_name AS name
+                                            FROM publishers
+                                            WHERE user_id = :user_id
+                                        ";
+                                        break;
+                                    case 'Manufacturer':
+                                        // SQL command to select manufacturer name from manufacturers table
+                                        $namesql = "
+                                            SELECT manufacturer_name AS name
+                                            FROM manufacturers
+                                            WHERE user_id = :user_id;
+                                        ";
+                                        break;
+                                    default:
+                                        // Handle unknown category
+                                        $name = 'Unknown Category';
+                                        break;
+                                }
+                                // var_dump($namesql);
+                            
+
+                                // Only execute if $namesql is not empty
+                                $namestmt = $db->prepare($namesql);
+                                $namestmt->bindParam(':user_id', $user['user_id']);
+                                $namestmt->execute();
+
+                                // Fetch name from the result
+                                $nameData = $namestmt->fetch(PDO::FETCH_ASSOC);
+
+                                if ($nameData !== false) {
+                                    // Access $nameData['name'] and assign it to $name
+                                    $name = $nameData['name'];
+                                } else {
+                                    // Handle case when no matching record is found
+                                    $name = 'No Name Found';
+                                }
+                                echo $name;
+                                ?>
+                            </div>
+
+                            <div class="bigger-cell2">
+                                <?php echo $user['email']; ?>
+                            </div>
+                            <div class="bigger-cell">
+                                <?php echo $user['role']; ?>
+                            </div>
+                            <div class="bigger-cell">
+                                <?php echo $user['category']; ?>
+                            </div>
+
+                            <div class="bigger-cell">
+                                <?php echo $user['date_joined']; ?>
+                            </div>
+                            <!-- <div class="cell">
                             </div> -->
 
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-eye-slash"></i>
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-pen"></i>
+                            </div>
+                            <div class="icon-cell">
+                                <a href="#" class="delete-link" data-table="users" data-pk="<?php echo $user['user_id']; ?>"
+                                    data-pk-name="user_id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-pen"></i>
-                        </div>
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-trash"></i>
-                        </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -244,14 +238,50 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php').then(response => response.text()).then(data => {
             document.getElementById('header-container').innerHTML = data;
-
         });
-});
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements with the class "delete-link"
+        var deleteLinks = document.querySelectorAll('.delete-link');
+
+        // Loop through each delete link
+        deleteLinks.forEach(function (link) {
+            // Add click event listener to each delete link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (i.e., following the href)
+                event.preventDefault();
+
+                // Get the table name, primary key column name, and primary key value from the data attributes
+                var tableName = link.getAttribute('data-table');
+                var primaryKey = link.getAttribute('data-pk');
+                var pkName = link.getAttribute('data-pk-name');
+
+                // Perform AJAX request to the delete script
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+                    primaryKey +
+                    '&pk_name=' + pkName, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Handle successful deletion (if needed)
+                        // For example, you can remove the deleted row from the DOM
+                        link.parentElement.parentElement.remove();
+                    } else {
+                        // Handle error (if needed)
+                        console.error('Error:', xhr.statusText);
+                    }
+                };
+                xhr.onerror = function () {
+                    // Handle network errors (if needed)
+                    console.error('Request failed');
+                };
+                xhr.send();
+            });
+        });
+    });
 </script>
 
 </html>

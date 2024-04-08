@@ -55,6 +55,40 @@ try {
     $orders = $ordersstmt->fetchAll(PDO::FETCH_ASSOC);
     global $orders;
 
+    // Handle form submissions
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['confirm_delivery'])) {
+            // Confirm Delivery form submission 
+            $orderId = $_POST['order_id'];
+            var_dump($orderId);
+            $comments = $_POST['comments'];
+
+            // Update database
+            $sql = "UPDATE orders SET status = 'Delivered', comments = :comments WHERE order_id = :orderId";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':comments', $comments);
+            $stmt->bindParam(':orderId', $orderId);
+            $stmt->execute();
+        } elseif (isset($_POST['decline_order'])) {
+            // Decline Order form submission
+            $orderId = $_POST['order_id'];
+            $reasons = $_POST['reason'];
+            $improvement = $_POST['improvement'];
+
+            // Update database
+            $sql = "UPDATE orders SET status = 'Declined', reasons = :reasons, comments = :improvement WHERE order_id = :orderId";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':reasons', $reasons);
+            $stmt->bindParam(':improvement', $improvement);
+            $stmt->bindParam(':orderId', $orderId);
+            $stmt->execute();
+        }
+        header("Location: {$_SERVER['REQUEST_URI']}");
+
+    }
+
+
+
 
 
 
@@ -101,17 +135,17 @@ try {
                     <form action="" method="get">
                         <select id="filterDropdown" name="status" onchange="this.form.submit()">
                             <option value="All" <?php
-                            if ($_GET['status'] === 'All') {
+                            if ($_GET['status'] == 'All') {
                                 echo "selected";
                             }
                             ; ?>>All</option>
                             <option value="Pending" <?php
-                            if ($_GET['status'] === 'Pending') {
+                            if ($_GET['status'] == 'Pending') {
                                 echo "selected";
                             }
                             ; ?>>Pending</option>
                             <option value="Delivered" <?php
-                            if ($_GET['status'] === 'Delivered') {
+                            if ($_GET['status'] == 'Delivered') {
                                 echo "selected";
                             }
                             ; ?>>Delivered</option>
@@ -140,20 +174,20 @@ try {
                 <div class="order-rows">
                     <!-- Adding the order items -->
                     <?php foreach ($orders as $order): ?>
-                    <div class="row">
-                        <div class="ordername-cell">
-                            <?php echo $order['title']; ?>
-                        </div>
-                        <div class="cell1">
-                            <?php echo $order['order_date']; ?>
-                        </div>
-                        <div class="bigger-cell2">
-                            <?php echo $order['shipping_address']; ?>
-                        </div>
-                        <div class="cell1">
-                            <?php echo $order['quantity']; ?>
-                        </div>
-                        <div class="cell1" style="background-color:
+                        <div class="row">
+                            <div class="ordername-cell">
+                                <?php echo $order['title']; ?>
+                            </div>
+                            <div class="cell1">
+                                <?php echo $order['order_date']; ?>
+                            </div>
+                            <div class="bigger-cell2">
+                                <?php echo $order['shipping_address']; ?>
+                            </div>
+                            <div class="cell1">
+                                <?php echo $order['quantity']; ?>
+                            </div>
+                            <div class="cell1" style="background-color:
     <?php
     // Determine background color based on status
     $status = strtolower($order['status']);
@@ -169,25 +203,30 @@ try {
     ?>
 ; border-radius: 15px; padding: 5px;
                             ">
-                            <?php echo $order['status']; ?>
+                                <?php echo $order['status']; ?>
+                            </div>
+
+
+                            <div class="cell1">
+                                <?php echo $order['delivery_date']; ?>
+                            </div>
+
+                            <?php if ($status === 'pending'): ?>
+                                <!-- <button type="submit" id="update-btn-<?php echo $order['order_id']; ?>"
+                                    class="update-button">Update</button> -->
+                                <button type="submit" id="update-btn-<?php echo $order['order_id']; ?>" class="update-button"
+                                    data-order-id="<?php echo $order['order_id']; ?>">Update</button>
+
+
+                                <!-- <button class="update-button">Update</button> -->
+                            <?php endif; ?>
+
+
+
+
+
+
                         </div>
-
-
-                        <div class="cell1">
-                            <?php echo $order['delivery_date']; ?>
-                        </div>
-                        <?php if ($status === 'pending'): ?>
-                        <button type="submit" id="update-btn" class="update-button">Update</button>
-
-                        <!-- <button class="update-button">Update</button> -->
-                        <?php endif; ?>
-
-
-
-
-
-
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -201,8 +240,11 @@ try {
                 <button type="button" class="action-button" id="Decline">Decline Order</button>
             </div>
             <div class="Delivered-container">
-                <form action="#" method="post">
+                <form action="#" method="post" onsubmit="reloadPage()">
+                    <input type="hidden" name="order_id" id="delivery-order-id" value="">
+
                     <div class="input-box">
+
 
                         <div class="inputcontrol">
                             <div class="toggle-buttons">
@@ -250,13 +292,15 @@ try {
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn">Confirm Delivery</button>
+                    <button type="submit" name="confirm_delivery" class="submit-btn">Confirm Delivery</button>
 
                 </form>
 
             </div>
             <div class="Decline-container">
-                <form action="#" method="post">
+                <form action="#" method="post" onsubmit="reloadPage()">
+                    <input type="hidden" name="order_id" id="rejected-order-id" value="">
+
                     <div class="input-box">
                         <div class="inputcontrol">
                             <label for="reason" class="no-asterisk">Reason for declining:</label><br>
@@ -265,17 +309,12 @@ try {
                     </div>
                     <div class="input-box">
                         <div class="inputcontrol">
-                            <label for="improvement" class="no-asterisk">Anything specific we could improve:</label>
+                            <label for="improvement" class="no-asterisk">what would you have opted to be done
+                                differently?</label>
                             <textarea id="improvement" style="height: 60px;width: 90%;" name="improvement"></textarea>
                         </div>
                     </div>
-                    <div class="input-box">
-                        <div class="inputcontrol">
-                            <label for="assistance" class="no-asterisk">How can we assist you further:</label>
-                            <textarea id="assistance" style="height: 60px;width: 90%;" name="assistance"></textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="submit-btn">Decline Order</button>
+                    <button type="submit" name="decline_order" class="submit-btn">Decline Order</button>
                 </form>
 
             </div>
@@ -286,61 +325,90 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php').then(response => response.text()).then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
-});
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the update button
-    var updateButton = document.getElementById('update-btn');
-    // Get the Delivered button
-    var deliveredButton = document.getElementById('Delivered');
-
-    // Get the Decline button
-    var declineButton = document.getElementById('Decline');
-    document.querySelector('.update-container').style.display = 'none';
-
-
-
-
-    // Add click event listener to the update button
-    updateButton.addEventListener('click', function() {
-        // Hide the viewproducts-container
-        document.querySelector('.viewproducts-container').style.display = 'none';
-        document.querySelector('.Decline-container').style.display = 'none';
-        document.querySelector('.Delivered-container').style.display = 'none';
-        document.querySelector('.update-container').style.display = 'block';
-
     });
+    document.addEventListener("DOMContentLoaded",
+        function () { // Get the update button
+            var updateButton = document.getElementById('update-btn');
+            // Get the Delivered button
+            var deliveredButton = document.getElementById('Delivered');
+            // Get the Decline button        
+            var declineButton = document.getElementById('Decline');
+            document.querySelector('.update-container').style.display = 'none';
 
 
 
-    // Add click event listener to the Delivered button
-    deliveredButton.addEventListener('click', function() {
-        // Show the Delivered container and hide the Decline container
-        document.querySelector('.Delivered-container').style.display = 'block';
-        document.querySelector('.Decline-container').style.display = 'none';
-        deliveredButton.classList.add('active');
-        deliveredButton.classList.remove('inactive');
-        declineButton.classList.add('inactive');
-        declineButton.classList.remove('active');
-    });
+            // Add click event listener to the update button 
+            // updateButton.addEventListener('click', function () {
+            //     // Hide the viewproducts-container
+            //     document.querySelector('.viewproducts-container').style.display = 'none';
+            //     document.querySelector('.Decline-container').style.display = 'none';
+            //     document.querySelector('.Delivered-container').style.display = 'none';
+            //     document.querySelector('.update-container').style.display = 'block';
+            // });
+            var updateButtons = document.querySelectorAll('.update-button');
+
+            // Loop through each update button and add event listener
+            updateButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Get the parent row of the clicked button
+                    var row = button.closest('.row');
+
+                    // Hide the viewproducts-container and show the update-container
+                    document.querySelector('.viewproducts-container').style.display = 'none';
+                    document.querySelector('.update-container').style.display = 'block';
+                    document.querySelector('.Decline-container').style.display = 'none';
+                    document.querySelector('.Delivered-container').style.display = 'none';
+                    // const orderId = updateButton.getAttribute("data-order-id");
+                    // console.log("Order ID:", orderId);
+                    // document.getElementById("order-id-input").value = orderId;
+                    var orderId = button.getAttribute("data-order-id");
+                    console.log("Order ID:", orderId);
+                    // Set the order ID in the delivery form
+                    document.getElementById("delivery-order-id").value = orderId;
+
+                    // Set the order ID in the rejected form
+                    document.getElementById("rejected-order-id").value = orderId;
 
 
-    // Add click event listener to the Decline button
-    declineButton.addEventListener('click', function() {
-        // Show the Decline container and hide the Delivered container
-        document.querySelector('.Delivered-container').style.display = 'none';
-        document.querySelector('.Decline-container').style.display = 'block';
-        declineButton.classList.add('active');
-        declineButton.classList.remove('inactive');
-        deliveredButton.classList.add('inactive');
-        deliveredButton.classList.remove('active');
-    });
-});
+
+
+                    // Add any additional logic as needed
+                });
+            });
+
+
+            // Add click event listener to the Delivered button     
+            deliveredButton.addEventListener('click', function () {
+                // Show the Delivered container and hide the Decline container 
+                document.querySelector('.Delivered-container').style.display = 'block';
+                document.querySelector('.Decline-container').style.display = 'none';
+                deliveredButton.classList.add('active');
+                deliveredButton.classList.remove('inactive');
+                declineButton.classList.add('inactive');
+                declineButton.classList.remove('active');
+
+            });
+
+
+            // Add click event listener to the Decline button   
+            declineButton.addEventListener('click', function () {
+                // Show the Decline container and hide the Delivered container
+                document.querySelector('.Delivered-container').style.display = 'none';
+                document.querySelector('.Decline-container').style.display = 'block';
+                declineButton.classList.add('active');
+                declineButton.classList.remove('inactive');
+                deliveredButton.classList.add('inactive');
+                deliveredButton.classList.remove('active');
+            });
+        });
+
+    function reloadPage() {
+        location.reload(); // Reload the current page
+    }
 </script>
 
 </html>

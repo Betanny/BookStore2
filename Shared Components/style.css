@@ -340,4 +340,15 @@ link{
 
 
 
+/*****************hide/view button styles****************/
+.toggle-icon {
+    display: none;
+}
+.hidden {
+    display: none;
+}
+.toggle-icon{
+    cursor: pointer;
+}
+
 

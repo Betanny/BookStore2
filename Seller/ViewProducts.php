@@ -5,7 +5,7 @@ require_once '../Shared Components/dbconnection.php';
 // Start session
 session_start();
 // Check if user is logged in
-if (!isset ($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
     exit();
@@ -81,12 +81,23 @@ try {
 
                     <input type="text" id="search-input" class="search-bar" placeholder="Search...">
                 </div>
-                <div class="addproductsbutton">
-                    <button type="submit" class="add-button">Add <div class="icon-cell">
-                            <i class="fa-solid fa-plus"></i>
+                <!-- <div class="addproductsbutton">
+                    <button type="button" class="add-button">Add <div class="icon-cell">
+                            <i class="fa-solid fa-plus">
+                                <a href="seller/addproducts.html"></a>
+                            </i>
                         </div></button>
 
+                </div> -->
+                <div class="addproductsbutton">
+                    <a href="addproducts.html" class="add-button">
+                        Add
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                    </a>
                 </div>
+
 
             </div>
         </div>
@@ -106,33 +117,33 @@ try {
                 <div class="rows">
                     <!-- Adding the product items -->
                     <?php foreach ($products as $product): ?>
-                    <div class="row">
-                        <input type="checkbox" class="checkbox" name="product_id" value="<?php $product['bookid']; ?>">
-                        <div class=" name-cell">
-                            <?php echo $product['title']; ?>
+                        <div class="row">
+                            <input type="checkbox" class="checkbox" name="product_id" value="<?php $product['bookid']; ?>">
+                            <div class=" name-cell">
+                                <?php echo $product['title']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['isbn']; ?>
+                            </div>
+                            <div class="bigger-cell">
+                                <?php echo $product['subject']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['bookrating']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['copies_bought']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $product['total_values_generated']; ?>
+                            </div>
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-pen"></i>
+                            </div>
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
                         </div>
-                        <div class="cell">
-                            <?php echo $product['isbn']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['subject']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $product['bookrating']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $product['copies_bought']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $product['total_values_generated']; ?>
-                        </div>
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-pen"></i>
-                        </div>
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-trash"></i>
-                        </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -144,17 +155,26 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
 
+            });
+    });
+    <?php foreach ($products as $product): ?>
+        console.log(<?php echo json_encode($product['bookid']); ?>);
+    <?php endforeach; ?>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var addProductButton = document.getElementById('addProductButton');
+
+        addProductButton.addEventListener('click', function () {
+            // Redirect to the addproducts.html page
+            window.location.href = 'seller/addproducts.html';
         });
-});
-<?php foreach ($products as $product): ?>
-console.log(<?php echo json_encode($product['bookid']); ?>);
-<?php endforeach; ?>
+    });
 </script>
 
 </html>

@@ -98,13 +98,8 @@ try {
                 <img id="bookImage"
                     src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $selected_book['front_page_image']); ?>"
                     alt="Book Image">
-                alt="Book Cover">
             </div>
-            <div class="img-nav">
-                <button id="prevButton"><i class="fa-solid fa-angles-left"></i></button>
-                <span id="imageCounter">1</span>
-                <button id="nextButton"><i class="fa-solid fa-angles-right"></i></button>
-            </div>
+
         </div>
         <div class="product-details">
             <h4>

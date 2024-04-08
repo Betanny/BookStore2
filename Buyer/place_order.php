@@ -2,149 +2,104 @@
 require_once '../Shared Components/dbconnection.php';
 session_start();
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
-    exit(); // Ensure script termination after redirection
+    exit; // Stop further execution
 }
-
 $user_id = $_SESSION['user_id'];
 
-try {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        var_dump($_POST);
-        // Retrieve form data
-        $shippingAddress = $_POST['DeliveryAddress'];
-        $paymentMethod = $_POST['paymentMethod'];
-        var_dump($paymentMethod);
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $sql = "SELECT client_id FROM clients WHERE user_id = $user_id";
+    // Execute the query and fetch the results
+    $client_id_stmt = $db->query($sql);
+    $client_id_result = $client_id_stmt->fetch(PDO::FETCH_ASSOC);
+    $client_id = $client_id_result['client_id'];
 
 
-        // Fetch cart data with product details from the database
-        $cartdatastmt = $db->prepare("
-        SELECT c.*, b.seller_id
-        FROM cart c
-        INNER JOIN books b ON c.product_id = b.bookid
-        WHERE c.client_id = :client_id
+
+    // Assign form data to variables
+    $status = "Pending"; // status is always pending
+    $payment_method = $_POST['paymentMethod'];
+    $payment_number = $_POST['paymentNumber'];
+    $shipping_address = $_POST['shipping_address'];
+    $product_type = "book"; // product_type is always book
+    $transactiontype = "Purchase";
+
+    // Prepare SQL statement to insert into orders table using named parameters
+    $stmt = $db->prepare("
+        INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
+        VALUES (:client_id, :total_amount, :status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
     ");
+    $cartItems = json_decode($_POST['cart_items'], true);
 
-        $cartdatastmt->bindParam(':client_id', $user_id);
-        $cartdatastmt->execute();
-        $cartItems = $cartdatastmt->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($user_id);
+    // Iterate over each item in the cart
+    foreach ($cartItems as $cartItem) {
+        $product_id = $cartItem['product_id'];
+        $unit_price = $cartItem['unit_price'];
+        $quantity = $cartItem['quantity'];
+        $total_amount = $unit_price * $quantity;
+        $cart_id = $cartItem['cart_id'];
+        $seller_id = $cartItem['seller_id'];
 
-
-
-        // var_dump($cartItems);
-
-        // Start transaction
-        // $db->beginTransaction();
-        $status = "Pending";
-        var_dump($status);
+        var_dump($cart_id);
 
 
-        foreach ($cartItems as $item) {
-            // Calculate total amount for each item
-            $totalAmount = $item['quantity'] * $item['unit_price'];
-            echo "Total amout";
-            var_dump($totalAmount);
+        // Assuming you have a way to determine seller_id for each product_id, otherwise adjust this accordingly
+
+        // Bind parameters
+        $stmt->bindParam(':client_id', $client_id);
+        $stmt->bindParam(':total_amount', $total_amount);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':payment_method', $payment_method);
+        $stmt->bindParam(':shipping_address', $shipping_address);
+        $stmt->bindParam(':product_type', $product_type);
+        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':unit_price', $unit_price);
+        $stmt->bindParam(':quantity', $quantity);
+        $stmt->bindParam(':seller_id', $seller_id); // Adjust this accordingly
 
 
-            // Insert order details into the orders table
-            //     $stmt = $db->prepare("
-            //     INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
-            //     VALUES (:client_id, :total_amount, :status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
-            // ");
-            //     $stmt->bindParam(':client_id', $user_id);
-            //     $stmt->bindParam(':total_amount', $totalAmount);
-            //     $stmt->bindParam(':status', $status);
-            //     $stmt->bindParam(':payment_method', $paymentMethod);
-            //     $stmt->bindParam(':shipping_address', $shippingAddress);
-            //     $stmt->bindValue(':product_type', 'book'); // Assuming product_type is a fixed value
-            //     $stmt->bindParam(':product_id', $item['product_id']);
-            //     $stmt->bindParam(':unit_price', $item['unit_price']);
-            //     $stmt->bindParam(':quantity', $item['quantity']);
-            //     $stmt->bindParam(':seller_id', $item['seller_id']);
-            //     var_dump($item['seller_id']);
+        // Execute the statement
+        if ($stmt->execute()) {
+            echo "Order for product ID $product_id placed successfully.<br>";
+            $order_id = $db->lastInsertId();
 
-            //     $stmt->execute();
-            var_dump($item['seller_id']);
-            var_dump($item['quantity']);
+            // Prepare SQL statement to insert into transactions table
+            $stmt_transaction = $db->prepare("
+                INSERT INTO transactions (client_id, amount, transaction_type, payment_method,payment_number,order_id)
+                VALUES (:client_id, :amount, :transaction_type, :payment_method, :payment_number,:order_id)
+            ");
+
+            // Bind parameters for the transaction insertion
+            $stmt_transaction->bindParam(':client_id', $client_id);
+            $stmt_transaction->bindParam(':amount', $total_amount);
+            $stmt_transaction->bindParam(':transaction_type', $transactiontype);
+            $stmt_transaction->bindParam(':payment_method', $payment_method);
+            $stmt_transaction->bindParam(':payment_number', $payment_number);
+            $stmt_transaction->bindParam(':order_id', $order_id);
 
 
 
-            // $query = "INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id) 
-            //   VALUES ('$user_id', '$totalAmount', '$status', '$paymentMethod', '$shippingAddress', 'book', '{$item['product_id']}', '{$item['unit_price']}', '{$item['quantity']}', '{$item['seller_id']}')";
-            // $db->query($query);
-            // Insert order details into the orders table
-            $query = "INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id) 
-            VALUES (:user_id, :totalAmount, 'Pending', :paymentMethod, :shippingAddress, 'book', :product_id, :unit_price, :quantity, :seller_id)";
-            $orderstmt = $db->prepare($query);
-
-            $params = array(
-                ':user_id' => $user_id,
-                ':totalAmount' => $totalAmount,
-                ':paymentMethod' => $paymentMethod,
-                ':shippingAddress' => $shippingAddress,
-                ':product_id' => $item['product_id'],
-                ':unit_price' => $item['unit_price'],
-                ':quantity' => $item['quantity'],
-                ':seller_id' => $item['seller_id']
-            );
-
-            echo $orderstmt->queryString; // Output the prepared SQL statement
-            $db->query($query);
-            var_dump($item['unit_price']);
-
-            $result = $orderstmt->execute($params);
-            var_dump($item['unit_price']);
-            echo $orderstmt->queryString; // Output the prepared SQL statement
-
-
-            if (!$result) {
-                // If the query failed, log the error message
-                $error = $db->errorInfo();
-                error_log("Error: " . $error[2]);
-                // You might want to handle the error or redirect to an error page here
+            // Execute the transaction insertion
+            if ($stmt_transaction->execute()) {
+                echo "Transaction completed successfully.<br>";
+                $stmt_delete_cart = $db->prepare("
+            DELETE FROM cart WHERE cart_id = :cart_id 
+        ");
+                $stmt_delete_cart->bindParam(':cart_id', $cart_id);
+                $stmt_delete_cart->execute();
+            } else {
+                echo "Error processing transaction.<br>";
             }
 
-
-
-            var_dump($item['seller_id']);
-
-
-            // Retrieve the order ID of the newly inserted order
-            $orderId = $db->lastInsertId();
-            var_dump($orderId);
-
-
-            // Insert transaction details into the transactions table
-            $stmt = $db->prepare("
-                    INSERT INTO transactions (client_id, amount, transaction_type, payment_method, order_id)
-                    VALUES (:client_id, :amount, 'Order', :payment_method, :order_id)
-                ");
-            $stmt->bindParam(':client_id', $user_id);
-            $stmt->bindParam(':amount', $totalAmount);
-            $stmt->bindParam(':payment_method', $paymentMethod);
-            $stmt->bindParam(':order_id', $orderId);
-            $stmt->execute();
+        } else {
+            echo "Error placing order for product ID $product_id.<br>";
         }
-
-        // Remove the order from the cart
-        $stmt = $db->prepare("DELETE FROM cart WHERE client_id = :client_id");
-        $stmt->bindParam(':client_id', $user_id);
-        $stmt->execute();
-
-        // Commit transaction
-        $db->commit();
-
-        // Redirect to a success page or perform further actions after successful order submission
-        // Example: header("Location: order_success.php");
-
-    } else {
-        // If the request method is not POST, redirect to an error page or display an error message
-        // Example: header("Location: order_error.php");
     }
-} catch (PDOException $e) {
-    error_log("Error: " . $e->getMessage());
-    // Redirect to an error page
-    // header("Location: review_error.php");
+
+} else {
+    echo "Invalid request.";
 }

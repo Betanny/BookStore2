@@ -124,16 +124,15 @@ try {
                             <div class="bigger-cell" style="text-align: center;">
                                 <?php echo $order['delivery_date']; ?>
                             </div>
-                            <?php if ($status === 'pending'): ?>
-                                <!-- <button type="submit" id="update-btn" class="update-button">Update</button> -->
 
-                                <!-- <button class="update-button">Update</button> -->
-                            <?php endif; ?>
                             <div class="icon-cell">
                                 <i class="fa-solid fa-eye-slash"></i>
                             </div>
                             <div class="icon-cell">
-                                <i class="fa-solid fa-trash"></i>
+                                <a href="#" class="delete-link" data-table="orders"
+                                    data-pk="<?php echo $order['order_id']; ?>" data-pk-name="order_id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
                             </div>
 
 
@@ -150,7 +149,6 @@ try {
 </body>
 
 <script>
-    // var update-btn =document.getElementById('update-btn');
     document.addEventListener("DOMContentLoaded", function () {
         fetch('header.php')
             .then(response => response.text())
@@ -159,6 +157,45 @@ try {
             });
 
 
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements with the class "delete-link"
+        var deleteLinks = document.querySelectorAll('.delete-link');
+
+        // Loop through each delete link
+        deleteLinks.forEach(function (link) {
+            // Add click event listener to each delete link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (i.e., following the href)
+                event.preventDefault();
+
+                // Get the table name, primary key column name, and primary key value from the data attributes
+                var tableName = link.getAttribute('data-table');
+                var primaryKey = link.getAttribute('data-pk');
+                var pkName = link.getAttribute('data-pk-name');
+
+                // Perform AJAX request to the delete script
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+                    primaryKey +
+                    '&pk_name=' + pkName, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Handle successful deletion (if needed)
+                        // For example, you can remove the deleted row from the DOM
+                        link.parentElement.parentElement.remove();
+                    } else {
+                        // Handle error (if needed)
+                        console.error('Error:', xhr.statusText);
+                    }
+                };
+                xhr.onerror = function () {
+                    // Handle network errors (if needed)
+                    console.error('Request failed');
+                };
+                xhr.send();
+            });
+        });
     });
 </script>
 

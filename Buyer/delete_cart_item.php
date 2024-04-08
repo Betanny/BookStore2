@@ -3,8 +3,9 @@ require_once '../Shared Components/dbconnection.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
-    exit(); // Exit to prevent further execution
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cartId'])) {

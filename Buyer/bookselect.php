@@ -2,8 +2,8 @@
 require_once '../Shared Components/dbconnection.php';
 
 session_start();
-
 if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
     exit();
 }
@@ -78,17 +78,17 @@ try {
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        });
 
-    // function setpid(productId) {
-    //     window.location.href = "bookreview.php?product_id=" + productId;
-    // }
+        // function setpid(productId) {
+        //     window.location.href = "bookreview.php?product_id=" + productId;
+        // }
     </script>
 </body>
 

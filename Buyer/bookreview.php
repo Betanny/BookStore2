@@ -4,13 +4,10 @@ require_once '../Shared Components/dbconnection.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
     header("Location: ../Registration/login.html");
+    exit();
 }
-
-// if (!isset($_POST['product_id'])) {
-//     header("Location: bookselect.php");
-// }
-
 $user_id = $_SESSION['user_id'];
 $selected_product_id = $_GET['product_id'];
 

@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../Registration/login.html");
     exit();
 }
-
 // Get user ID and category from session
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
@@ -109,10 +108,10 @@ try {
 
     <title>Document</title>
     <style>
-    .task {
-        height: 100%;
-        /* Set the height of the calendar container to 100% */
-    }
+        .task {
+            height: 100%;
+            /* Set the height of the calendar container to 100% */
+        }
     </style>
 </head>
 
@@ -170,20 +169,20 @@ try {
                         <div class="rows">
                             <!-- Adding the order items -->
                             <?php foreach ($orders as $order): ?>
-                            <div class="row">
-                                <div class="name-cell">
-                                    <?php echo $order['book_title']; ?>
+                                <div class="row">
+                                    <div class="name-cell">
+                                        <?php echo $order['book_title']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['unit_price']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['status']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['delivery_date']; ?>
+                                    </div>
                                 </div>
-                                <div class="cell">
-                                    <?php echo $order['unit_price']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $order['status']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $order['delivery_date']; ?>
-                                </div>
-                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -308,15 +307,15 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
 
 
-});
+    });
 </script>
 
 </html>

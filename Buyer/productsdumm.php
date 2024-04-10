@@ -3,6 +3,7 @@
 require_once '../Shared Components/dbconnection.php';
 
 
+
 //Getting books from the books table
 $bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
 $bookrecomendationstmt = $db->query($bookrecsql);
@@ -60,8 +61,11 @@ global $best_selling;
 </head>
 
 <body>
-    <div id="header-container"></div>
-
+    <!-- <div id="header-container"></div> -->
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include '../Shared Components/headerdispatcher.php';
+    ?>
 
 
     <div class="products-container">

@@ -50,32 +50,34 @@ try {
             var_dump($discount);
             $stmt->bindParam(':cart_id', $cart_id);
             $stmt->execute();
-        } else {
-            $discount = 0;
-            // Item doesn't exist, insert new item into the cart
-            $stmt = $db->prepare("INSERT INTO cart (client_id, product_id, quantity, product_type, product_category, unit_price, discount)
+        }
+    } else {
+        $discount = 0;
+        // Item doesn't exist, insert new item into the cart
+        $stmt = $db->prepare("INSERT INTO cart (client_id, product_id, quantity, product_type, product_category, unit_price, discount)
 VALUES (:client_id, :product_id, :quantity, :product_type, :product_category, :unit_price, :discount)");
-            $stmt->bindParam(':client_id', $user_id);
-            $stmt->bindParam(':product_id', $book_id);
-            $stmt->bindParam(':quantity', $newQuantity);
-            $stmt->bindParam(':product_type', $productType);
-            $stmt->bindParam(':product_category', $productCategory);
-            $stmt->bindParam(':unit_price', $price);
-            $stmt->bindParam(':discount', $discount);
+        $stmt->bindParam(':client_id', $user_id);
+        $stmt->bindParam(':product_id', $book_id);
+        $stmt->bindParam(':quantity', $newQuantity);
+        $stmt->bindParam(':product_type', $productType);
+        $stmt->bindParam(':product_category', $productCategory);
+        $stmt->bindParam(':unit_price', $price);
+        $stmt->bindParam(':discount', $discount);
 
-            $stmt->execute();
-        }
-
-
-        // Check if the insertion or update was successful
-        if ($stmt->rowCount() > 0) {
-            // Book added to cart successfully or quantity updated
-            echo "Operation successful!";
-        } else {
-            // Error adding book to cart or updating quantity
-            echo "Operation failed!";
-        }
+        $stmt->execute();
     }
+
+
+    // Check if the insertion or update was successful
+    if ($stmt->rowCount() > 0) {
+        header('Location:/Home/products.php');
+        // Book added to cart successfully or quantity updated
+        echo "Operation successful!";
+    } else {
+        // Error adding book to cart or updating quantity
+        echo "Operation failed!";
+    }
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

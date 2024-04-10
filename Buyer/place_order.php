@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = "Pending"; // status is always pending
     $payment_method = $_POST['paymentMethod'];
     $payment_number = $_POST['paymentNumber'];
+    var_dump($payment_number);
     $shipping_address = $_POST['shipping_address'];
     $product_type = "book"; // product_type is always book
     $transactiontype = "Purchase";

@@ -62,18 +62,21 @@ try {
             $orderId = $_POST['order_id'];
             var_dump($orderId);
             $comments = $_POST['comments'];
+            $current_date = date("Y-m-d");
 
             // Update database
-            $sql = "UPDATE orders SET status = 'Delivered', comments = :comments WHERE order_id = :orderId";
+            $sql = "UPDATE orders SET status = 'Delivered', comments = :comments, delivery_date = :delivery_date WHERE order_id = :orderId";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':comments', $comments);
             $stmt->bindParam(':orderId', $orderId);
+            $stmt->bindParam(':delivery_date', $current_date);
             $stmt->execute();
         } elseif (isset($_POST['decline_order'])) {
             // Decline Order form submission
             $orderId = $_POST['order_id'];
             $reasons = $_POST['reason'];
             $improvement = $_POST['improvement'];
+
 
             // Update database
             $sql = "UPDATE orders SET status = 'Declined', reasons = :reasons, comments = :improvement WHERE order_id = :orderId";

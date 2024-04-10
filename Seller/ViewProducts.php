@@ -118,7 +118,7 @@ try {
                     <!-- Adding the product items -->
                     <?php foreach ($products as $product): ?>
                         <div class="row">
-                            <input type="checkbox" class="checkbox" name="product_id" value="<?php $product['bookid']; ?>">
+                            <!-- <input type="checkbox" class="checkbox" name="product_id" value="php $product['bookid']; ?>"> -->
                             <div class=" name-cell">
                                 <?php echo $product['title']; ?>
                             </div>

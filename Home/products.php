@@ -2,6 +2,8 @@
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
+session_start();
+
 
 //Getting books from the books table
 $bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
@@ -60,9 +62,12 @@ global $best_selling;
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <!-- <div id="header-container"></div> -->
 
-
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
 
     <div class="products-container">
         <div class="filters-container">
@@ -241,49 +246,49 @@ global $best_selling;
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('/Shared Components/header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-        fetch('/Shared Components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            });
+// document.addEventListener("DOMContentLoaded", function() {
+//     // fetch('/Shared Components/header.php')
+//     //     .then(response => response.text())
+//     //     .then(data => {
+//     //         document.getElementById('header-container').innerHTML = data;
+//     //     });
+//     fetch('/Shared Components/footer.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('footer-container').innerHTML = data;
+//         });
+// });
+const categoryToggles = document.querySelectorAll('.category-toggle');
+
+categoryToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const subCategories = toggle.nextElementSibling;
+        subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
     });
-    const categoryToggles = document.querySelectorAll('.category-toggle');
+});
+// Function to rotate the slides
+function rotateSlides() {
+    const slideshow = document.querySelector('.slideshow-container');
+    const slides = slideshow.querySelectorAll('.slideshow-book');
 
-    categoryToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const subCategories = toggle.nextElementSibling;
-            subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
-        });
-    });
-    // Function to rotate the slides
-    function rotateSlides() {
-        const slideshow = document.querySelector('.slideshow-container');
-        const slides = slideshow.querySelectorAll('.slideshow-book');
+    // Find the active slide
+    const activeSlide = slideshow.querySelector('.active');
 
-        // Find the active slide
-        const activeSlide = slideshow.querySelector('.active');
+    // Get the index of the active slide
+    const activeIndex = Array.from(slides).indexOf(activeSlide);
 
-        // Get the index of the active slide
-        const activeIndex = Array.from(slides).indexOf(activeSlide);
+    // Calculate the index of the next slide
+    const nextIndex = (activeIndex + 1) % slides.length;
 
-        // Calculate the index of the next slide
-        const nextIndex = (activeIndex + 1) % slides.length;
+    // Remove the active class from the current slide
+    activeSlide.classList.remove('active');
 
-        // Remove the active class from the current slide
-        activeSlide.classList.remove('active');
+    // Add the active class to the next slide
+    slides[nextIndex].classList.add('active');
+}
 
-        // Add the active class to the next slide
-        slides[nextIndex].classList.add('active');
-    }
-
-    // Rotate the slides every 3 seconds
-    setInterval(rotateSlides, 3000);
+// Rotate the slides every 3 seconds
+setInterval(rotateSlides, 3000);
 </script>
 
 </html>

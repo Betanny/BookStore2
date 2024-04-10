@@ -89,7 +89,9 @@ try {
                 <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
                 <li><a href="orders.php" class="link light-text">Orders</a></li>
                 <li><a href="transactions.php" class="link light-text">Transactions</a></li>
-                <li><a href="feedback.php" class="link light-text">Feedback</a>
+                <li><a href="/Shared Components/feedback.php" class="link light-text">Feedback</a>
+                <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li>
+
 
             </ul>
 

@@ -57,7 +57,7 @@ try {
     <title>Document</title>
 </head>
 
-<body class="montserrat-23">
+<body class="">
     <header>
         <div class="logo">
             <img src="/Shared Components\smartcbc.svg" style="width:150px !important" alt="LOGO">
@@ -67,12 +67,14 @@ try {
         <nav>
 
             <ul>
-                <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="products.php" class="link light-text">Products</a></li>
-                <li><a href="myorders.php" class="link light-text">My orders</a></li>
-                <li><a href="feedback.php" class="link light-text">Feedback</a>
+                <li><a href="/Buyer/buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="/Home/products.php" class="link light-text">Products</a></li>
+                <li><a href="/Buyer/myorders.php" class="link light-text">My orders</a></li>
+                <li><a href="/Shared Components\feedback.php" class="link light-text">Feedback</a>
                 </li>
-                <li><a href="bookselect.php" class="link light-text">Review a book</a></li>
+                <li><a href="/Buyer/bookselect.php" class="link light-text">Review a book</a></li>
+                <!-- <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li> -->
+
             </ul>
 
         </nav>
@@ -85,7 +87,7 @@ try {
                 <a href="#"><i class="fa-regular fa-bell"></i></a>
             </div>
             <div class="icon">
-                <a href="CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
 
             </div>
 
@@ -98,14 +100,15 @@ try {
                     <h4>
                         <?php echo $full_name; ?>
                     </h4>
-                    <a href="#"><i class="fa-solid fa-angle-down"></i></a>
+                    <a href="" onclick="minivisible()"><i class="fa-solid fa-angle-down"></i></a>
 
                 </div>
 
             </div>
-
-
         </div>
+        <!-- style="display:flex;flex-direction:column;" -->
+
+
 
         <label for="nav_check" class="hamburger">
             <div></div>
@@ -115,14 +118,36 @@ try {
 
 
     </header>
-    <!-- <div id="feedbackContainer" style="display: none;">
+    <div class="mini-menu">
+
+        <li><a href="/Shared Components\feedback.php" class="link light-text">Profile</a>
+        <li><a href="/Shared Components\logout.php" class="link light-text">LogOut</a>
+
+    </div>
+</body>
+<!-- <div id="feedbackContainer" style="display: none;">
        include 'D:\xammp2\htdocs\BookStore2\Shared Components\feedback.php'; ?>
     </div>
     <script src="/Shared Components/Feedback.php"></script> -->
+<script>
+function minivisible(event) {
+    event.preventDefault();
+    const miniMenu = document.getElementsByClassName('mini-menu');
+    miniMenu.style.display = 'block';
+}
 
+document.addEventListener("DOMContentLoaded", function() {
+    const userPanel = document.getElementsByClassName('profile');
+    const miniMenu = document.getElementsByClassName('mini-menu');
 
-    <script>
+    userPanel.addEventListener('onmouseover', function() {
+        miniMenu.style.display = 'block';
+    });
 
-    </script>
+    userPanel.addEventListener('mouseleave', function() {
+        miniMenu.style.display = 'none';
+    });
+});
+</script>
 
 </html>

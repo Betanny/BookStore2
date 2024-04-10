@@ -1030,3 +1030,37 @@ input#rate-5:checked~label {
     align-items: center;
 
 }
+
+
+.mini-menu {
+    display: block;
+}
+/* Position the mini-menu right below the user panel */
+.mini-menu {
+    width: 10%;
+    padding: 30px;
+    position: absolute;
+    top: 10%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    /* Add any additional styling here */
+}
+
+/* Style the links in the mini-menu */
+.mini-menu a {
+    text-align: center;
+    display: block;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+/* Style the links on hover */
+.mini-menu a:hover {
+    background-color: var(--primary-color);
+    color: white;
+    /* Add other hover effects as needed */
+}

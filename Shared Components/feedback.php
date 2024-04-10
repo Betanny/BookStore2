@@ -1,3 +1,64 @@
+<?php
+
+// Include database connection file
+require_once '../Shared Components/dbconnection.php';
+
+// Start session
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: ../Registration/login.html");
+    exit();
+}
+
+// Get user ID and category from session
+$user_id = $_SESSION['user_id'];
+$category = $_SESSION['category'];
+$role = $_SESSION['role'];
+
+
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_POST['submit'])) {
+    try {
+        // Get feedback text from the form
+        $feedback_text = $_POST["feedback_text"];
+        $rating = $_POST['rating'];
+        $rating = intval($rating);
+
+
+
+        // Prepare SQL statement with parameterized query
+        $stmt = $db->prepare("INSERT INTO feedback (user_id, feedback_text, rating) VALUES (:user_id, :feedback_text, :rating)");
+
+        // Bind parameters
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':feedback_text', $feedback_text);
+        $stmt->bindParam(':rating', $rating); // Assuming $rating_int holds the integer rating value
+        echo '<script>
+        document.querySelector(".post").style.display = "block";
+        document.querySelector(".star-widget").style.display = "none";
+      </script>';
+
+
+
+        // Execute SQL statement
+        $stmt->execute();
+
+    } catch (PDOException $e) {
+        // Handle database errors
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -209,7 +270,13 @@
         background: #1b1b1b;
     }
     </style>
-    <div id="header-container"></div>
+
+    <!-- <div id="header-container"></div> -->
+
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include '../Shared Components/headerdispatcher.php';
+    ?>
 
     <div class="feedback-container">
 
@@ -217,7 +284,6 @@
             <h4>Rate our Services</h4>
             <p>Have questions or need assistance with your orders?</p>
             <p>Reach out to us via email, phone, or the contact form below.</p>
-
             <div class="feedback-form">
 
                 <div class="post">
@@ -229,74 +295,85 @@
 
                 </div>
                 <div class="star-widget">
-                    <input type="radio" name="rate" id="rate-5">
+                    <input type="radio" value="5" name="rate" id="rate-5">
                     <label for="rate-5" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-4">
+                    <input type="radio" value="4" name="rate" id="rate-4">
                     <label for="rate-4" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-3">
+                    <input type="radio" value="3" name="rate" id="rate-3">
                     <label for="rate-3" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-2">
+                    <input type="radio" value="2" name="rate" id="rate-2">
                     <label for="rate-2" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-1">
+                    <input type="radio" value="1" name="rate" id="rate-1">
                     <label for="rate-1" class="fas fa-star"></label>
-                    <form action="#">
+                    <form action="" id="feedback-form" method="post">
                         <header></header>
                         <div class="textarea">
-                            <textarea cols="30" placeholder="Describe your experience.."></textarea>
+                            <textarea cols="30" id="feedback_text" name="feedback_text"
+                                placeholder="Describe your experience.."></textarea>
                         </div>
+                        <input type="hidden" id="rating" name="rating">
+
                         <div class="btn">
-                            <button type="submit">Post</button>
+                            <button id="submit" type="submit">Post</button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
+    </form>
     <script>
     const btn = document.querySelector("button");
     const post = document.querySelector(".post");
     const widget = document.querySelector(".star-widget");
     const editBtn = document.querySelector(".edit");
     btn.onclick = () => {
+
+        const rating = document.querySelector('input[name="rate"]:checked').value;
+        console.log(rating);
+
+        // Set the value of the hidden input field
+        document.getElementById("rating").value = rating;
+        document.getElementById("feedback-form").submit();
         widget.style.display = "none";
         post.style.display = "block";
-        editBtn.onclick = () => {
-            widget.style.display = "block";
-            post.style.display = "none";
-        }
+    }
+
+    editBtn.onclick = () => {
+        widget.style.display = "block";
+        post.style.display = "none";
+
         return false;
     }
+
+
+
+    <?php if ($role === 'Client'): ?>
     document.addEventListener("DOMContentLoaded", function() {
-        fetch('/Shared Components/header.php')
+        fetch('../Buyer/header.php')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-container').innerHTML = data;
             });
     });
+    <?php else: ?>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/Buyer/header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+    });
+    <?php endif; ?>
+
+
+
     //Function to navigate back to the previous page
 
     function goBack() {
         window.history.back();
-        // Redirect based on user category
-        //    switch ($role) {
-        //                 case 'Client':
-        //                     $session_id = session_id();
-        //                     header("Location: ../Buyer/buyerdashboard.php");
-        //                     break;
-        //                 case 'Dealer':
-        //                     // Redirect to the HTML file with session ID
-        //                     $session_id = session_id();
-        //                     header("Location: ../Seller/sellerdashboard.php");
-        //                     break;
-        //                 case 'Admin':
-        //                     $session_id = session_id();
-        //                     header("Location: ../Admin/admindashboard.php");
-        //                     break;
-        //                 default:
-        //                     // Handle other user categories or redirect to a generic dashboard
-        //                     header("Location: generic_dashboard.php");
-        //                     break;
-        //             }
+
     }
     </script>
 

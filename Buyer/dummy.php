@@ -105,8 +105,15 @@ try {
 
 
 
+/////////////////////delete on transactions
+/* <div class="icon-cell">
+<a href="#" class="delete-link" data-table="transactions"
+    data-pk="<?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
+    <i class="fa-solid fa-trash"></i>
+</a>
+</div> 
 
-
+*/
 
 
 

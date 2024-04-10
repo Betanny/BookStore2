@@ -64,8 +64,7 @@ try {
 <body>
     <header>
         <div class="logo">
-            <img src="logo.png" alt="LOGO">
-
+            <img src="/Shared Components\smartcbc.svg" style="width:150px !important" alt="LOGO">
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -76,6 +75,8 @@ try {
                 <li><a href="users.php" class="link light-text">Users</a></li>
                 <li><a href="orders.php" class="link light-text">Orders</a></li>
                 <li><a href="transactions.php" class="link light-text">Transactions</a></li>
+                <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li>
+
             </ul>
 
         </nav>

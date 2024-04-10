@@ -1,6 +1,7 @@
 <?php
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
+session_start();
 
 $bookid = $_GET['bookid'];
 
@@ -70,10 +71,13 @@ global $books;
 </head>
 
 <body>
-    <div id="header-container"></div>
-    <div class="file-path">
 
-    </div>
+
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
+
 
     <div class="product-container">
         <div class="product-image">
@@ -212,56 +216,56 @@ global $books;
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('/Shared Components/header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-        fetch('/Shared Components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            });
-        const bookImage = document.getElementById('bookImage');
-        const prevButton = document.getElementById('prevButton');
-        const nextButton = document.getElementById('nextButton');
-        const imageCounter = document.getElementById('imageCounter');
+document.addEventListener("DOMContentLoaded", function() {
+    // fetch('/Shared Components/header.php')
+    //     .then(response => response.text())
+    //     .then(data => {
+    //         document.getElementById('header-container').innerHTML = data;
+    //     });
+    fetch('/Shared Components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-container').innerHTML = data;
+        });
+    const bookImage = document.getElementById('bookImage');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const imageCounter = document.getElementById('imageCounter');
 
-        const imageURLs = <?php echo json_encode($imageURLs); ?>;
-        let currentIndex = 0;
+    const imageURLs = <?php echo json_encode($imageURLs); ?>;
+    let currentIndex = 0;
 
-        function showImage(index) {
-            if (index >= 0 && index < imageURLs.length) {
-                bookImage.src = imageURLs[index];
-                imageCounter.innerText = index + 1;
-                currentIndex = index;
-            }
+    function showImage(index) {
+        if (index >= 0 && index < imageURLs.length) {
+            bookImage.src = imageURLs[index];
+            imageCounter.innerText = index + 1;
+            currentIndex = index;
         }
-
-        prevButton.addEventListener('click', function () {
-            showImage(currentIndex - 1);
-        });
-
-        nextButton.addEventListener('click', function () {
-            showImage(currentIndex + 1);
-        });
-    });
-    const categoryToggles = document.querySelectorAll('.category-toggle');
-
-    categoryToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const subCategories = toggle.nextElementSibling;
-            subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
-        });
-    });
-
-    function addToCart(bookId) {
-        console.log(bookId);
-        console.log("No book id")
-        document.getElementById("addToCartForm").submit();
-
     }
+
+    prevButton.addEventListener('click', function() {
+        showImage(currentIndex - 1);
+    });
+
+    nextButton.addEventListener('click', function() {
+        showImage(currentIndex + 1);
+    });
+});
+const categoryToggles = document.querySelectorAll('.category-toggle');
+
+categoryToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const subCategories = toggle.nextElementSibling;
+        subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+    });
+});
+
+function addToCart(bookId) {
+    console.log(bookId);
+    console.log("No book id")
+    document.getElementById("addToCartForm").submit();
+
+}
 </script>
 
 </html>

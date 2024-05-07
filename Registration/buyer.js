@@ -148,15 +148,15 @@ function validateOrganizationForm() {
     isValid = validateEmail('OrgEmail') && isValid;
     isValid = validateField('OrgPhone', 'Organization Phone is required') && isValid;
     isValid = validatePhoneNumber('OrgPhone') && isValid; // Validate phone number field
-    isValid = validateField('county', 'Organization County of residence is required') && isValid;
-    isValid = validateField('address', 'Organization Address is required') && isValid;
+    isValid = validateField('county2', 'Organization County of residence is required') && isValid;
+    isValid = validateField('org-address', 'Organization Address is required') && isValid;
     isValid = validateField('cfname', 'Contact Person First Name is required') && isValid;
     isValid = validateField('clname', 'Contact Person Last Name is required') && isValid;
     isValid = validateEmail('cemail', 'Contact Person Email is required') && isValid;
     isValid = validateField('cphone', 'Contact Person Phone is required') && isValid;
     isValid = validateField('org-password', 'Password is required') && isValid;
     isValid = validateField('org-password2', 'Confirm Password is required') && isValid;
-    isValid = validatePassword('password', 'password2') && isValid;
+    isValid = validatePassword('org-password', 'org-password2') && isValid;
 
     return isValid;
 }

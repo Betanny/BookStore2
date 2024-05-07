@@ -163,13 +163,13 @@ try {
                         <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
                         </div>
-
+                        <!-- 
                         <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="transactions"
-                                data-pk="<?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
+                                data-pk="?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                        </div>
+                        </div> -->
 
 
 

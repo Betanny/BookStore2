@@ -80,8 +80,18 @@ global $books;
 
 
     <div class="product-container">
+
         <div class="product-image">
+            <div class="back-container">
+
+                <button type="submit" onclick="returnToProducts()" class="back-button">
+                    <div class="icon-cell">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </div>Back
+                </button>
+            </div>
             <div class="img-section">
+
                 <img id="bookImage" src="<?php echo $imageURLs[0]; ?>" alt="Book Cover">
             </div>
             <div class="img-nav">
@@ -134,7 +144,7 @@ global $books;
                     <input type="hidden" name="bookid" id="bookidInput" value="<?php echo $book['bookid']; ?>">
                     <input type="hidden" name="price" id="bookidInput" value="<?php echo $book['price']; ?>">
 
-                    <button type="submit">Add to Cart</button>
+                    <button class="button" type="submit">Add to Cart</button>
                 </form>
 
 
@@ -265,6 +275,11 @@ function addToCart(bookId) {
     console.log("No book id")
     document.getElementById("addToCartForm").submit();
 
+}
+
+
+function returnToProducts() {
+    window.location.href = "/Home/products.php";
 }
 </script>
 

@@ -46,12 +46,31 @@ try {
 
 
     //Full Name
-    $first_name = $data['first_name'];
-    $last_name = $data['last_name'];
-    $full_name = $first_name . ' ' . $last_name;
-    global $first_name, $full_name;
+    // $first_name = $data['first_name'];
+    // $last_name = $data['last_name'];
+    // $full_name = $first_name . ' ' . $last_name;
+    // global $first_name, $full_name;
 
+    switch ($category) {
+        case 'Author':
+            $first_name = $data['first_name'];
+            $last_name = $data['last_name'];
+            $full_name = $first_name . ' ' . $last_name;
+            global $first_name, $full_name;
 
+            break;
+        case 'Publisher':
+            $full_name = $first_name = $data['publisher_name'];
+            $last_name = "";
+            global $first_name, $full_name;
+            break;
+        case 'Manufacturer':
+            $full_name = $first_name = $data['manufacturer_name'];
+            $last_name = "";
+
+            break;
+        // Add more cases as needed
+    }
     // SQL query to get the best-rated book for the current seller
     $sql_best_rated = "SELECT * FROM books WHERE seller_id = $user_id ORDER BY bookrating DESC LIMIT 1";
 

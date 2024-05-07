@@ -846,3 +846,36 @@ height: 87vh;
     height: 120px;
 
 }
+
+.back-container{
+    width: 100%;
+}
+.back-button{
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    height: 25px;
+    width:  max-content;
+    border:none;
+    cursor: pointer;
+    border-radius: 8px;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+
+    
+    }
+    .icon-cell{
+        padding-right: 10px;
+
+    }

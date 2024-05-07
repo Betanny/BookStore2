@@ -45,12 +45,27 @@ try {
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-    //Full Name
-    $first_name = $data['first_name'];
-    $last_name = $data['last_name'];
-    $full_name = $first_name . ' ' . $last_name;
-    global $first_name, $full_name;
 
+    switch ($category) {
+        case 'Author':
+            $first_name = $data['first_name'];
+            $last_name = $data['last_name'];
+            $full_name = $first_name . ' ' . $last_name;
+            global $first_name, $full_name;
+
+            break;
+        case 'Publisher':
+            $full_name = $first_name = $data['publisher_name'];
+            $last_name = "";
+            global $first_name, $full_name;
+            break;
+        case 'Manufacturer':
+            $full_name = $first_name = $data['manufacturer_name'];
+            $last_name = "";
+
+            break;
+        // Add more cases as needed
+    }
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -85,10 +100,10 @@ try {
         <nav>
 
             <ul>
-                <li><a href="sellerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
-                <li><a href="orders.php" class="link light-text">Orders</a></li>
-                <li><a href="transactions.php" class="link light-text">Transactions</a></li>
+                <li><a href="/Seller/sellerdashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="/Seller/ViewProducts.php" class=" link light-text">Products</a></li>
+                <li><a href="/Seller/orders.php" class="link light-text">Orders</a></li>
+                <li><a href="/Seller/transactions.php" class="link light-text">Transactions</a></li>
                 <li><a href="/Shared Components/feedback.php" class="link light-text">Feedback</a>
                 <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li>
 

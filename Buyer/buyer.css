@@ -684,7 +684,7 @@ input#rate-5:checked~label {
 .book-selection{
     width: 100%;
     background-color: var(--accent-color2);
-    height: 88vh;
+    height: 91vh;
 
 }
 
@@ -696,6 +696,7 @@ input#rate-5:checked~label {
     background-color: white;
     height: auto;
 }
+
 .book-selection .allProducts-container h4{
     text-align: center;
     margin: auto;
@@ -708,6 +709,7 @@ input#rate-5:checked~label {
     margin: auto;
     padding: 30px 0;
     font-size: 20px;
+
     color: var(--primary-color);
 }
 

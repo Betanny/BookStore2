@@ -46,6 +46,14 @@ try {
             // Inserting data into clients table 
             $sql = "INSERT INTO clients (client_type, first_name, last_name, email, phone, address, county, user_id) VALUES ('$user_type', '$first_name', '$last_name', '$email', '$phone', '$address', '$county', '$user_id')";
             $db_connection->query($sql);
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['category'] = "Individual";
+            $_SESSION['role'] = "Client";
+
+            $session_id = session_id();
+            header("Location: ../Buyer/buyerdashboard.php");
+
+
         } elseif ($user_type === "Organization") {
             $email = $_POST["OrgEmail"];
             $organization_name = $_POST["OrgName"];
@@ -71,7 +79,9 @@ try {
             $db_connection->query($sql);
         }
         echo "New record created successfully";
-        $session_id = session_id();
+        $_SESSION['user_id'] = $user_id;
+        $_SESSION['category'] = "Organization";
+        $_SESSION['role'] = "Dealer";
         header("Location: ../Buyer/buyerdashboard.php");
         $session_id = session_id();
 

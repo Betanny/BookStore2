@@ -91,6 +91,14 @@ try {
 
     <div class="product-container">
         <div class="product-image">
+            <div class="back-container">
+
+                <button type="submit" onclick="returnToBooks()" class="back-button">
+                    <div class="icon-cell">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </div>Back
+                </button>
+            </div>
             <div class="img-section">
                 <img id="bookImage"
                     src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $selected_book['front_page_image']); ?>"
@@ -204,13 +212,17 @@ try {
 
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+    });
+
+    function returnToBooks() {
+        window.location.href = "/Buyer/bookselect.php";
+    }
     </script>
 </body>
 

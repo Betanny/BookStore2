@@ -118,7 +118,7 @@ try {
 
 
     </header>
-    <div class="mini-menu">
+    <div class="mini-menu" style="display:none">
 
         <li><a href="/Shared Components\feedback.php" class="link light-text">Profile</a>
         <li><a href="/Shared Components\logout.php" class="link light-text">LogOut</a>
@@ -130,24 +130,24 @@ try {
     </div>
     <script src="/Shared Components/Feedback.php"></script> -->
 <script>
-function minivisible(event) {
-    event.preventDefault();
-    const miniMenu = document.getElementsByClassName('mini-menu');
-    miniMenu.style.display = 'block';
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const userPanel = document.getElementsByClassName('profile');
-    const miniMenu = document.getElementsByClassName('mini-menu');
-
-    userPanel.addEventListener('onmouseover', function() {
+    function minivisible(event) {
+        event.preventDefault();
+        const miniMenu = document.getElementsByClassName('mini-menu');
         miniMenu.style.display = 'block';
-    });
+    }
 
-    userPanel.addEventListener('mouseleave', function() {
-        miniMenu.style.display = 'none';
+    document.addEventListener("DOMContentLoaded", function () {
+        const userPanel = document.getElementsByClassName('profile');
+        const miniMenu = document.getElementsByClassName('mini-menu');
+
+        userPanel.addEventListener('onmouseover', function () {
+            miniMenu.style.display = 'block';
+        });
+
+        userPanel.addEventListener('mouseleave', function () {
+            miniMenu.style.display = 'none';
+        });
     });
-});
 </script>
 
 </html>

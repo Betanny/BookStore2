@@ -161,15 +161,15 @@ function validatePublisherForm() {
     isValid = validateEmail('OrgEmail') && isValid;
     isValid = validateField('OrgPhone', 'Organization Phone is required') && isValid;
     isValid = validatePhoneNumber('OrgPhone') && isValid; // Validate phone number field
-    isValid = validateField('address', 'Organization Address is required') && isValid;
+    isValid = validateField('org-address', 'Organization Address is required') && isValid;
     isValid = validateField('cfname', 'Contact Person First Name is required') && isValid;
     isValid = validateField('clname', 'Contact Person Last Name is required') && isValid;
     isValid = validateEmail('cemail') && isValid;
     isValid = validateField('cphone', 'Contact Person Phone is required') && isValid;
     isValid = validatePhoneNumber('cphone') && isValid; // Validate phone number field
-    isValid = validateField('password', 'Password is required') && isValid;
-    isValid = validateField('password2', 'Confirm Password is required') && isValid;
-    isValid = validatePassword('password', 'password2') && isValid;
+    isValid = validateField('org-password', 'Password is required') && isValid;
+    isValid = validateField('org-password2', 'Confirm Password is required') && isValid;
+    isValid = validatePassword('org-password', 'org-password2') && isValid;
 
     return isValid;
 }
@@ -182,15 +182,15 @@ function validateManufacturerForm() {
     isValid = validateEmail('OrgEmail') && isValid;
     isValid = validateField('OrgPhone', 'Organization Phone is required') && isValid;
     isValid = validatePhoneNumber('OrgPhone') && isValid; // Validate phone number field
-    isValid = validateField('address', 'Organization Address is required') && isValid;
+    isValid = validateField('org-address', 'Organization Address is required') && isValid;
     isValid = validateField('cfname', 'Contact Person First Name is required') && isValid;
     isValid = validateField('clname', 'Contact Person Last Name is required') && isValid;
     isValid = validateEmail('cemail') && isValid;
     isValid = validateField('cphone', 'Contact Person Phone is required') && isValid;
     isValid = validatePhoneNumber('cphone') && isValid; // Validate phone number field
-    isValid = validateField('password', 'Password is required') && isValid;
-    isValid = validateField('password2', 'Confirm Password is required') && isValid;
-    isValid = validatePassword('password', 'password2') && isValid;
+    isValid = validateField('org-password', 'Password is required') && isValid;
+    isValid = validateField('org-password2', 'Confirm Password is required') && isValid;
+    isValid = validatePassword('org-password', 'org-password2') && isValid;
 
     return isValid;
 }

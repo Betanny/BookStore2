@@ -22,7 +22,7 @@ try {
         $password = $_POST["password"];
 
         // Validate form data (basic validation for demonstration)
-        if (empty ($email) || empty ($password)) {
+        if (empty($email) || empty($password)) {
             // Display error notification if email or password is empty
             echo "<script>alert('Please enter both email and password.')</script>";
         } else {

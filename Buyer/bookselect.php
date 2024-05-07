@@ -60,7 +60,7 @@ try {
             <div class="table">
                 <h4>Which book would you like to review?<br>Please select one of the following</h4>
                 <div class="row-header1">
-                    <div class="ordername-cell">Title</div>
+                    <div class="ordername-cell">Book Title</div>
                 </div>
                 <div class="order-rows">
                     <?php
@@ -78,17 +78,17 @@ try {
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+    });
 
-        // function setpid(productId) {
-        //     window.location.href = "bookreview.php?product_id=" + productId;
-        // }
+    // function setpid(productId) {
+    //     window.location.href = "bookreview.php?product_id=" + productId;
+    // }
     </script>
 </body>
 

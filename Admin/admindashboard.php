@@ -137,10 +137,10 @@ try {
 
     <title>Document</title>
     <style>
-        .task {
-            height: 100%;
-            /* Set the height of the calendar container to 100% */
-        }
+    .task {
+        height: 100%;
+        /* Set the height of the calendar container to 100% */
+    }
     </style>
 </head>
 
@@ -190,8 +190,10 @@ try {
                     <i class="fa-solid fa-money-check-dollar"></i>
                     <div class="content">
                         <h4>
-                            Total Income
+                            Total Income<br>
+                            <h5>ksh</h5>
                         </h4>
+
                         <p>
                             <?php echo (int) $total_income; ?>
                         </p>
@@ -272,21 +274,21 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
 
-        fetch('/Shared Components/calendar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('calendar-container').innerHTML = data;
-            });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        <?php
+    fetch('/Shared Components/calendar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('calendar-container').innerHTML = data;
+        });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    <?php
         // Fetch order data from PHP
         $sql_order_counts = "SELECT status, COUNT(*) AS count FROM orders GROUP BY status";
         $stmt_order_counts = $db->query($sql_order_counts);
@@ -303,46 +305,46 @@ try {
         }
         ?>
 
-        // Calculate total ord ers
-        const totalOrders = <?php echo array_sum($order_data); ?>;
+    // Calculate total ord ers
+    const totalOrders = <?php echo array_sum($order_data); ?>;
 
-        // Pie chart data
-        const data = {
-            labels: <?php echo json_encode($status_labels); ?>,
-            datasets: [{
-                data: <?php echo json_encode($order_data); ?>,
-                backgroundColor: ['#44b89d', '#800020',
-                    '#FFA500'
-                ],
-                hoverBackgroundColor: ['#44b89d', '#800020',
-                    '#FFA500'
-                ],
-            }]
-        };
+    // Pie chart data
+    const data = {
+        labels: <?php echo json_encode($status_labels); ?>,
+        datasets: [{
+            data: <?php echo json_encode($order_data); ?>,
+            backgroundColor: ['#44b89d', '#800020',
+                '#FFA500'
+            ],
+            hoverBackgroundColor: ['#44b89d', '#800020',
+                '#FFA500'
+            ],
+        }]
+    };
 
-        // Chart options
-        const options = {
-            responsive: true,
-            cutoutPercentage: 60, // Determines the size of the hole in the middle
-            legend: {
-                position: 'bottom'
-            },
-            title: {
-                display: true,
-                text: `Total Orders: ${totalOrders}`
-            }
-        };
+    // Chart options
+    const options = {
+        responsive: true,
+        cutoutPercentage: 60, // Determines the size of the hole in the middle
+        legend: {
+            position: 'bottom'
+        },
+        title: {
+            display: true,
+            text: `Total Orders: ${totalOrders}`
+        }
+    };
 
-        // Get the canvas element
-        const ctx = document.getElementById('ordersChart').getContext('2d');
+    // Get the canvas element
+    const ctx = document.getElementById('ordersChart').getContext('2d');
 
-        // Create the pie chart
-        const ordersChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: data,
-            options: options
-        });
+    // Create the pie chart
+    const ordersChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: data,
+        options: options
     });
+});
 </script>
 
 </html>

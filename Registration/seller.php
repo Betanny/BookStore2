@@ -42,6 +42,8 @@ try {
             $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
             $_SESSION['user_id'] = $user_id;
+            $_SESSION['category'] = "Author";
+
 
 
             // Inserting data into the authors table
@@ -67,6 +69,8 @@ try {
             $user_id = $db_connection->lastInsertId();
 
             $_SESSION['user_id'] = $user_id;
+            $_SESSION['category'] = "Publisher";
+
 
 
             // Inserting data into publishers table
@@ -93,19 +97,20 @@ try {
             $db_connection->query($sql);
             $user_id = $db_connection->lastInsertId();
             $_SESSION['user_id'] = $user_id;
+            $_SESSION['category'] = "Manufacturer";
+
 
 
             // Inserting data into manufacturers table
             $sql = "INSERT INTO manufacturers (manufacturer_name, contact_first_name, contact_last_name, contact_email, contact_phone, manufacturer_email, manufacturer_phone, address, website, products_offered, user_id) VALUES ('$manufacturer_name', '$contact_first_name', '$contact_last_name', '$contact_email', '$contact_phone', '$manufacturer_email', '$manufacturer_phone', '$address', '$website', '$products_offered_string', '$user_id')";
             $db_connection->query($sql);
         }
-
+        $_SESSION['role'] = "Dealer";
         echo "New record created successfully";
         $session_id = session_id();
-        header("Location: ../Seller/sellerdashboard.php?session_id=$session_id");
 
         // Redirect to buyer dashboard
-        header("Location: ../../Seller/addproducts.html?session_id=$session_id");
+        header("Location: ../Seller/addproducts.html");
         exit();
     }
 } catch (PDOException $e) {

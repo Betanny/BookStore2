@@ -100,6 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error placing order for product ID $product_id.<br>";
         }
     }
+    header('Location:/Buyer/CheckOut.php');
+
 
 } else {
     echo "Invalid request.";

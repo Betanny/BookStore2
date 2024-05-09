@@ -297,6 +297,8 @@ h1{
 .inputcontrol label::after{
     content: '*';
     color: red;
+    margin-left: 20px;
+
 }
 
 .inputcontrol.error input{

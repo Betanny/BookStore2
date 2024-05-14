@@ -5,13 +5,17 @@ require_once '../Shared Components/dbconnection.php';
 
 // Start session
 
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    error_reporting(E_ALL & ~E_NOTICE);
+
     session_start();
 }
+
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 

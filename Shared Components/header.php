@@ -20,7 +20,7 @@
                 <li><a href="/Home/products.php" name="nav-link" class="link light-text">Products</a></li>
                 <li><a href="/Home/Aboutus.html" name="nav-link" class="link light-text">About us</a></li>
                 <li><a href="/Home/contactus.html" name="nav-link" class="link light-text">Contact us</a></li>
-                <li><a href="/Registration/login.html" class="link-active">Login</a></li>
+                <li><a href="/Registration/login.php" class="link-active">Login</a></li>
             </ul>
         </nav>
         <label for="nav_check" class="hamburger">

@@ -98,8 +98,13 @@ try {
                     <h4>
                         Manager
                     </h4>
-                    <a href="#"><i class="fa-solid fa-angle-down"></i></a>
-
+                    <div class="dropdown">
+                        <button class="dropbtn"><i class="fa-solid fa-angle-down"></i></button>
+                        <div class="dropdown-content">
+                            <a href="/Shared Components\profile.php">Edit</a>
+                            <a href="/Shared Components\logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
 
             </div>

@@ -638,10 +638,11 @@ details{
 
 /************************book review********************/
 .stars{
-    height: max-content;
+    height: 100px;
     padding-bottom: 40px;
     margin: auto;
     justify-content: space-around;
+    padding-right: 100px;
 
 }
 

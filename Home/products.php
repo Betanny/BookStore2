@@ -2,7 +2,13 @@
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
-session_start();
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    error_reporting(E_ALL & ~E_NOTICE);
+
+    session_start();
+}
+
 
 
 //Getting books from the books table

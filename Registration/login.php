@@ -1,29 +1,18 @@
 <?php
+require_once '../Shared Components/dbconnection.php';
 session_start();
-
-$host = "localhost";
-$port = "5432";
-$dbname = "MyBookstore";
-$user = "postgres";
-$password = "#Wa1r1mu";
-
 try {
-    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password";
-    $db_connection = new PDO($dsn);
 
-    // Set PDO to throw exceptions for errors
-    $db_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Define error messages
+    // Defining error messages
     $emailError = $passwordError = '';
 
-    // Check if the form is submitted
+    // Checking if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve form data
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        // Validate form data (basic validation for demonstration)
+        // Validating form data (basic validation for demonstration)
         if (empty($email)) {
             $emailError = 'Email is required';
         }
@@ -33,7 +22,7 @@ try {
 
         if (empty($emailError) && empty($passwordError)) {
             // Fetch the hashed password and user category from the database based on the provided email
-            $stmt = $db_connection->prepare("SELECT password, user_id, category, role FROM users WHERE email = ?");
+            $stmt = $db->prepare("SELECT password, user_id, category, role FROM users WHERE email = ?");
             $stmt->execute([$email]);
             $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 

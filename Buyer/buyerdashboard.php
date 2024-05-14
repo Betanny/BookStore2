@@ -7,7 +7,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 // Get user ID and category from session
@@ -81,6 +81,12 @@ try {
     $totalItemsBought = $totalItemsBoughtResult['total_items_bought'];
     global $totalItemsBought;
 
+    // Get the total number of items reviewed
+    $reviewsSql = "SELECT COUNT(*) AS total_items_reviewed FROM reviews WHERE user_id = $user_id";
+    $reviewsStmt = $db->query($reviewsSql);
+    $totalItemsReviewedResult = $reviewsStmt->fetch(PDO::FETCH_ASSOC);
+    $totalItemsReviewed = $totalItemsReviewedResult['total_items_reviewed'];
+    global $totalItemsReviewed;
 
 
 
@@ -108,10 +114,10 @@ try {
 
     <title>Document</title>
     <style>
-        .task {
-            height: 100%;
-            /* Set the height of the calendar container to 100% */
-        }
+    .task {
+        height: 100%;
+        /* Set the height of the calendar container to 100% */
+    }
     </style>
 </head>
 
@@ -169,20 +175,20 @@ try {
                         <div class="rows">
                             <!-- Adding the order items -->
                             <?php foreach ($orders as $order): ?>
-                                <div class="row">
-                                    <div class="name-cell">
-                                        <?php echo $order['book_title']; ?>
-                                    </div>
-                                    <div class="cell">
-                                        <?php echo $order['unit_price']; ?>
-                                    </div>
-                                    <div class="cell">
-                                        <?php echo $order['status']; ?>
-                                    </div>
-                                    <div class="cell">
-                                        <?php echo $order['delivery_date']; ?>
-                                    </div>
+                            <div class="row">
+                                <div class="name-cell">
+                                    <?php echo $order['book_title']; ?>
                                 </div>
+                                <div class="cell">
+                                    <?php echo $order['unit_price']; ?>
+                                </div>
+                                <div class="cell">
+                                    <?php echo $order['status']; ?>
+                                </div>
+                                <div class="cell">
+                                    <?php echo $order['delivery_date']; ?>
+                                </div>
+                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -202,7 +208,7 @@ try {
 
                         echo '<div class="book">';
                         echo '<div class="book-img">';
-                        echo '<a href=""><img src="' . $front_image . '"></a>';
+                        echo '<a href="/Home/product.php?bookid=' . $book['bookid'] . '"><img src="' . $front_image . '"></a>';
                         echo '</div>';
 
                         echo '<p>' . $book['title'] . '</p>';
@@ -265,7 +271,9 @@ try {
                         </div>
                         <div class="double-details">
                             <div class="detail">
-                                <p>15</p>
+                                <p>
+                                    <?php echo $totalItemsReviewed; ?>
+                                </p>
                                 <h5>Products reviewed</h5>
                             </div>
                             <div class="detail">
@@ -307,15 +315,15 @@ try {
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
 
 
-    });
+});
 </script>
 
 </html>

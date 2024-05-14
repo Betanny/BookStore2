@@ -55,7 +55,7 @@ if (isset($_POST['logout'])) {
                 <h4>Oh No! You're leaving <br>Are you sure?</h4>
             </div>
             <div class="select-logout-action">
-                <button type="button" class="active" id="return-btn">Naaah, Just Kidding</button>
+                <button type="button" class="active" onclick="goBack()" id="return-btn">Naaah, Just Kidding</button>
                 <!-- Use a form to submit the logout -->
                 <form method="post" action="">
                     <button type="submit" class="inactive" name="logout" id="logout-btn">Yes, Log Me Out</button>
@@ -66,15 +66,19 @@ if (isset($_POST['logout'])) {
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php').then(response => response.text()).then(data => {
-        document.getElementById('header-container').innerHTML = data;
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php').then(response => response.text()).then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
     });
-});
 
-function reloadPage() {
-    location.reload(); // Reload the current page
-}
+    function reloadPage() {
+        location.reload(); // Reload the current page
+    }
+
+    function goBack() {
+        window.history.back();
+    }
 </script>
 
 </html>

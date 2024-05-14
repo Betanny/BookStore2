@@ -354,7 +354,7 @@ link{
 
 /***********************************LOGOUT FORM*************************************/
 .logout-container{
-    background-color: var(--accent-color2);
+    background-color: var(--background-color);
     width: 100%;
     height: 90vh;
     display: flex;
@@ -363,7 +363,7 @@ link{
     padding-top: 10px;
 }
 .logout-popup{
-    background-color: var(--background-color);
+    background-color: var(--accent-color2);
     width: 35%;
     height: max-content;
     padding: 40px;

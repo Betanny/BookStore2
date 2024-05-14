@@ -5,7 +5,7 @@ session_start();
 
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 $user_id = $_SESSION['user_id'];
@@ -34,15 +34,24 @@ try {
     // $books = $bookstmt->fetchAll(PDO::FETCH_ASSOC);
 
     //other book suggestions
+    $sql = "SELECT * FROM clients WHERE user_id = $user_id";
+
+    // Execute the query and fetch the results
+    $stmt = $db->query($sql);
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    //Getting the book orders made
+    $clientid = $data['client_id'];
+
     $bookrecsql = "
     SELECT DISTINCT b.bookid, b.front_page_image, b.title, b.price, b.bookrating, RANDOM() as rand 
     FROM books b 
     JOIN orders o ON b.bookid = o.product_id 
-    WHERE o.status = 'Delivered' AND o.client_id = :user_id ";
+    WHERE o.status = 'Delivered' AND o.client_id = :client_id ";
 
 
     $bookrecomendationstmt = $db->prepare($bookrecsql);
-    $bookrecomendationstmt->bindParam(':user_id', $user_id);
+    $bookrecomendationstmt->bindParam(':client_id', $clientid);
     $bookrecomendationstmt->execute();
     $bookrec = $bookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
     global $bookrec;
@@ -117,15 +126,15 @@ try {
                         <label for="Rating">What would you rate the book?</label><br>
                         <div class="stars">
                             <div class="star-widget">
-                                <input type="radio" name="rate" id="rate-1" value="1">
+                                <input type="radio" name="rate" id="rate-1" value="5">
                                 <label for="rate-1" class="fas fa-star"></label>
-                                <input type="radio" name="rate" id="rate-2" value="2">
+                                <input type="radio" name="rate" id="rate-2" value="5">
                                 <label for="rate-2" class="fas fa-star"></label>
                                 <input type="radio" name="rate" id="rate-3" value="3">
                                 <label for="rate-3" class="fas fa-star"></label>
-                                <input type="radio" name="rate" id="rate-4" value="4">
+                                <input type="radio" name="rate" id="rate-4" value="2">
                                 <label for="rate-4" class="fas fa-star"></label>
-                                <input type="radio" name="rate" id="rate-5" value="5">
+                                <input type="radio" name="rate" id="rate-5" value="1">
                                 <label for="rate-5" class="fas fa-star"></label>
                             </div><br />
                         </div>
@@ -161,13 +170,13 @@ try {
                     </div>
                 </div>
                 <input type="hidden" name="product_id" value="<?php echo $selected_product_id; ?>">
-                <button type="submit">Submit Review</button>
+                <button class="button" type="submit">Submit Review</button>
             </form>
         </div>
 
 
         <div class="other-products">
-            <h4>Other Books you might like</h4>
+            <h4>Other Books you can review</h4>
 
             <?php
             foreach ($bookrec as $book) {
@@ -176,7 +185,8 @@ try {
 
                 echo '<div class="book">';
                 echo '<div class="book-img">';
-                echo '<a href=""><img src="' . $front_image . '"></a>';
+                echo '<a href="/Buyer/bookreview.php?product_id=' . $book['bookid'] . '"><img src="' . $front_image . '"></a>';
+
                 echo '</div>';
 
                 echo '<p>' . $book['title'] . '</p>';

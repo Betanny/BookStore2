@@ -7,7 +7,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 
@@ -26,11 +26,24 @@ try {
     // Execute the query and fetch the results
     $stmt = $db->query($sql);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
-    //Full Name
-    $first_name = $data['first_name'];
-    $last_name = $data['last_name'];
-    $full_name = $first_name . ' ' . $last_name;
-    global $full_name;
+
+
+    switch ($category) {
+        case 'Individual':
+            //Full Name
+            $first_name = $data['first_name'];
+            $last_name = $data['last_name'];
+            $full_name = $first_name . ' ' . $last_name;
+            global $full_name;
+
+            break;
+        case 'Organization':
+            $full_name = $first_name = $data['organization_name'];
+            $last_name = "";
+            global $first_name, $full_name;
+            break;
+
+    }
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -100,8 +113,14 @@ try {
                     <h4>
                         <?php echo $full_name; ?>
                     </h4>
-                    <a href="" onclick="minivisible()"><i class="fa-solid fa-angle-down"></i></a>
-
+                    <!-- <a href="" onclick="minivisible()"><i class="fa-solid fa-angle-down"></i></a> -->
+                    <div class="dropdown">
+                        <button class="dropbtn"><i class="fa-solid fa-angle-down"></i></button>
+                        <div class="dropdown-content">
+                            <a href="/Shared Components\profile.php">Edit</a>
+                            <a href="/Shared Components\logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -118,36 +137,36 @@ try {
 
 
     </header>
-    <div class="mini-menu" style="display:none">
+    <!-- <div class="mini-menu" style="display:none">
 
         <li><a href="/Shared Components\feedback.php" class="link light-text">Profile</a>
         <li><a href="/Shared Components\logout.php" class="link light-text">LogOut</a>
 
-    </div>
+    </div> -->
 </body>
-<!-- <div id="feedbackContainer" style="display: none;">
-       include 'D:\xammp2\htdocs\BookStore2\Shared Components\feedback.php'; ?>
-    </div>
-    <script src="/Shared Components/Feedback.php"></script> -->
+
 <script>
-    function minivisible(event) {
-        event.preventDefault();
-        const miniMenu = document.getElementsByClassName('mini-menu');
+function minivisible(event) {
+    event.preventDefault();
+    const miniMenu = document.getElementsByClassName('dropdown-content');
+    miniMenu.style.display = 'block';
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const userPanel = document.getElementsByClassName('profile');
+    // const miniMenu = document.getElementsByClassName('mini-menu');
+    const miniMenu = document.getElementsByClassName('dropdown-content');
+
+    dropdown - content
+
+    userPanel.addEventListener('onmouseover', function() {
         miniMenu.style.display = 'block';
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const userPanel = document.getElementsByClassName('profile');
-        const miniMenu = document.getElementsByClassName('mini-menu');
-
-        userPanel.addEventListener('onmouseover', function () {
-            miniMenu.style.display = 'block';
-        });
-
-        userPanel.addEventListener('mouseleave', function () {
-            miniMenu.style.display = 'none';
-        });
     });
+
+    userPanel.addEventListener('mouseleave', function() {
+        miniMenu.style.display = 'none';
+    });
+});
 </script>
 
 </html>

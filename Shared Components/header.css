@@ -186,7 +186,44 @@ nav ul li a:hover {
     color: var(--background-color);
 
 }
+header .dropbtn{
+    border: none;
+    background-color: inherit;
+    padding-left: 10px;
+}
+header .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--primary-color);
+    min-width: 180px;
+    z-index: 1;
+    right: 0%;
+    color: var(--primary-color);
+    padding: 10px;
+    
 
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: var(--primary-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+ 
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: var(--background-color);}
+  header .dropbtn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
 
 
 

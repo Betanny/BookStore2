@@ -5,9 +5,9 @@ require_once '../Shared Components/dbconnection.php';
 // Start session
 session_start();
 // Check if user is logged in
-if (!isset ($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 
@@ -17,7 +17,7 @@ $category = $_SESSION['category'];
 
 try {
     // Define SQL query to fetch orders data
-    $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address, o.quantity, o.status, o.delivery_date
+    $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
             FROM orders o
             INNER JOIN books b ON o.product_id = b.bookid
             WHERE o.seller_id = :seller_id";
@@ -28,6 +28,40 @@ try {
 
     // Fetch the results into an associative array
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['confirm_delivery'])) {
+            // Confirm Delivery form submission 
+            $orderId = $_POST['order_id'];
+            var_dump($orderId);
+            $comments = $_POST['comments'];
+            $current_date = date("Y-m-d");
+
+            // Update database
+            $sql = "UPDATE orders SET dealer_status = 'Delivered', dealer_comment = :comments, dealer_delivery_date = :delivery_date WHERE order_id = :orderId";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':comments', $comments);
+            $stmt->bindParam(':orderId', $orderId);
+            $stmt->bindParam(':delivery_date', $current_date);
+            $stmt->execute();
+        } elseif (isset($_POST['decline_order'])) {
+            // Decline Order form submission
+            $orderId = $_POST['order_id'];
+            $reasons = $_POST['reason'];
+
+
+            // Update database
+            $sql = "UPDATE orders SET dealer_status = 'Declined', status = 'Declined', dealer_comment = :reasons,dealer_delivery_date = :delivery_date  WHERE order_id = :orderId";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':reasons', $reasons);
+            $stmt->bindParam(':orderId', $orderId);
+            $stmt->bindParam(':delivery_date', $current_date);
+
+            $stmt->execute();
+        }
+        header("Location: {$_SERVER['REQUEST_URI']}");
+
+    }
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -41,8 +75,10 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/Shared Components/style.css">
-    <link rel="stylesheet" href="/Registration/Stylesheet.css">
+    <!-- <link rel="stylesheet" href="/Registration/Stylesheet.css"> -->
     <link rel="stylesheet" href="seller.css">
+    <link rel="stylesheet" href="home.css">
+
 
     <title>My Orders</title>
 </head>
@@ -82,26 +118,27 @@ try {
                     <div class="cell">Order Date</div>
                     <div class="bigger-cell2">Shipping Address</div>
                     <div class="small-cell">Quantity</div>
-                    <div class="cell">Status</div>
+                    <div class="cell">Client Delivery Status</div>
+                    <div class="cell">Dealer Delivery Status</div>
                     <div class="cell">Delivery Date</div>
                 </div>
                 <div class="order-rows">
                     <!-- Adding the order items -->
                     <?php foreach ($orders as $order): ?>
-                        <div class="row">
-                            <div class="ordername-cell">
-                                <?php echo $order['title']; ?>
-                            </div>
-                            <div class="cell">
-                                <?php echo $order['order_date']; ?>
-                            </div>
-                            <div class="bigger-cell2">
-                                <?php echo $order['shipping_address']; ?>
-                            </div>
-                            <div class="small-cell">
-                                <?php echo $order['quantity']; ?>
-                            </div>
-                            <div class="cell" style="background-color:
+                    <div class="row">
+                        <div class="ordername-cell">
+                            <?php echo $order['title']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $order['order_date']; ?>
+                        </div>
+                        <div class="bigger-cell2">
+                            <?php echo $order['shipping_address']; ?>
+                        </div>
+                        <div class="small-cell">
+                            <?php echo $order['quantity']; ?>
+                        </div>
+                        <div class="cell" style="background-color:
     <?php
     // Determine background color based on status
     $status = strtolower($order['status']);
@@ -115,45 +152,187 @@ try {
         echo 'transparent'; // Default color or no color
     }
     ?>
+; border-radius: 15px;margin:7px; padding: 5px;
+                            ">
+                            <?php echo $order['status']; ?>
+                        </div>
+                        <div class="cell" style="background-color:
+    <?php
+    // Determine background color based on status
+    $status = strtolower($order['dealer_status']);
+    if ($status === 'delivered') {
+        echo '#90ee90';
+    } elseif ($status === 'pending') {
+        echo '#ffa500';
+    } elseif ($status === 'declined') {
+        echo 'red';
+    } else {
+        echo 'transparent'; // Default color or no color
+    }
+    ?>
 ; border-radius: 15px; padding: 5px;
                             ">
-                                <?php echo $order['status']; ?>
-                            </div>
-
-
-                            <div class="cell">
-                                <?php echo $order['delivery_date']; ?>
-                            </div>
-                            <?php if ($status === 'pending'): ?>
-                                <button type="submit" id="update-btn" class="update-button">Update</button>
-
-                                <!-- <button class="update-button">Update</button> -->
-                            <?php endif; ?>
-
-
-
-
-
-
+                            <?php echo $order['dealer_status']; ?>
                         </div>
+
+                        <div class="cell">
+                            <?php echo $order['dealer_delivery_date']; ?>
+
+                            <?php if (strtolower($order['dealer_status']) === 'pending'): ?>
+                            <button type="submit" id="update-btn-<?php echo $order['order_id']; ?>"
+                                class="update-button" data-order-id="<?php echo $order['order_id']; ?>">Update</button>
+
+                            <!-- <button class="update-button">Update</button> -->
+                            <?php endif; ?>
+                        </div>
+
+
+
+
+
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="update-container">
+        <div class="update-popup">
+            <div class="select-update-action">
+                <button type="button" class="action-button" id="Delivered">Confirm Delivery</button>
+                <button type="button" class="action-button" id="Decline">Decline Order</button>
+            </div>
+            <div class="Delivered-container">
+                <form action="#" method="post" onsubmit="reloadPage()">
+                    <input type="hidden" name="order_id" id="delivery-order-id" value="">
+
+
+
+
+
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="comments" class="no-asterisk">Any message you would like to pass across to your
+                                customers</label>
+                            <textarea class="inputfield" style="height: 70px;width: 90%;" class="inputfield"
+                                name="comments"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="confirm_delivery" class="submit-btn">Confirm Delivery</button>
+
+                </form>
+
+            </div>
+            <div class="Decline-container">
+                <form action="#" method="post" onsubmit="reloadPage()">
+                    <input type="hidden" name="order_id" id="rejected-order-id" value="">
+
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label for="reason" class="no-asterisk">Reason for declining:</label><br>
+                            <textarea id="reason" style="height: 60px;width: 90%;" name="reason"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="decline_order" class="submit-btn">Decline Order</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
 </body>
 
 <script>
-    // var update-btn =document.getElementById('update-btn');
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
+// var update-btn =document.getElementById('update-btn');
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
+
+
+});
+document.addEventListener("DOMContentLoaded",
+    function() { // Get the update button
+        var updateButton = document.getElementById('update-btn');
+        // Get the Delivered button
+        var deliveredButton = document.getElementById('Delivered');
+        // Get the Decline button        
+        var declineButton = document.getElementById('Decline');
+        document.querySelector('.update-container').style.display = 'none';
+
+
+
+        // Add click event listener to the update button 
+        // updateButton.addEventListener('click', function () {
+        //     // Hide the viewproducts-container
+        //     document.querySelector('.viewproducts-container').style.display = 'none';
+        //     document.querySelector('.Decline-container').style.display = 'none';
+        //     document.querySelector('.Delivered-container').style.display = 'none';
+        //     document.querySelector('.update-container').style.display = 'block';
+        // });
+        var updateButtons = document.querySelectorAll('.update-button');
+
+        // Loop through each update button and add event listener
+        updateButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Get the parent row of the clicked button
+                var row = button.closest('.row');
+
+                // Hide the viewproducts-container and show the update-container
+                document.querySelector('.viewproducts-container').style.display = 'none';
+                document.querySelector('.update-container').style.display = 'block';
+                document.querySelector('.Decline-container').style.display = 'none';
+                document.querySelector('.Delivered-container').style.display = 'none';
+                // const orderId = updateButton.getAttribute("data-order-id");
+                // console.log("Order ID:", orderId);
+                // document.getElementById("order-id-input").value = orderId;
+                var orderId = button.getAttribute("data-order-id");
+                console.log("Order ID:", orderId);
+                // Set the order ID in the delivery form
+                document.getElementById("delivery-order-id").value = orderId;
+
+                // Set the order ID in the rejected form
+                document.getElementById("rejected-order-id").value = orderId;
+
+
+
+
+                // Add any additional logic as needed
             });
+        });
 
 
+        // Add click event listener to the Delivered button     
+        deliveredButton.addEventListener('click', function() {
+            // Show the Delivered container and hide the Decline container 
+            document.querySelector('.Delivered-container').style.display = 'block';
+            document.querySelector('.Decline-container').style.display = 'none';
+            deliveredButton.classList.add('active');
+            deliveredButton.classList.remove('inactive');
+            declineButton.classList.add('inactive');
+            declineButton.classList.remove('active');
+
+        });
+
+
+        // Add click event listener to the Decline button   
+        declineButton.addEventListener('click', function() {
+            // Show the Decline container and hide the Delivered container
+            document.querySelector('.Delivered-container').style.display = 'none';
+            document.querySelector('.Decline-container').style.display = 'block';
+            declineButton.classList.add('active');
+            declineButton.classList.remove('inactive');
+            deliveredButton.classList.add('inactive');
+            deliveredButton.classList.remove('active');
+        });
     });
 </script>
+
 
 </html>

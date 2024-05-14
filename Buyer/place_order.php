@@ -31,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL statement to insert into orders table using named parameters
     $stmt = $db->prepare("
-        INSERT INTO orders (client_id, total_amount, status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
-        VALUES (:client_id, :total_amount, :status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
+        INSERT INTO orders (client_id, total_amount, status,dealer_status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
+        VALUES (:client_id, :total_amount, :status,:dealer_status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
     ");
     $cartItems = json_decode($_POST['cart_items'], true);
 
@@ -54,6 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':client_id', $client_id);
         $stmt->bindParam(':total_amount', $total_amount);
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':dealer_status', $status);
+
         $stmt->bindParam(':payment_method', $payment_method);
         $stmt->bindParam(':shipping_address', $shipping_address);
         $stmt->bindParam(':product_type', $product_type);

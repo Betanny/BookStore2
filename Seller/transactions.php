@@ -156,19 +156,21 @@ try {
                     <div class="bigger-cell" style="text-align: center;">Transaction Date</div>
                 </div>
                 <div class="order-rows">
+                    <?php if (!empty($transactions)): ?>
+
                     <!-- Adding the order items -->
                     <?php foreach ($transactions as $transaction): ?>
                     <div class="row">
                         <div class="cell">
                             <?php echo $transaction['serialno'];
-                                ?>
+                                    ?>
                         </div>
                         <div class="bigger-cell2">
                             <?php echo $transaction['client_name']; ?>
                         </div>
                         <div class="cell">
                             <?php echo $transaction['order_id'];
-                                ?>
+                                    ?>
                         </div>
                         <div class="bigger-cell">
                             <?php echo $transaction['transaction_type']; ?>
@@ -187,15 +189,15 @@ try {
                         </div>
 
 
-                        <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
-                        </div>
-                        <div class="icon-cell">
+                        </div> -->
+                        <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="transactions"
-                                data-pk="<?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
+                                data-pk="?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                        </div>
+                        </div> -->
 
 
 
@@ -204,9 +206,14 @@ try {
 
                     </div>
                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- <div class="row"> -->
+                    <h2>No Transactions to display yet.</h2>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

@@ -17,10 +17,25 @@ $category = $_SESSION['category'];
 
 try {
     // Define SQL query to fetch orders data
-    $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
+    // Set the default status filter to 'all'
+    $statusFilter = 'All';
+
+    // Check if a filter has been selected
+    if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+        $statusFilter = $_GET['status'];
+    }
+    if ($statusFilter == 'All') {
+
+        $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
             FROM orders o
             INNER JOIN books b ON o.product_id = b.bookid
             WHERE o.seller_id = :seller_id";
+    } else {
+        $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
+        FROM orders o
+        INNER JOIN books b ON o.product_id = b.bookid
+        WHERE o.seller_id = :seller_id AND status = '$statusFilter'";
+    }
 
     // Prepare and execute the query
     $stmt = $db->prepare($sql);
@@ -96,12 +111,26 @@ try {
             </div>
             <div class="right-filter">
                 <div class="filter-dropdown">
-                    <select id="genre-filter" class="filter-bar" placeholder="sort">
-                        <option value="All">All</option>
-                        <option value="Latest">Latest</option>
-                        <option value="Popularity">Popularity</option>
-                        <option value="Rating">Rating</option>
-                    </select>
+                    <form action="" method="get">
+                        <select id="filterDropdown" class="filter-bar" name="status" onchange="this.form.submit()">
+                            <option value="All" <?php
+                            if ($_GET['status'] === 'All') {
+                                echo "selected";
+                            }
+                            ; ?>>All</option>
+                            <option value="Pending" <?php
+                            if ($_GET['status'] === 'Pending') {
+                                echo "selected";
+                            }
+                            ; ?>>Pending</option>
+                            <option value="Delivered" <?php
+                            if ($_GET['status'] === 'Delivered') {
+                                echo "selected";
+                            }
+                            ; ?>>Delivered</option>
+                        </select>
+
+                    </form>
                 </div>
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -124,6 +153,7 @@ try {
                 </div>
                 <div class="order-rows">
                     <!-- Adding the order items -->
+                    <?php if (!empty($orders)): ?>
                     <?php foreach ($orders as $order): ?>
                     <div class="row">
                         <div class="ordername-cell">
@@ -140,36 +170,36 @@ try {
                         </div>
                         <div class="cell" style="background-color:
     <?php
-    // Determine background color based on status
-    $status = strtolower($order['status']);
-    if ($status === 'delivered') {
-        echo '#90ee90';
-    } elseif ($status === 'pending') {
-        echo '#ffa500';
-    } elseif ($status === 'declined') {
-        echo 'red';
-    } else {
-        echo 'transparent'; // Default color or no color
-    }
-    ?>
+            // Determine background color based on status
+            $status = strtolower($order['status']);
+            if ($status === 'delivered') {
+                echo '#90ee90';
+            } elseif ($status === 'pending') {
+                echo '#ffa500';
+            } elseif ($status === 'declined') {
+                echo 'red';
+            } else {
+                echo 'transparent'; // Default color or no color
+            }
+            ?>
 ; border-radius: 15px;margin:7px; padding: 5px;
                             ">
                             <?php echo $order['status']; ?>
                         </div>
                         <div class="cell" style="background-color:
     <?php
-    // Determine background color based on status
-    $status = strtolower($order['dealer_status']);
-    if ($status === 'delivered') {
-        echo '#90ee90';
-    } elseif ($status === 'pending') {
-        echo '#ffa500';
-    } elseif ($status === 'declined') {
-        echo 'red';
-    } else {
-        echo 'transparent'; // Default color or no color
-    }
-    ?>
+            // Determine background color based on status
+            $status = strtolower($order['dealer_status']);
+            if ($status === 'delivered') {
+                echo '#90ee90';
+            } elseif ($status === 'pending') {
+                echo '#ffa500';
+            } elseif ($status === 'declined') {
+                echo 'red';
+            } else {
+                echo 'transparent'; // Default color or no color
+            }
+            ?>
 ; border-radius: 15px; padding: 5px;
                             ">
                             <?php echo $order['dealer_status']; ?>
@@ -180,7 +210,7 @@ try {
 
                             <?php if (strtolower($order['dealer_status']) === 'pending'): ?>
                             <button type="submit" id="update-btn-<?php echo $order['order_id']; ?>"
-                                class="update-button" data-order-id="<?php echo $order['order_id']; ?>">Update</button>
+                                class=" update-button" data-order-id="<?php echo $order['order_id']; ?>">Update</button>
 
                             <!-- <button class="update-button">Update</button> -->
                             <?php endif; ?>
@@ -192,9 +222,14 @@ try {
 
                     </div>
                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- <div class="row"> -->
+                    <h2>No orders to display yet.</h2>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="update-container">

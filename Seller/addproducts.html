@@ -15,19 +15,19 @@
      <div class="productsadd-container">
     <section class="progress-bar">
         <ul class="progress-bar-steps">
-            <li class="progress-step">
+            <li id="step1" class="progress-step current-item">
                 <span class="progress-count">1</span>
                 <span class="progress-label">Basic Details</span>
             </li>
-            <li class="progress-step current-item">
+            <li id="step2"  class="progress-step">
                 <span class="progress-count">2</span>
                 <span class="progress-label ">Additional Details</span>
             </li>
-            <li class="progress-step">
+            <li id="step3"  class="progress-step">
                 <span class="progress-count">3</span>
                 <span class="progress-label">Pricing</span>
             </li>
-            <li class="progress-step">
+            <li id="step4"  class="progress-step">
                 <span class="progress-count">4</span>
                 <span class="progress-label">Upload Images</span>
             </li>
@@ -518,18 +518,7 @@ function previousStep() {
         showStep(currentStep);
     }
 
-// function nextStep() {
-//     if (validateCurrentStep()==true) {
-//         if (currentStep < 4) {
-//             currentStep++;
-//             showStep(currentStep);
-//         }
-//         // If the current step is the last step, submit the form
-//         else if (currentStep === 4) {
-//             document.getElementById('Add-products').submit();
-//         }
-//     }
-// }
+
 
 function nextStep() {
     var isValid = validateCurrentStep();
@@ -551,7 +540,11 @@ function nextStep() {
 
 
     function showStep(step) {
-        switch(step) {
+        var progressSteps = document.querySelectorAll('.progress-step');
+    progressSteps.forEach(step => {
+        step.classList.remove('current-item');
+    });
+            switch(step) {
             case 1:
                 step1.style.display = "block";
                 step2.style.display = "none";
@@ -559,6 +552,7 @@ function nextStep() {
                 step4.style.display = "none";
                 prevbtn.style.display = "none";
                 submitbtn.style.display="none"
+                document.getElementById('step1').classList.add('current-item');
 
                 break;
             case 2:
@@ -569,6 +563,8 @@ function nextStep() {
                 prevbtn.style.display = "block";
                 nextbtn.style.display = "block";
                 submitbtn.style.display="none"
+                document.getElementById('step2').classList.add('current-item');
+
 
 
 
@@ -581,6 +577,8 @@ function nextStep() {
                 prevbtn.style.display = "block";
                 nextbtn.style.display = "block";
                 submitbtn.style.display="none"
+                document.getElementById('step3').classList.add('current-item');
+
 
 
 
@@ -593,6 +591,8 @@ function nextStep() {
                 nextbtn.style.display = "none";
                 prevbtn.style.display = "block";
                 submitbtn.style.display="block"
+                document.getElementById('step4').classList.add('current-item');
+
 
 
                 break;

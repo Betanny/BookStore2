@@ -543,7 +543,7 @@ link{
     color: black;
     min-height: 25px;
     border:1px solid #80808050;
-    width: 590px;
+    width: 500px;
     padding:0 10px 0 10px;
     border-radius: 5px;
     outline: none;
@@ -552,3 +552,36 @@ link{
 
 
 }
+
+.left-section{
+       color:var(--primary-color);
+    float: left;
+
+
+ }
+ .add-button{
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    height: 25px;
+    width:  max-content;
+    border:none;
+    cursor: pointer;
+    border-radius: 8px;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    gap:10px;
+    }
+    .add-button i{
+        font-size: 10px;
+    }

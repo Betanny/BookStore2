@@ -66,6 +66,10 @@ try {
             break;
         // Add more cases as needed
     }
+    $sql_unread_count = "SELECT COUNT(*) AS unread_count FROM notifications WHERE recipient_id = :user_id AND status = false";
+    $stmt_unread_count = $db->prepare($sql_unread_count);
+    $stmt_unread_count->execute(['user_id' => $user_id]);
+    $unread_count = $stmt_unread_count->fetch(PDO::FETCH_ASSOC)['unread_count'];
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -105,20 +109,21 @@ try {
                 <li><a href="/Seller/orders.php" class="link light-text">Orders</a></li>
                 <li><a href="/Seller/transactions.php" class="link light-text">Transactions</a></li>
                 <li><a href="/Shared Components/feedback.php" class="link light-text">Feedback</a>
-                <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li>
 
 
             </ul>
 
         </nav>
         <div class="user-panel">
-            <div class="icon">
+            <!-- <div class="icon">
                 <a href="#"><i class="fa-regular fa-envelope"></i></a>
 
-            </div>
+            </div> -->
             <div class="icon">
                 <a href="#"><i class="fa-regular fa-bell"></i></a>
-
+                <?php if ($unread_count > 0): ?>
+                <span class="notification-count"><?php echo $unread_count; ?></span>
+                <?php endif; ?>
             </div>
             <div class="profile">
                 <div class="user-image">

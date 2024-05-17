@@ -186,8 +186,42 @@ try {
     }
     global $pending_orders;
 
+    //Sales report$salesDataMonthly = array_fill(1, 12, 0); // Array with keys 1-12 initialized to 0
+    // Define your SQL query to fetch monthly sales data from the database
+    $sqlMonthly = "SELECT EXTRACT(MONTH FROM order_date) AS month, SUM(total_amount) AS total_sales 
+                   FROM orders 
+                   WHERE seller_id = :seller_id AND EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE)
+                   GROUP BY EXTRACT(MONTH FROM order_date)";
 
+    // Prepare and execute the monthly query
+    $stmtMonthly = $db->prepare($sqlMonthly);
+    $stmtMonthly->execute([':seller_id' => $user_id]);
 
+    // Fetch the monthly results into an associative array
+    while ($row = $stmtMonthly->fetch(PDO::FETCH_ASSOC)) {
+        $month = (int) $row['month'];
+        $totalSales = (float) $row['total_sales'];
+        // Update salesDataMonthly array
+        $salesDataMonthly[$month] = $totalSales;
+    }
+
+    // Define your SQL query to fetch yearly sales data from the database
+    $sqlYearly = "SELECT EXTRACT(YEAR FROM order_date) AS year, SUM(total_amount) AS total_sales 
+                  FROM orders 
+                  WHERE seller_id = :seller_id 
+                  GROUP BY EXTRACT(YEAR FROM order_date)";
+
+    // Prepare and execute the yearly query
+    $stmtYearly = $db->prepare($sqlYearly);
+    $stmtYearly->execute([':seller_id' => $user_id]);
+
+    // Fetch the yearly results into an associative array
+    while ($row = $stmtYearly->fetch(PDO::FETCH_ASSOC)) {
+        $year = (int) $row['year'];
+        $totalSales = (float) $row['total_sales'];
+        // Update salesDataYearly array
+        $salesDataYearly[$year] = $totalSales;
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -274,39 +308,80 @@ try {
 
 
             <div class="sales-report">
-                <h4>Sales report</h4>
-                <img src="../Images/Dummy/column-chart.webp" alt="">
-
+                <div class="salesreport-header">
+                    <h4>Sales report</h4>
+                    <div class="filter-dropdown">
+                        <select id="filter" class="filter-bar" onchange="updateGraph();" placeholder="sort">
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bar-graph">
+                    <div id="monthly-graph" style="display: block;">
+                        <?php
+                        $months = [
+                            1 => 'January',
+                            2 => 'February',
+                            3 => 'March',
+                            4 => 'April',
+                            5 => 'May',
+                            6 => 'June',
+                            7 => 'July',
+                            8 => 'August',
+                            9 => 'September',
+                            10 => 'October',
+                            11 => 'November',
+                            12 => 'December'
+                        ];
+                        foreach ($salesDataMonthly as $month => $totalSales): ?>
+                            <div class="bar-container">
+                                <div class="bar-label"><?php echo $months[$month]; ?>:</div>
+                                <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
+                                <div class="bar-value"><?php echo $totalSales; ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div id="yearly-graph" style="display: none;">
+                        <?php foreach ($salesDataYearly as $year => $totalSales): ?>
+                            <div class="bar-container">
+                                <div class="bar-label"><?php echo $year; ?>:</div>
+                                <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
+                                <div class="bar-value"><?php echo $totalSales; ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
 
             <div class="products-report-container">
                 <h4>Product Report</h4>
                 <div class="products">
                     <?php if (empty($best_rated_title) || empty($best_selling_title) || empty($most_popular_title)): ?>
-                    <h2>Nothing to display yet</h2>
-                    <p>Please upload a book</p>
+                        <h2>Nothing to display yet</h2>
+                        <p>Please upload a book</p>
                     <?php else: ?>
-                    <div class="product">
-                        <h4>
-                            <?php echo $best_rated_title; ?>
-                        </h4>
-                        <h5>Highest rated</h5>
+                        <div class="product">
+                            <h4>
+                                <?php echo $best_rated_title; ?>
+                            </h4>
+                            <h5>Highest rated</h5>
 
-                    </div>
-                    <div class="product">
-                        <h4>
-                            <?php echo $best_selling_title; ?>
-                        </h4>
-                        <h5>Best Selling</h5>
+                        </div>
+                        <div class="product">
+                            <h4>
+                                <?php echo $best_selling_title; ?>
+                            </h4>
+                            <h5>Best Selling</h5>
 
-                    </div>
-                    <div class="product">
-                        <h4>
-                            <?php echo $most_popular_title; ?>
-                        </h4>
-                        <h5>Most Popular</h5>
+                        </div>
+                        <div class="product">
+                            <h4>
+                                <?php echo $most_popular_title; ?>
+                            </h4>
+                            <h5>Most Popular</h5>
 
-                    </div>
+                        </div>
                     <?php endif; ?>
 
                 </div>
@@ -328,20 +403,20 @@ try {
                 <h4>Pending Tasks</h4>
                 <div class="tasks-container">
                     <?php if (empty($pending_orders)): ?>
-                    <h2>Nothing to display yet</h2>
+                        <h2>Nothing to display yet</h2>
                     <?php else: ?>
-                    <?php foreach ($pending_orders as $order): ?>
-                    <div class="task">
-                        <a href="orders.php?status=Pending">
+                        <?php foreach ($pending_orders as $order): ?>
+                            <div class="task">
+                                <a href="orders.php?status=Pending">
 
-                            <h4>
-                                <?php echo $order['book_title']; ?>
-                            </h4>
-                            <h5>Order Date:
-                                <?php echo $order['order_date']; ?>
-                            </h5>
-                    </div>
-                    <?php endforeach; ?>
+                                    <h4>
+                                        <?php echo $order['book_title']; ?>
+                                    </h4>
+                                    <h5>Order Date:
+                                        <?php echo $order['order_date']; ?>
+                                    </h5>
+                            </div>
+                        <?php endforeach; ?>
                     <?php endif; ?>
 
                 </div>
@@ -356,15 +431,15 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php').then(response => response.text()).then(data => {
-        document.getElementById('header-container').innerHTML = data;
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php').then(response => response.text()).then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
+
+
     });
-
-
-});
-document.addEventListener('DOMContentLoaded', function() {
-    <?php
+    document.addEventListener('DOMContentLoaded', function () {
+        <?php
         // Fetch order data from PHP
         $sql_order_counts = "SELECT status, COUNT(*) AS count FROM orders WHERE seller_id = $user_id GROUP BY status";
         $stmt_order_counts = $db->query($sql_order_counts);
@@ -380,47 +455,61 @@ document.addEventListener('DOMContentLoaded', function() {
             $order_data[] = $row['count'];
         }
         ?>
-
-    // Calculate total ord ers
+   
+          // Calculate total ord ers
     const totalOrders = <?php echo array_sum($order_data); ?>;
-
-    // Pie chart data
-    let data = {
-        labels: <?php echo json_encode($status_labels); ?>,
-        datasets: [{
-            data: <?php echo json_encode($order_data); ?>,
-            backgroundColor: ['#44b89d', '#800020',
-                '#FFA500'
-            ],
-            hoverBackgroundColor: ['#44b89d', '#800020',
-                '#FFA500'
-            ],
+ 
+           // Pie chart data
+    let     data = {
+            labels: <?php echo json_encode($status_labels); ?>,
+            datasets: [{
+                data: <?php echo json_encode($order_data); ?>,
+                backgroundColor: ['#44b89d', '#800020',
+                    '#FFA500'
+                ],
+                hoverBackgroundColor: ['#44b89d', '#800020',
+                    '#FFA500'
+                ],
         }]
-    };
-
+        };
+    
     // Chart options
-    const options = {
-        responsive: true,
-        cutoutPercentage: 60, // Determines the size of the hole in the middle
-        legend: {
-            position: 'bottom'
-        },
-        title: {
+        const options = {
+            responsive: true,
+            cutoutPercentage: 60, // Determines the size of the hole in the middle
+            legend: {
+                position: 'bottom'
+            },
+            title: {
             display: true,
-            text: `Total Orders: ${totalOrders}`
-        }
-    };
-
-    // Get the canvas element
-    const ctx = document.getElementById('ordersChart').getContext('2d');
-
-    // Create the pie chart
-    const ordersChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options
-    });
+                text: `Total Orders: ${totalOrders}`
+            }
+        };
+  
+      // Get the canvas element
+        const ctx = document.getElementById('ordersChart').getContext('2d');
+ 
+           // Create the pie chart
+        const ordersChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data,
+            options: options
+        });
 });
+
+function updateGraph() {
+    const filter = document.getElementById('filter').value;
+    const monthlyGraph = document.getElementById('monthly-graph');
+    const yearlyGraph = document.getElementById('yearly-graph');
+
+    if (filter === 'monthly') {
+        monthlyGraph.style.display = 'block';
+        yearlyGraph.style.display = 'none';
+    } else if (filter === 'yearly') {
+        monthlyGraph.style.display = 'none';
+        yearlyGraph.style.display = 'block';
+    }
+}
 </script>
 
 </html>

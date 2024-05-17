@@ -985,3 +985,31 @@ body {
     width: 80%; /* Could be more or less, depending on screen size */
   }
   
+
+
+
+
+  .bar-container {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+.bar-label {
+    width: 100px;
+}
+.bar {
+    height: 20px;
+    background-color: #4caf50;
+    margin-left: 10px;
+}
+.bar-value {
+    margin-left: 10px;
+}
+
+
+.salesreport-header{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}

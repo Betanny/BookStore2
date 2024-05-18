@@ -198,7 +198,7 @@ body{
     transition: .3 ease;
 }
 .btn{
-    color: white;
+    color: var(--primary-color);
     font-weight: 800;
     width:300px;
     height: 40px;
@@ -213,11 +213,10 @@ body{
     transition: .3 ease;
 }
 .active {
-    color: white;
-    font-weight: 800;
+    color: var(--primary-color);
+    font-weight: bolder;
     width: 300px;
     height: 40px;
-    font-weight: 500;
    background: rgba(128, 128, 128, 0.4);
     border: none;
     cursor: pointer;
@@ -276,7 +275,7 @@ h1{
     width: 90%;
 }
 .inputfield{
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1);
     font-size: 15px;
     color: black;
     height: 38px;

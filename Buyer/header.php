@@ -14,7 +14,6 @@ if (!isset($_SESSION['user_id'])) {
 // Get user ID and category from session
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
-
 try {
     // Determine which table to query based on user category
     $table_name = 'clients';
@@ -44,11 +43,12 @@ try {
             break;
 
     }
-    $sql_unread_count = "SELECT COUNT(*) AS unread_count FROM notifications WHERE recipient_id = :user_id AND status = false";
+    $sql_unread_count = "SELECT DISTINCT COUNT(*) AS unread_count FROM notifications WHERE recipient_id = :user_id AND status = false";
     $stmt_unread_count = $db->prepare($sql_unread_count);
     $stmt_unread_count->execute(['user_id' => $user_id]);
     $unread_count = $stmt_unread_count->fetch(PDO::FETCH_ASSOC)['unread_count'];
-
+    global $unread_count;
+    var_dump($unread_count);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -103,7 +103,7 @@ try {
             <div class="icon">
                 <a href="#"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
-                    <span class="notification-count"><?php echo $unread_count; ?></span>
+                <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="icon">
@@ -153,27 +153,27 @@ try {
 </body>
 
 <script>
-    function minivisible(event) {
-        event.preventDefault();
-        const miniMenu = document.getElementsByClassName('dropdown-content');
+function minivisible(event) {
+    event.preventDefault();
+    const miniMenu = document.getElementsByClassName('dropdown-content');
+    miniMenu.style.display = 'block';
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const userPanel = document.getElementsByClassName('profile');
+    // const miniMenu = document.getElementsByClassName('mini-menu');
+    const miniMenu = document.getElementsByClassName('dropdown-content');
+
+    dropdown - content
+
+    userPanel.addEventListener('onmouseover', function() {
         miniMenu.style.display = 'block';
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const userPanel = document.getElementsByClassName('profile');
-        // const miniMenu = document.getElementsByClassName('mini-menu');
-        const miniMenu = document.getElementsByClassName('dropdown-content');
-
-        dropdown - content
-
-        userPanel.addEventListener('onmouseover', function () {
-            miniMenu.style.display = 'block';
-        });
-
-        userPanel.addEventListener('mouseleave', function () {
-            miniMenu.style.display = 'none';
-        });
     });
+
+    userPanel.addEventListener('mouseleave', function() {
+        miniMenu.style.display = 'none';
+    });
+});
 </script>
 
 </html>

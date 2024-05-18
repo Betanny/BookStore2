@@ -70,6 +70,8 @@ try {
     $stmt_unread_count = $db->prepare($sql_unread_count);
     $stmt_unread_count->execute(['user_id' => $user_id]);
     $unread_count = $stmt_unread_count->fetch(PDO::FETCH_ASSOC)['unread_count'];
+    var_dump($unread_count);
+
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();

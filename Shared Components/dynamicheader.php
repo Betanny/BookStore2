@@ -17,7 +17,12 @@ function getUserData()
     }
     return null;
 }
-
+$sql_unread_count = "SELECT DISTINCT COUNT(*) AS unread_count FROM notifications WHERE recipient_id = :user_id AND status = false";
+$stmt_unread_count = $db->prepare($sql_unread_count);
+$stmt_unread_count->execute(['user_id' => $user_id]);
+$unread_count = $stmt_unread_count->fetch(PDO::FETCH_ASSOC)['unread_count'];
+global $unread_count;
+var_dump($unread_count);
 // Get user data
 $user_data = getUserData();
 ?>
@@ -45,45 +50,45 @@ $user_data = getUserData();
             <ul>
                 <li><a href="/Home/homepage.html" class="link light-text active-link">Home</a></li>
                 <?php if ($user_data): ?>
-                    <?php if ($user_data['category'] == 'Admin'): ?>
-                        <li><a href="admindashboard.php" class="link light-text active-link">Dashboard</a></li>
-                        <li><a href="products.php" class="link light-text">Products</a></li>
-                        <li><a href="users.php" class="link light-text">Users</a></li>
-                        <li><a href="orders.php" class="link light-text">Orders</a></li>
-                        <li><a href="transactions.php" class="link light-text">Transactions</a></li>
-                    <?php elseif ($user_data['category'] == 'Buyer'): ?>
-                        <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                        <li><a href="products.php" class="link light-text">Products</a></li>
-                        <li><a href="myorders.php" class="link light-text">My orders</a></li>
-                        <li><a href="feedback.php" class="link light-text">Feedback</a>
-                        </li>
-                        <li><a href="bookselect.php" class="link light-text">Review a book</a></li>
-                    <?php elseif ($user_data['category'] == 'Seller'): ?>
-                        <li><a href="sellerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                        <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
-                        <li><a href="orders.php" class="link light-text">Orders</a></li>
-                        <li><a href="transactions.php" class="link light-text">Transactions</a></li>
-                        <li><a href="feedback.php" class="link light-text">Feedback</a>
-                        <?php endif; ?>
-                    <li><a href="/Home/products.php" class="link light-text">Products</a></li>
-                    <li><a href="/Home/aboutus.html" class="link light-text">About Us</a></li>
+                <?php if ($user_data['category'] == 'Admin'): ?>
+                <li><a href="admindashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="products.php" class="link light-text">Products</a></li>
+                <li><a href="users.php" class="link light-text">Users</a></li>
+                <li><a href="orders.php" class="link light-text">Orders</a></li>
+                <li><a href="transactions.php" class="link light-text">Transactions</a></li>
+                <?php elseif ($user_data['category'] == 'Buyer'): ?>
+                <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="products.php" class="link light-text">Products</a></li>
+                <li><a href="myorders.php" class="link light-text">My orders</a></li>
+                <li><a href="feedback.php" class="link light-text">Feedback</a>
+                </li>
+                <li><a href="bookselect.php" class="link light-text">Review a book</a></li>
+                <?php elseif ($user_data['category'] == 'Seller'): ?>
+                <li><a href="sellerdashboard.php" class="link light-text active-link">Dashboard</a></li>
+                <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
+                <li><a href="orders.php" class="link light-text">Orders</a></li>
+                <li><a href="transactions.php" class="link light-text">Transactions</a></li>
+                <li><a href="feedback.php" class="link light-text">Feedback</a>
+                    <?php endif; ?>
+                <li><a href="/Home/products.php" class="link light-text">Products</a></li>
+                <li><a href="/Home/aboutus.html" class="link light-text">About Us</a></li>
                 <?php else: ?>
-                    <li><a href="/Home/homepage.html" class="link light-text active-link">Home</a></li>
-                    <li><a href="/Home/products.php" class="link light-text">Products</a></li>
-                    <li><a href="/Home/Aboutus.html" class="link light-text">About us</a></li>
-                    <li><a href="/Home/contactus.html" class="link-active">Contact us</a></li>
+                <li><a href="/Home/homepage.html" class="link light-text active-link">Home</a></li>
+                <li><a href="/Home/products.php" class="link light-text">Products</a></li>
+                <li><a href="/Home/Aboutus.html" class="link light-text">About us</a></li>
+                <li><a href="/Home/contactus.html" class="link-active">Contact us</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
         <?php if ($user_data): ?>
-            <div class="user-panel">
-                <div class="profile">
-                    <div class="user-name">
-                        <h4>User Name</h4> <!-- Replace with actual user name -->
-                        <a href="#"><i class="fa-solid fa-angle-down"></i></a>
-                    </div>
+        <div class="user-panel">
+            <div class="profile">
+                <div class="user-name">
+                    <h4>User Name</h4> <!-- Replace with actual user name -->
+                    <a href="#"><i class="fa-solid fa-angle-down"></i></a>
                 </div>
             </div>
+        </div>
         <?php endif; ?>
         <label for="nav_check" class="hamburger">
             <div></div>

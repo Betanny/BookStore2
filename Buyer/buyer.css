@@ -1,6 +1,5 @@
-
+/* 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
 .poppins-thin {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
@@ -107,7 +106,7 @@ font-style: italic;
 font-family: "Poppins", sans-serif;
 font-weight: 900;
 font-style: italic;
-}
+}  */
   
 .dashboard-container{
     display: flex;
@@ -334,6 +333,7 @@ font-style: italic;
     scrollbar-width:thin;
     scrollbar-color: var(--accent-color);
 }
+
     
 .order-rows{
     width: 99%;
@@ -590,8 +590,15 @@ details{
     margin-left: 2.5%;
     width:95%;
     height: 55%;
+  
 
 
+}
+.notifications-container .rows{
+    overflow-y: auto;
+    max-height: 450px;
+    scrollbar-width:thin;
+    scrollbar-color: var(--accent-color);
 
 }
 .notifications-container{
@@ -603,13 +610,16 @@ details{
     border-radius: 10px;
     background-color: var(--accent-color2);
     margin-top: 0;
+    max-height: 450px;
+
 
    
     
 }
 .notifications-container h4{
-    padding:5px 10px;
     font-weight: bold;
+    text-align: left;
+
 
 }
 .notification{
@@ -621,19 +631,26 @@ details{
     padding-right: 5px;
     height: 50px;
     align-items: left;
+    text-align: left;
     margin-bottom: 10px;
+    padding-top: 0;
+    overflow: hidden;
+    white-space: wrap; /* Don't forget this one */
+    text-overflow: ellipsis;
+  
 
 }
 
 .notification h5{
     font-weight: bold;
-    padding: 5px 5px 5px 10px;
+    text-align: left;
+    padding: 2px 2px 2px 5px;
 }
 .notification p{
     font-weight: lighter;
-    font-size: 15px;
+    font-size: 10px;
     padding: 5px;
-    padding-top: 0;
+ 
 }
 
 /************************book review********************/

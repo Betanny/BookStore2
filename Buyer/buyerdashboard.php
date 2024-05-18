@@ -89,7 +89,14 @@ try {
     global $totalItemsReviewed;
 
 
-
+    // Query to fetch notifications for the user
+    $sql_notifications = "SELECT notifications.*, users.email 
+                          FROM public.notifications 
+                          JOIN users ON notifications.sender_id = users.user_id 
+                          WHERE notifications.recipient_id = :user_id";
+    $stmt_notifications = $db->prepare($sql_notifications);
+    $stmt_notifications->execute(['user_id' => $user_id]);
+    $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
 
 
 } catch (PDOException $e) {
@@ -103,8 +110,11 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="buyer.css">
     <link rel="stylesheet" href="home.css">
+
     <link rel="stylesheet" href="/Shared Components/style.css">
+    <!-- <link rel="stylesheet" href="/Shared Components/style.css"> -->
     <!-- <link rel="stylesheet" href="admin.css"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -287,30 +297,23 @@ try {
             <div class="notifications">
                 <div class="notifications-container">
                     <h4> Notifications</h4>
-
-                    <div class="notification">
-                        <h5>Delivery</h5>
-                        <p>On 2nd march your book was delivered</p>
-
-                    </div>
-                    <div class="notification">
-                        <h5>Delivery</h5>
-                        <p>On 2nd march your book was delivered</p>
-
-                    </div>
-                    <div class="notification">
-                        <h5>Delivery</h5>
-                        <p>On 2nd march your book was delivered</p>
-
+                    <div class="rows">
+                        <?php foreach ($notifications as $notification): ?>
+                        <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                            data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                            onclick="openNotification(this);">
+                            <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
+                            <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
-    <div id="feedbackContainer"></div>
+        <div id="feedbackContainer"></div>
 
-    <!--include 'D:\xammp2\htdocs\BookStore2\Shared Components\feedback.php'; ?> -->
+        <!--include 'D:\xammp2\htdocs\BookStore2\Shared Components\feedback.php'; ?> -->
 
 
 </body>

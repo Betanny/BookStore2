@@ -297,6 +297,9 @@ try {
             <div class="notifications">
                 <div class="notifications-container">
                     <h4> Notifications</h4>
+                    <?php if (empty($notifications)): ?>
+                    <p>You have no notifications</p>
+                    <?php else: ?>
                     <div class="rows">
                         <?php foreach ($notifications as $notification): ?>
                         <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
@@ -307,11 +310,14 @@ try {
                         </div>
                         <?php endforeach; ?>
                     </div>
+                    <?php endif; ?>
+
                 </div>
 
             </div>
         </div>
-        <div id="feedbackContainer"></div>
+        <div id="notifications-container" style="display:none;"></div>
+
 
         <!--include 'D:\xammp2\htdocs\BookStore2\Shared Components\feedback.php'; ?> -->
 
@@ -324,6 +330,13 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
+
+
+});
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('/Shared Components/notifications.php').then(response => response.text()).then(data => {
+        document.getElementById('notifications-container').innerHTML = data;
+    });
 
 
 });

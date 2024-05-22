@@ -23,17 +23,24 @@ try {
     $cartItems = $cartdatastmt->fetchAll(PDO::FETCH_ASSOC);
 
     $subtotal = 0;
-    $discount = 0;
+    $discount = $totaldiscount = 0;
     $total = 0;
 
+    $noOfItems = count($cartItems);
 
     // Calculate subtotal
     foreach ($cartItems as $item) {
         // Calculate total price for each item
-        $totalPrice = $item['quantity'] * $item['price'];
+        $totalprice = $item['quantity'] * $item['price'];
         // Add total price to subtotal
-        $subtotal += $totalPrice;
-        $discount = $item['discount'];
+        if ($item['quantity'] >= $item['mininbulk']) {
+            $discount = ($item['price'] * $item['quantity']) - ($item['priceinbulk'] * $item['quantity']);
+
+        } else {
+            $discount = 0;
+        }
+        $subtotal += $totalprice;
+        $totaldiscount += $discount;
         $total = $subtotal - $discount;
     }
 
@@ -109,7 +116,8 @@ try {
 
 
                                 <div class="reg-cell">
-                                    <?php echo $item['product_type']; ?>
+                                    <?php if ($item['quantity'] < $item['mininbulk']): ?>Retail<?php else: ?>Bulk<?php endif; ?>
+
                                 </div>
                                 <div class="reg-cell">
                                     <?php echo $item['price']; ?>
@@ -142,7 +150,7 @@ try {
                             <?php echo $subtotal; ?>
                         </p>
                         <p> Discount:
-                            <?php echo $discount; ?>
+                            <?php echo $totaldiscount; ?>
                         </p>
                         <h4>
                             Total:
@@ -179,15 +187,15 @@ try {
 
                     <div id="mpesaFields" class="input-box" style="display:none;">
                         <div class="inputcontrol">
+                            <div class="error"></div>
                             <label for="mpesaNumber">Mpesa Number</label>
                             <input type="text" class="inputfield" id="mpesaNumber" name="mpesaNumber">
-                            <div class="error"></div>
                         </div>
 
                         <div class="inputcontrol">
+                            <div class="error"></div>
                             <label for="mpesaName">Mpesa Name</label>
                             <input type="text" class="inputfield" id="mpesaName" name="mpesaName">
-                            <div class="error"></div>
                         </div>
                         <!--             
                     <div class="inputcontrol">
@@ -199,15 +207,15 @@ try {
 
                     <div id="airtelmoneyFields" class="input-box" style="display:none;">
                         <div class="inputcontrol">
+                            <div class="error"></div>
                             <label for="airtelNumber">Airtel Money Number</label>
                             <input type="text" class="inputfield" id="airtelNumber" name="airtelNumber">
-                            <div class="error"></div>
                         </div>
 
                         <div class="inputcontrol">
+                            <div class="error"></div>
                             <label for="airtelName">Airtel Money Name</label>
                             <input type="text" class="inputfield" id="airtelName" name="airtelName">
-                            <div class="error"></div>
                         </div>
 
                         <!-- <div class="inputcontrol">
@@ -219,15 +227,15 @@ try {
 
                     <div id="cardFields" class="input-box" style="display:none;">
                         <div class="inputcontrol">
+                            <div class="error"></div>
                             <label for="cardName">Name on Card</label>
                             <input type="text" class="inputfield" id="cardName" name="cardName">
-                            <div class="error"></div>
                         </div>
 
                         <div class="inputcontrol">
+                            <div class="error"></div>
                             <label for="cardNumber">Card Number</label>
                             <input type="text" class="inputfield" id="cardNumber" name="cardNumber">
-                            <div class="error"></div>
                         </div>
                     </div>
 
@@ -283,10 +291,8 @@ try {
 
     <script>
         // Define a function to submit the form
-        function submitOrderForm() {
-            console.log("Starting to submit the form");
-            document.getElementById('order-form').submit();
-        }
+
+
 
         // Define a function to toggle payment fields
         function togglePaymentFields(paymentMethod) {
@@ -338,9 +344,6 @@ try {
 
 
 
-            // Attach event listener to submit button
-            var submitButton = document.getElementById('order-button');
-            submitButton.addEventListener('click', submitOrderForm);
 
             function updateSubtotalAndTotal() {
                 var total = 0;
@@ -422,6 +425,63 @@ try {
                 });
             });
         });
+
+        document.getElementById("order-form").addEventListener('submit', function (e) {
+            // Prevent the default form submission
+            e.preventDefault();
+            validateForm();
+            console.log("Starting to submit the form");
+
+        });
+
+        function validateField(fieldName, errorMessage) {
+            var inputField = document.getElementsByName(fieldName)[0];
+            var inputControl = inputField.parentElement;
+            var errorDisplay = inputControl.querySelector('.error');
+            var fieldValue = inputField.value.trim();
+            if (fieldValue === '') {
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+                errorDisplay.textContent = errorMessage;
+                return false;
+            } else {
+                errorDisplay.textContent = "";
+                return true;
+            }
+        }
+
+        function validatePhoneNumber(fieldName) {
+            var inputField = document.getElementsByName(fieldName)[0];
+            var inputControl = inputField.parentElement;
+            var errorDisplay = inputControl.querySelector('.error');
+            var phoneNumber = inputField.value.trim();
+            var phoneNumberPattern = /^\d+$/; // Regular expression to match only digits
+
+            // Check if the phone number contains only digits
+            if (!phoneNumberPattern.test(phoneNumber)) {
+                var errorMessage = "Phone number should only contain digits";
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+                errorDisplay.textContent = errorMessage;
+                return false;
+            } else {
+                errorDisplay.textContent = "";
+                return true;
+            }
+        }
+
+        // Individual form functions
+        function validateForm() {
+            var isValid = true;
+            // Validate fields for Individual form
+            isValid = validateField('RecipientName', 'Recipient Name is required') && isValid;
+            isValid = validatePhoneNumber('ContactNumber') && isValid; // Validate phone number field
+            isValid = validateField('ContactNumber', 'Phone is required') && isValid;
+            isValid = validateField('shipping_address', 'Address is required') && isValid;
+
+
+            return isValid;
+        }
     </script>
 
 

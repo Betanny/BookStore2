@@ -18,54 +18,33 @@ $role = $_SESSION['role'];
 
 
 try {
-    $table_name = '';
-    switch ($category) {
-        case 'Author':
-            $table_name = 'authors';
-            break;
-        case 'Publisher':
-            $table_name = 'publishers';
-            break;
-        case 'Manufacturer':
-            $table_name = 'manufacturers';
-            break;
-        // Add more cases as needed
-    }
-    // Query the appropriate table to fetch data
-    $sql = "SELECT * FROM $table_name WHERE user_id = $user_id";
 
-    // Execute the query and fetch the results
-    $stmt = $db->query($sql);
-    $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    switch ($category) {
-        case 'Author':
-            $table_name = 'authors';
-            $first_name = $data['first_name'];
-            $last_name = $data['last_name'];
-            $full_name = $first_name . ' ' . $last_name;
-            global $first_name, $full_name;
-
-            break;
-        case 'Publisher':
-            $table_name = 'publishers';
-            $full_name = $first_name = $data['publisher_name'];
-            $last_name = "";
-            global $first_name, $full_name;
-            break;
-        case 'Manufacturer':
-            $table_name = 'manufacturers';
-            $full_name = $first_name = $data['manufacturer_name'];
-            $last_name = "";
-
-            break;
-        // Add more cases as needed
-    }
-    $profile_sql = "SELECT * FROM $table_name WHERE user_id = :user_id";
+    $profile_sql = "SELECT * FROM clients WHERE user_id = :user_id";
     $profile_stmt = $db->prepare($profile_sql);
     $profile_stmt->bindParam(':user_id', $user_id);
     $profile_stmt->execute();
     $profile = $profile_stmt->fetch(PDO::FETCH_ASSOC);
+
+    switch ($category) {
+        case 'Individual':
+            $first_name = $profile['first_name'];
+            $last_name = $profile['last_name'];
+            $full_name = $first_name . ' ' . $last_name;
+            global $first_name, $full_name;
+
+            break;
+        case 'Organization':
+            $full_name = $first_name = $profile['organization_name'];
+            $last_name = "";
+            $contact_first_name = $profile['contact_first_name'];
+            $contact_last_name = $profile['contact_last_name'];
+            $contact_full_name = $contact_first_name . ' ' . $contact_last_name;
+            global $first_name, $full_name, $contact_full_name;
+            break;
+
+    }
+
     global $profile;
 
 
@@ -104,7 +83,7 @@ try {
             <div class="modal-content">
                 <div class="input-box">
                     <div class="inputcontrol">
-                        <label class="no-asterisk" for="BookTitle">Fullname</label class="no-asterisk">
+                        <label class="no-asterisk" for="BookTitle">Full Name</label class="no-asterisk">
                         <input type="text" class="inputfield" name="booktitle" value="<?php echo $full_name; ?>" />
                     </div>
                 </div>
@@ -116,9 +95,6 @@ try {
 
                 </div>
 
-
-
-
                 <div class="input-box">
                     <div class="inputcontrol">
                         <label class="no-asterisk" for="Language">address</label class="no-asterisk">
@@ -129,17 +105,15 @@ try {
 
                 <div class="input-box">
                     <div class="inputcontrol">
-                        <label class="no-asterisk" for="website">website</label class="no-asterisk">
-                        <input type="text" class="inputfield" name="website"
-                            value="<?php echo $profile['website']; ?>" />
+                        <label class="no-asterisk" for="county">county</label class="no-asterisk">
+                        <input type="text" class="inputfield" name="county" value="<?php echo $profile['county']; ?>" />
                     </div>
                 </div>
                 <div class="input-box">
                     <div class="inputcontrol">
-                        <label class="no-asterisk" for="socialmedia_handles">socialmedia_handles</label
-                            class="no-asterisk">
-                        <input type="text" class="inputfield" name="socialmedia_handles"
-                            value="<?php echo $profile['socialmedia_handles']; ?>" />
+                        <label class="no-asterisk" for="points">Points</label class="no-asterisk">
+                        <input type="number" class="inputfield" name="points" value="<?php echo $profile['points']; ?>"
+                            readonly />
                     </div>
                 </div>
                 <div class="input-box">
@@ -148,15 +122,41 @@ try {
                         <input type="text" class="inputfield" name="phone" value="<?php echo $profile['phone']; ?>" />
                     </div>
                 </div>
-                <div class="input-box">
+                <!-- <div class="input-box">
                     <div class="inputcontrol">
                         <label class="no-asterisk" for="biography"> Book Description</label class="no-asterisk">
                         <textarea class="inputfield" name="biography"
-                            style="height: 150px;"><?php echo $profile['biography']; ?></textarea>
+                            style="height: 150px;"><php echo $profile['biography']; ?></textarea>
 
                     </div>
-                </div>
+                </div> -->
                 <!-- ?php endif; ?> -->
+                <?php if ($category == 'Organization'): ?>
+                <h4><br><br>Contact Person details</h4><br>
+                <div class="input-box">
+                    <div class="inputcontrol">
+                        <label class="no-asterisk" for="full_name">Full Name</label class="no-asterisk">
+                        <input type="text" class="inputfield" name="full_name"
+                            value="<?php echo $contact_full_name; ?>" />
+                    </div>
+                </div>
+                <div class="input-box">
+                    <div class="inputcontrol">
+                        <label class="no-asterisk" for="Email">Email</label class="no-asterisk">
+                        <input type="text" class="inputfield" name="Email"
+                            value="<?php echo $profile['contact_email']; ?>" />
+                    </div>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="phone">phone</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="phone"
+                                value="<?php echo $profile['contact_phone']; ?>" />
+                        </div>
+                    </div>
+
+                </div>
+                <?php endif; ?>
+
 
                 <div class="modal-buttons">
                     <button class="button" type="button" onclick="goBack();">Cancel</button>

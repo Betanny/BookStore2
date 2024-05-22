@@ -516,7 +516,6 @@ link{
     justify-content: space-between;
     margin-top: 5px;
     padding: 12px;
-    align-items: center;
     border: 0.5px dotted var(--primary-color);
     
 
@@ -585,3 +584,68 @@ link{
     .add-button i{
         font-size: 10px;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .bar-container {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+    .bar-label {
+        width: 100px;
+    }
+    .bar {
+        height: 20px;
+        background-color: #4caf50;
+        margin-left: 10px;
+    }
+    .bar-value {
+        margin-left: 10px;
+    }
+    
+
+
+
+    .legend {
+        margin-left: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .legend-color {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    .color-pending { background: orange; }
+    .color-delivered { background: green; }
+    .color-declined { background: red; }
+    
+    .legend-item span{
+        font-size: 12px;
+    }
+
+    
+.salesreport-header{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+

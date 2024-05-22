@@ -222,6 +222,44 @@ try {
         // Update salesDataYearly array
         $salesDataYearly[$year] = $totalSales;
     }
+
+
+    // Fetch order data from PHP
+// Query to get the count of each status
+    $sql_order_counts = "SELECT status, COUNT(*) AS count FROM orders WHERE seller_id = :user_id GROUP BY status";
+    $stmt_order_counts = $db->prepare($sql_order_counts);
+    $stmt_order_counts->execute(['user_id' => $user_id]);
+    $order_counts = $stmt_order_counts->fetchAll(PDO::FETCH_ASSOC);
+
+    // Initialize counts
+    $pending_count = 0;
+    $delivered_count = 0;
+    $declined_count = 0;
+
+    // Store the counts in variables
+    foreach ($order_counts as $order_count) {
+        switch ($order_count['status']) {
+            case 'Pending':
+                $pending_count = $order_count['count'];
+                break;
+            case 'Delivered':
+                $delivered_count = $order_count['count'];
+                break;
+            case 'Declined':
+                $declined_count = $order_count['count'];
+                break;
+        }
+    }
+    $total_status_count = $pending_count + $delivered_count + $declined_count;
+    $pending_percentage = round(($pending_count / $total_status_count) * 100);
+    $delivered_percentage = round(($delivered_count / $total_status_count) * 100);
+    $declined_percentage = round(($declined_count / $total_status_count) * 100);
+    var_dump($pending_percentage);
+    var_dump($delivered_percentage);
+    var_dump($declined_percentage);
+
+
+
     global $salesDataMonthly, $salesDataYearly, $order_counts;
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -243,7 +281,17 @@ try {
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>Document</title>
-
+    <style>
+    .chart {
+        width: 200px;
+        height: 200px;
+        margin: 10px auto;
+        border-radius: 50%;
+        background: conic-gradient(green 0% <?php echo $delivered_percentage; ?>%,
+                orange <?php echo $delivered_percentage; ?>% <?php echo $pending_percentage + $delivered_percentage; ?>%,
+                red <?php echo $pending_percentage + $delivered_percentage; ?>% 100%);
+    }
+    </style>
 </head>
 
 <body>
@@ -405,7 +453,24 @@ try {
         <div class="reports-container2">
             <div class="pie-chart-container">
                 <h4>Book Sales</h4>
-                <canvas id="ordersChart"></canvas>
+                <div class="chart"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color color-delivered"></div>
+                        <span>Delivered: <?php echo $delivered_count; ?>
+                            (<?php echo round($delivered_percentage, 2); ?>%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-pending"></div>
+                        <span>Pending: <?php echo $pending_count; ?>
+                            (<?php echo round($pending_percentage, 2); ?>%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-declined"></div>
+                        <span>Declined: <?php echo $declined_count; ?>
+                            (<?php echo round($declined_percentage, 2); ?>%)</span>
+                    </div>
+                </div>
             </div>
             <div class="pendingtasks-container">
                 <h4>Pending Tasks</h4>
@@ -439,71 +504,25 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+function showModal() {
+    const container = document.getElementById('notifications-container');
+    if (container.style.display === "none" || container.style.display === "") {
+        console.log("Showing modal"); // Debug statement
+        container.style.display = "block";
+    } else {
+        console.log("Hiding modal"); // Debug statement
+        container.style.display = "none";
+    }
+}
 document.addEventListener("DOMContentLoaded", function() {
     fetch('header.php').then(response => response.text()).then(data => {
         document.getElementById('header-container').innerHTML = data;
+
     });
 
 
 });
-document.addEventListener('DOMContentLoaded', function() {
-    <?php
-        // Fetch order data from PHP
-        $sql_order_counts = "SELECT status, COUNT(*) AS count FROM orders WHERE seller_id = $user_id GROUP BY status";
-        $stmt_order_counts = $db->query($sql_order_counts);
-        $order_counts = $stmt_order_counts->fetchAll(PDO::FETCH_ASSOC);
 
-        // Initialize arrays to store data for the pie chart
-        $status_labels = [];
-        $order_data = [];
-
-        // Loop through the fetched order counts and populate the arrays
-        foreach ($order_counts as $row) {
-            $status_labels[] = $row['status'];
-            $order_data[] = $row['count'];
-        }
-        ?>
-
-    // Calculate total ord ers
-    const totalOrders = <?php echo array_sum($order_data); ?>;
-
-    // Pie chart data
-    let data = {
-        labels: <?php echo json_encode($status_labels); ?>,
-        datasets: [{
-            data: <?php echo json_encode($order_data); ?>,
-            backgroundColor: ['#44b89d', '#800020',
-                '#FFA500'
-            ],
-            hoverBackgroundColor: ['#44b89d', '#800020',
-                '#FFA500'
-            ],
-        }]
-    };
-
-    // Chart options
-    const options = {
-        responsive: true,
-        cutoutPercentage: 60, // Determines the size of the hole in the middle
-        legend: {
-            position: 'bottom'
-        },
-        title: {
-            display: true,
-            text: `Total Orders: ${totalOrders}`
-        }
-    };
-
-    // Get the canvas element
-    const ctx = document.getElementById('ordersChart').getContext('2d');
-
-    // C       reate the pie chart
-    const ordersChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options
-    });
-});
 
 function updateGraph() {
     const filter = document.getElementById('filter').value;
@@ -518,6 +537,33 @@ function updateGraph() {
         yearlyGraph.style.display = 'block';
     }
 }
+document.addEventListener("DOMContentLoaded", function() {
+    // Data for pie chart
+    const data = {
+        pending: <?php echo $pending_count; ?>,
+        delivered: <?php echo $delivered_count; ?>,
+        declined: <?php echo $declined_count; ?>
+    };
+
+    // Calculate total
+    const total = data.pending + data.delivered + data.declined;
+
+    // Calculate percentages
+    const pendingPercentage = (data.pending / total) * 100;
+    const deliveredPercentage = (data.delivered / total) * 100;
+    const declinedPercentage = (data.declined / total) * 100;
+
+    console.log(
+        `Pending: ${pendingPercentage}%, Delivered: ${deliveredPercentage}%, Declined: ${declinedPercentage}%`
+    );
+
+    // Apply conic gradient dynamically
+    document.querySelector('.chart').style.background = `conic-gradient(
+        green 0% pendingPercentage%,
+        orange pendingPercentage% calc(pendingPercentage + deliveredPercentage)%,
+        red calc(pendingPercentage + deliveredPercentage)% 100%
+    )`;
+});
 </script>
 
 </html>

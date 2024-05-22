@@ -146,6 +146,17 @@ try {
             </div>
         </div>
     </div>
+    <div id="deleteModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this order?</p>
+            <div class="modal-buttons">
+                <button id="confirmDelete" class="delete-button">Delete</button>
+                <button class="cancel-button">Cancel</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 <script>
@@ -158,33 +169,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 });
-document.addEventListener("DOMContentLoaded", function() {
-    // Get all elements with the class "delete-link"
-    var deleteLinks = document.querySelectorAll('.delete-link');
 
-    // Loop through each delete link
-    deleteLinks.forEach(function(link) {
-        // Add click event listener to each delete link
-        link.addEventListener('click', function(event) {
-            // Prevent the default behavior (i.e., following the href)
-            event.preventDefault();
+deleteLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+        event.preventDefault();
 
-            // Get the table name, primary key column name, and primary key value from the data attributes
-            var tableName = link.getAttribute('data-table');
-            var primaryKey = link.getAttribute('data-pk');
-            var pkName = link.getAttribute('data-pk-name');
+        // Get the table name, primary key column name, and primary key value from the data attributes
+        var tableName = link.getAttribute('data-table');
+        var primaryKey = link.getAttribute('data-pk');
+        var pkName = link.getAttribute('data-pk-name');
 
+        // Open the delete confirmation modal
+        var modal = document.getElementById('deleteModal');
+        modal.style.display = 'block';
+
+        // Get the confirm delete button and add a click event listener
+        var confirmDeleteButton = document.getElementById('confirmDelete');
+        confirmDeleteButton.addEventListener('click', function() {
             // Perform AJAX request to the delete script
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                primaryKey +
-                '&pk_name=' + pkName, true);
+                primaryKey + '&pk_name=' + pkName, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Handle successful deletion (if needed)
                     // For example, you can remove the deleted row from the DOM
-                    console.log(link);
                     link.parentElement.parentElement.remove();
+                    modal.style.display = 'none';
                 } else {
                     // Handle error (if needed)
                     console.error('Error:', xhr.statusText);
@@ -195,6 +206,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error('Request failed');
             };
             xhr.send();
+        });
+
+        // Get the close button and add a click event listener to close the modal
+        var closeButton = document.getElementsByClassName('close-button')[0];
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close the modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
         });
     });
 });

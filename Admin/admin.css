@@ -192,7 +192,6 @@ padding: 10px;
     
 }
 .tasks-container{
-    /* background-color: var(--background-color); */
     justify-content: space-around;
     height: 90%;
     padding: 5px;
@@ -240,6 +239,9 @@ padding: 10px;
     font-size: 10px;
 
 }
+
+
+
 .product h4{
     font-weight: normal;
 

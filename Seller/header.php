@@ -70,7 +70,38 @@ try {
     $stmt_unread_count = $db->prepare($sql_unread_count);
     $stmt_unread_count->execute(['user_id' => $user_id]);
     $unread_count = $stmt_unread_count->fetch(PDO::FETCH_ASSOC)['unread_count'];
-    var_dump($unread_count);
+
+
+    $sql_notifications = "SELECT notifications.*, users.email 
+    FROM public.notifications 
+    JOIN users ON notifications.sender_id = users.user_id 
+    WHERE notifications.recipient_id = :user_id";
+    $stmt_notifications = $db->prepare($sql_notifications);
+    $stmt_notifications->execute(['user_id' => $user_id]);
+    $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $recipient_email = $_POST['recipient'];
+        $message = $_POST['message'];
+        $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
+        $stmt->execute(['email' => $recipient_email]);
+        $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $recipient_id = $recipient['user_id'];
+
+        // Insert new notification
+        $sql = "INSERT INTO notifications (sender_id, recipient_id, notification_message) 
+VALUES (:sender_id, :recipient_id, :message)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            'sender_id' => $user_id,
+            'recipient_id' => $recipient_id,
+            'message' => $message
+        ]);
+
+    }
+
 
 
 } catch (PDOException $e) {
@@ -86,6 +117,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="seller.css">
     <link rel="stylesheet" href="/Shared Components/header.css">
+    <link rel="icon" type="image/svg+xml" href="/Shared Components/smartcbc.svg">
+
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -122,7 +155,7 @@ try {
 
             </div> -->
             <div class="icon">
-                <a href="#"><i class="fa-regular fa-bell"></i></a>
+                <a onclick="showModal();"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
                 <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
@@ -158,6 +191,133 @@ try {
 
 
     </header>
+    <div class="modal" style="display:none;">
+        <div class="modal-header">
+            <div class="left-section">
+
+                <button type="submit" class="add-button">New <div class="icon-cell">
+                        <i class="fa-solid fa-plus"></i>
+                    </div></button>
+            </div>
+            <h2 class="modal-title">Notifications</h2>
+            <div class="close">
+                <i class="fa-solid fa-xmark" onclick="cancel();"></i>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="all-notifications" id="all-notifications">
+                <?php foreach ($notifications as $notification): ?>
+
+                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                    onclick="openNotification(this);">
+                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                </div>
+                <?php endforeach; ?>
+
+
+            </div>
+            <div class="opened-notification" id="opened-notification" style="display:none;">
+                <h4 id="sender-email">Sender : </h4>
+                <p id="notification-message"> Message : </p>
+
+
+                <button class="button">Reply</button>
+
+            </div>
+            <div class="new-notification" id="new-notification" style="display:none;">
+                <form action="#" method="post" id="new-notification-form">
+
+                    <div class="notification-header">
+                        <h4>To: </h4>
+                        <div class="form-group">
+                            <div class="inputcontrol">
+                                <label class="no-asterisk" for="recipient"></label>
+                                <input type="text" class="inputfield" name="recipient" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="message"></label>
+                            <textarea class="inputfield" name="message"
+                                style="height: 150px; width: 85%; margin-left: 25px;"></textarea>
+                            <div class="error"></div>
+
+                        </div>
+
+                    </div>
+                    <button type="submit" class="button">Send</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script>
+    function showModal() {
+        const container = document.getElementsByClassName('modal');
+        if (container.style.display === "none" || container.style.display === "") {
+            container.style.display = "block";
+            console.log("Showing modal"); // Debug statement
+
+        } else {
+            console.log("Hiding modal"); // Debug statement
+            container.style.display = "none";
+        }
+    }
+
+    function cancel() {
+        window.location.href = 'ViewProducts.php';
+    }
+    var allnotification = document.getElementById('all-notifications');
+    var openednotification = document.getElementById('opened-notification');
+    var newnotification = document.getElementById('new-notification');
+    var addButton = document.querySelector('.add-button');
+
+
+    // function openNotification() {
+    //     allnotification.style.display = 'none';
+    //     newnotification.style.display = 'none';
+    //     openednotification.style.display = 'block';
+
+    // }
+    function openNotification(element) {
+        const email = element.getAttribute('data-email');
+        const message = element.getAttribute('data-message');
+
+        document.getElementById('sender-email').innerText = 'Sender: ' + email;
+        document.getElementById('notification-message').innerText = 'Message: ' + message;
+
+        document.getElementById('all-notifications').style.display = 'none';
+        document.getElementById('new-notification').style.display = 'none';
+        document.getElementById('opened-notification').style.display = 'block';
+    }
+
+    function newNotification() {
+        allnotification.style.display = 'none';
+        newnotification.style.display = 'block';
+        openednotification.style.display = 'none';
+        addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+
+
+    }
+
+    function allNotification() {
+        allnotification.style.display = 'block';
+        newnotification.style.display = 'none';
+        openednotification.style.display = 'none';
+        addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
+
+    }
+    addButton.addEventListener('click', function() {
+        if (this.innerHTML.includes('Back')) {
+            allNotification();
+        } else {
+            newNotification();
+        }
+    });
+    </script>
 </body>
 
 </html>

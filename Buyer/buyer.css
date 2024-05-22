@@ -519,7 +519,7 @@ font-style: italic;
     margin-left: 2.5%;
     width:95%;
     background-color: var(--accent-color2);
-    height: 45%;
+    height: auto;
 
 
 }
@@ -611,6 +611,7 @@ details{
     background-color: var(--accent-color2);
     margin-top: 0;
     max-height: 450px;
+    min-height: 100px;
 
 
    
@@ -633,6 +634,7 @@ details{
     align-items: left;
     text-align: left;
     margin-bottom: 10px;
+    align-items: left;
     padding-top: 0;
     overflow: hidden;
     white-space: wrap; /* Don't forget this one */

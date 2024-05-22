@@ -101,7 +101,7 @@ try {
                     <div class="bigger-cell">Subject</div>
                     <div class="cell">Rating</div>
                     <div class="cell">Copies Bought</div>
-                    <div class="cell">Total Values</div>
+                    <div class="cell">Total Income</div>
 
 
                 </div>
@@ -129,16 +129,16 @@ try {
                             <?php echo $product['total_values_generated']; ?>
                         </div>
                         <!-- Add the icon with a class to handle click events -->
-                        <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash toggle-icon"></i>
-                        </div>
+                        </div> -->
 
-                        <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="books"
-                                data-pk="<?php echo $product['bookid']; ?>" data-pk-name="bookid">
+                                data-pk="<php echo $product['bookid']; ?>" data-pk-name="bookid">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; ?>
                 </div>

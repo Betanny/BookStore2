@@ -8,7 +8,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: login.php");
+    header("Location: ../Registration/login.php");
     exit();
 }
 
@@ -115,7 +115,82 @@ try {
     global $most_popular_title;
 
 
+    $sqlMonthly = "SELECT EXTRACT(MONTH FROM order_date) AS month, SUM(total_amount) AS total_sales 
+    FROM orders 
+    WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE)
+    GROUP BY EXTRACT(MONTH FROM order_date)";
 
+    // Prepare and execute the monthly query
+    $stmtMonthly = $db->prepare($sqlMonthly);
+    $stmtMonthly->execute();
+
+    // Fetch the monthly results into an associative array
+    while ($row = $stmtMonthly->fetch(PDO::FETCH_ASSOC)) {
+        $month = (int) $row['month'];
+        $totalSales = (float) $row['total_sales'];
+        // Update salesDataMonthly array
+        $salesDataMonthly[$month] = $totalSales;
+    }
+
+    // Define your SQL query to fetch yearly sales data from the database
+    $sqlYearly = "SELECT EXTRACT(YEAR FROM order_date) AS year, SUM(total_amount) AS total_sales 
+   FROM orders 
+      GROUP BY EXTRACT(YEAR FROM order_date)";
+
+    // Prepare and execute the yearly query
+    $stmtYearly = $db->prepare($sqlYearly);
+    $stmtYearly->execute();
+
+    // Fetch the yearly results into an associative array
+    while ($row = $stmtYearly->fetch(PDO::FETCH_ASSOC)) {
+        $year = (int) $row['year'];
+        $totalSales = (float) $row['total_sales'];
+        // Update salesDataYearly array
+        $salesDataYearly[$year] = $totalSales;
+    }
+
+
+
+    // Fetch order data from PHP
+// Query to get the count of each status
+    $sql_order_counts = "SELECT status, COUNT(*) AS count FROM orders GROUP BY status";
+    $stmt_order_counts = $db->prepare($sql_order_counts);
+    $stmt_order_counts->execute();
+    $order_counts = $stmt_order_counts->fetchAll(PDO::FETCH_ASSOC);
+
+    // Initialize counts
+    $pending_count = 0;
+    $delivered_count = 0;
+    $declined_count = 0;
+
+    // Store the counts in variables
+    foreach ($order_counts as $order_count) {
+        switch ($order_count['status']) {
+            case 'Pending':
+                $pending_count = $order_count['count'];
+                break;
+            case 'Delivered':
+                $delivered_count = $order_count['count'];
+                break;
+            case 'Declined':
+                $declined_count = $order_count['count'];
+                break;
+        }
+    }
+    $total_status_count = $pending_count + $delivered_count + $declined_count;
+    $pending_percentage = round(($pending_count / $total_status_count) * 100);
+    $delivered_percentage = round(($delivered_count / $total_status_count) * 100);
+    $declined_percentage = round(($declined_count / $total_status_count) * 100);
+
+
+    // Query to fetch notifications for the user
+    $sql_notifications = "SELECT notifications.*, users.email 
+ FROM public.notifications 
+ JOIN users ON notifications.sender_id = users.user_id 
+ WHERE notifications.recipient_id = :user_id";
+    $stmt_notifications = $db->prepare($sql_notifications);
+    $stmt_notifications->execute(['user_id' => $user_id]);
+    $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
 
 
 } catch (PDOException $e) {
@@ -137,9 +212,14 @@ try {
 
     <title>Document</title>
     <style>
-    .task {
-        height: 100%;
-        /* Set the height of the calendar container to 100% */
+    .chart {
+        width: 200px;
+        height: 200px;
+        margin: 10px auto;
+        border-radius: 50%;
+        background: conic-gradient(green 0% <?php echo $delivered_percentage; ?>%,
+                orange <?php echo $delivered_percentage; ?>% <?php echo $pending_percentage + $delivered_percentage; ?>%,
+                red <?php echo $pending_percentage + $delivered_percentage; ?>% 100%);
     }
     </style>
 </head>
@@ -208,9 +288,57 @@ try {
 
 
             <div class="sales-report">
-                <h4>Sales report</h4>
-                <img src="../Images/Dummy/column-chart.webp" alt="">
+                <div class="salesreport-header">
+                    <h4>Sales report</h4>
+                    <div class="filter-dropdown">
+                        <select id="filter" class="filter-bar" onchange="updateGraph();" placeholder="sort">
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bar-graph">
 
+
+                    <div id="monthly-graph" style="display: block;">
+                        <?php if (empty($salesDataMonthly || $salesDataYearly)): ?>
+                        <h2>Nothing to display yet</h2>
+                        <?php else: ?>
+                        <?php
+                            $months = [
+                                1 => 'January',
+                                2 => 'February',
+                                3 => 'March',
+                                4 => 'April',
+                                5 => 'May',
+                                6 => 'June',
+                                7 => 'July',
+                                8 => 'August',
+                                9 => 'September',
+                                10 => 'October',
+                                11 => 'November',
+                                12 => 'December'
+                            ];
+                            foreach ($salesDataMonthly as $month => $totalSales): ?>
+                        <div class="bar-container">
+                            <div class="bar-label"><?php echo $months[$month]; ?>:</div>
+                            <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
+                            <div class="bar-value"><?php echo $totalSales; ?></div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div id="yearly-graph" style="display: none;">
+                        <?php foreach ($salesDataYearly as $year => $totalSales): ?>
+                        <div class="bar-container">
+                            <div class="bar-label"><?php echo $year; ?>:</div>
+                            <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
+                            <div class="bar-value"><?php echo $totalSales; ?></div>
+                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+
+                    </div>
+                </div>
             </div>
 
             <div class="products-report-container">
@@ -250,17 +378,44 @@ try {
         <div class="reports-container2">
             <div class="pie-chart-container">
                 <h4>Book Sales</h4>
-                <canvas id="ordersChart"></canvas>
+                <div class="chart"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color color-delivered"></div>
+                        <span>Delivered: <?php echo $delivered_count; ?>
+                            (<?php echo round($delivered_percentage, 2); ?>%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-pending"></div>
+                        <span>Pending: <?php echo $pending_count; ?>
+                            (<?php echo round($pending_percentage, 2); ?>%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-declined"></div>
+                        <span>Declined: <?php echo $declined_count; ?>
+                            (<?php echo round($declined_percentage, 2); ?>%)</span>
+                    </div>
+                </div>
             </div>
             <div class="pendingtasks-container">
                 <h4>Notifications</h4>
                 <div class="tasks-container">
-
+                    <?php if (empty($notifications)): ?>
+                    <p>You have no notifications</p>
+                    <?php else: ?>
                     <div class="task">
-                        <h4>Notification</h4>
-                        <h5>This is a notifiction</h5>
 
+                        <?php foreach ($notifications as $notification): ?>
+                        <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                            data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                            onclick="openNotification(this);">
+                            <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
+                            <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
+                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
+
 
                 </div>
 
@@ -281,70 +436,22 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('header-container').innerHTML = data;
         });
 
-    fetch('/Shared Components/calendar.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('calendar-container').innerHTML = data;
-        });
+
 });
-document.addEventListener('DOMContentLoaded', function() {
-    <?php
-        // Fetch order data from PHP
-        $sql_order_counts = "SELECT status, COUNT(*) AS count FROM orders GROUP BY status";
-        $stmt_order_counts = $db->query($sql_order_counts);
-        $order_counts = $stmt_order_counts->fetchAll(PDO::FETCH_ASSOC);
 
-        // Initialize arrays to store data for the pie chart
-        $status_labels = [];
-        $order_data = [];
+function updateGraph() {
+    const filter = document.getElementById('filter').value;
+    const monthlyGraph = document.getElementById('monthly-graph');
+    const yearlyGraph = document.getElementById('yearly-graph');
 
-        // Loop through the fetched order counts and populate the arrays
-        foreach ($order_counts as $row) {
-            $status_labels[] = $row['status'];
-            $order_data[] = $row['count'];
-        }
-        ?>
-
-    // Calculate total ord ers
-    const totalOrders = <?php echo array_sum($order_data); ?>;
-
-    // Pie chart data
-    const data = {
-        labels: <?php echo json_encode($status_labels); ?>,
-        datasets: [{
-            data: <?php echo json_encode($order_data); ?>,
-            backgroundColor: ['#44b89d', '#800020',
-                '#FFA500'
-            ],
-            hoverBackgroundColor: ['#44b89d', '#800020',
-                '#FFA500'
-            ],
-        }]
-    };
-
-    // Chart options
-    const options = {
-        responsive: true,
-        cutoutPercentage: 60, // Determines the size of the hole in the middle
-        legend: {
-            position: 'bottom'
-        },
-        title: {
-            display: true,
-            text: `Total Orders: ${totalOrders}`
-        }
-    };
-
-    // Get the canvas element
-    const ctx = document.getElementById('ordersChart').getContext('2d');
-
-    // Create the pie chart
-    const ordersChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options
-    });
-});
+    if (filter === 'monthly') {
+        monthlyGraph.style.display = 'block';
+        yearlyGraph.style.display = 'none';
+    } else if (filter === 'yearly') {
+        monthlyGraph.style.display = 'none';
+        yearlyGraph.style.display = 'block';
+    }
+}
 </script>
 
 </html>

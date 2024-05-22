@@ -109,7 +109,6 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
     <div class="modal">
         <div class="modal-header">
             <div class="left-section">

@@ -12,10 +12,29 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 
 
 //Getting books from the books table
-$bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
+$bookrecsql = "SELECT DISTINCT bookid, front_page_image, grade, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
 $bookrecomendationstmt = $db->query($bookrecsql);
 $books = $bookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
 global $books;
+
+//Getting approved books from the approved books table
+$appbookrecsql = "SELECT * FROM kicdapprovedbooks";
+$appbookrecomendationstmt = $db->query($appbookrecsql);
+$appbooks = $appbookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
+global $appbooks;
+// Function to check if a book is KICD approved
+function isKICDApproved($title, $grade, $appbooks)
+{
+    foreach ($appbooks as $book) {
+        preg_match('/\d+/', $book['grade'], $matches);
+        $dbGrade = $matches[0];
+
+        if ($book['title'] === $title && $book['grade'] == $dbGrade) {
+            return true;
+        }
+    }
+    return false;
+}
 
 //best_rated
 $sql_best_rated = "SELECT * FROM books ORDER BY bookrating DESC LIMIT 1";
@@ -214,6 +233,13 @@ global $best_selling;
                                 echo '<span class="star">&#9734;</span>'; // Empty star
                             }
                             echo '</p>';
+                            // Check if the book is KICD approved and display accordingly
+                            $titleToCheck = $book['title'];
+                            $gradeToCheck = $book['grade']; // Assuming grade 6 for demonstration
+                            if (isKICDApproved($titleToCheck, $gradeToCheck, $appbooks)) {
+                                echo '<p style="color: green;">KICD APPROVED</p>';
+                            }
+
                             echo '</div>';
                         }
                         ?>
@@ -252,49 +278,49 @@ global $best_selling;
 
 
 <script>
-// document.addEventListener("DOMContentLoaded", function() {
-//     // fetch('/Shared Components/header.php')
-//     //     .then(response => response.text())
-//     //     .then(data => {
-//     //         document.getElementById('header-container').innerHTML = data;
-//     //     });
-//     fetch('/Shared Components/footer.html')
-//         .then(response => response.text())
-//         .then(data => {
-//             document.getElementById('footer-container').innerHTML = data;
-//         });
-// });
-const categoryToggles = document.querySelectorAll('.category-toggle');
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     // fetch('/Shared Components/header.php')
+    //     //     .then(response => response.text())
+    //     //     .then(data => {
+    //     //         document.getElementById('header-container').innerHTML = data;
+    //     //     });
+    //     fetch('/Shared Components/footer.html')
+    //         .then(response => response.text())
+    //         .then(data => {
+    //             document.getElementById('footer-container').innerHTML = data;
+    //         });
+    // });
+    const categoryToggles = document.querySelectorAll('.category-toggle');
 
-categoryToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-        const subCategories = toggle.nextElementSibling;
-        subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+    categoryToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const subCategories = toggle.nextElementSibling;
+            subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+        });
     });
-});
-// Function to rotate the slides
-function rotateSlides() {
-    const slideshow = document.querySelector('.slideshow-container');
-    const slides = slideshow.querySelectorAll('.slideshow-book');
+    // Function to rotate the slides
+    function rotateSlides() {
+        const slideshow = document.querySelector('.slideshow-container');
+        const slides = slideshow.querySelectorAll('.slideshow-book');
 
-    // Find the active slide
-    const activeSlide = slideshow.querySelector('.active');
+        // Find the active slide
+        const activeSlide = slideshow.querySelector('.active');
 
-    // Get the index of the active slide
-    const activeIndex = Array.from(slides).indexOf(activeSlide);
+        // Get the index of the active slide
+        const activeIndex = Array.from(slides).indexOf(activeSlide);
 
-    // Calculate the index of the next slide
-    const nextIndex = (activeIndex + 1) % slides.length;
+        // Calculate the index of the next slide
+        const nextIndex = (activeIndex + 1) % slides.length;
 
-    // Remove the active class from the current slide
-    activeSlide.classList.remove('active');
+        // Remove the active class from the current slide
+        activeSlide.classList.remove('active');
 
-    // Add the active class to the next slide
-    slides[nextIndex].classList.add('active');
-}
+        // Add the active class to the next slide
+        slides[nextIndex].classList.add('active');
+    }
 
-// Rotate the slides every 3 seconds
-setInterval(rotateSlides, 3000);
+    // Rotate the slides every 3 seconds
+    setInterval(rotateSlides, 3000);
 </script>
 
 </html>

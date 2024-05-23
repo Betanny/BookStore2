@@ -425,11 +425,11 @@ margin: auto;
 
 }
 /* Adjust the width of .book to fit three books in a row */
-.book {
+.all-books .book {
     border-radius: 15px;
     margin: 10px;
     padding: 10px;
-    width: calc(25% - 20px); /* Three books in a row with 20px margin */
+    width: calc(33% - 20px); /* Three books in a row with 20px margin */
     float:left;
     text-align: center;
     /* margin-right: 20px; /* Margin between books */
@@ -837,8 +837,7 @@ height: 87vh;
     align-items: center;
     text-align: center;
     background-color: var(--background-color);
-
-    
+   
 }
 .book-img{
     width: auto;

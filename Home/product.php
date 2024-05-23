@@ -50,12 +50,29 @@ global $imageURLs;
 
 
 //Getting books from the books table
-$bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
+$bookrecsql = "SELECT DISTINCT bookid, front_page_image,grade, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
 $bookrecomendationstmt = $db->query($bookrecsql);
 $books = $bookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
 global $books;
 
+//Getting approved books from the approved books table
+$appbookrecsql = "SELECT * FROM kicdapprovedbooks";
+$appbookrecomendationstmt = $db->query($appbookrecsql);
+$appbooks = $appbookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
+global $appbooks;
+// Function to check if a book is KICD approved
+function isKICDApproved($title, $grade, $appbooks)
+{
+    foreach ($appbooks as $book) {
+        preg_match('/\d+/', $book['grade'], $matches);
+        $dbGrade = $matches[0];
 
+        if ($book['title'] === $title && $book['grade'] == $dbGrade) {
+            return true;
+        }
+    }
+    return false;
+}
 
 ?>
 
@@ -144,6 +161,16 @@ global $books;
                 <h5>Minimum pieces in Bulk:
                     <?php echo $book['mininbulk']; ?>
                 </h5>
+                <h5>
+                    <?php
+                    // Check if the book is KICD approved and display accordingly
+                    $titleToCheck = $book['title'];
+                    $gradeToCheck = $book['grade']; // Assuming grade 6 for demonstration
+                    if (isKICDApproved($titleToCheck, $gradeToCheck, $appbooks)) {
+                        echo '<p style="color: green;">KICD APPROVED</p>';
+                    }
+                    ?>
+                </h5>
                 <form id="addToCartForm" action="/Buyer/add_to_cart.php" method="post">
                     <input type="hidden" name="bookid" id="bookidInput" value="<?php echo $book['bookid']; ?>">
                     <input type="hidden" name="price" id="bookidInput" value="<?php echo $book['price']; ?>">
@@ -199,6 +226,12 @@ global $books;
                 for ($i = 1; $i <= $integer_rating; $i++) {
                     echo '<span class="star">&#9733;</span>'; // Full star
                 }
+                // Check if the book is KICD approved and display accordingly
+                $titleToCheck = $book['title'];
+                $gradeToCheck = $book['grade']; // Assuming grade 6 for demonstration
+                if (isKICDApproved($titleToCheck, $gradeToCheck, $appbooks)) {
+                    echo '<p style="color: green;">KICD approved</p>';
+                }
 
                 // // If decimal part is greater than 0, add a half star
                 // if ($decimal_rating > 0) {
@@ -210,6 +243,7 @@ global $books;
                     echo '<span class="star">&#9734;</span>'; // Empty star
                 }
                 echo '</p>';
+
                 echo '</div>';
             }
             ?>

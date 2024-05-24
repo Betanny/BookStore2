@@ -128,8 +128,9 @@ VALUES (:sender_id, :recipient_id, :message)";
             </ul>
         </nav>
         <div class="user-panel">
-            <div class="icon" onclick="showModal();" role="button">
-                <i class="fa-regular fa-bell" style="color:blue;cursor:pointer"></i>
+            <div class="icon" role="button">
+                <i class="fa-regular fa-bell" id="showNotificationsIcon" onclick="showModal();"
+                    style="color:blue;cursor:pointer"></i>
                 <?php if ($unread_count > 0): ?>
                 <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
@@ -228,23 +229,39 @@ VALUES (:sender_id, :recipient_id, :message)";
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+    function showModal() {
+        if (container.style.display != "block";) {
+            container.style.display = "block";
+            console.log("Showing modal");
+        } else {
+            console.log("Hiding modal");
+            container.style.display = "none";
+        }
+    }
     document.addEventListener("DOMContentLoaded", function() {
         const container = document.getElementById('modal');
+        const notificationIcon = document.getElementById('showNotificationsIcon');
+        const closeButton = document.querySelector('.close');
+
 
         function showModal() {
-            if (container.style.display === "none" || container.style.display === "") {
+            if (container.style.display != "block";) {
                 container.style.display = "block";
-                console.log("Showing modal"); // Debug statement
+                console.log("Showing modal");
             } else {
-                console.log("Hiding modal"); // Debug statement
+                console.log("Hiding modal");
                 container.style.display = "none";
             }
         }
 
-        function cancel() {
-            console.log("Hiding modal"); // Debug statement
-            container.style.display = "none";
-        }
+        notificationIcon.addEventListener('click', function(event) {
+            event.preventDefault();
+            showModal();
+        });
+
+        closeButton.addEventListener('click', function() {
+            container.style.display = 'none';
+        });
 
         var allnotification = document.getElementById('all-notifications');
         var openednotification = document.getElementById('opened-notification');
@@ -258,9 +275,9 @@ VALUES (:sender_id, :recipient_id, :message)";
             document.getElementById('sender-email').innerText = 'Sender: ' + email;
             document.getElementById('notification-message').innerText = 'Message: ' + message;
 
-            document.getElementById('all-notifications').style.display = 'none';
-            document.getElementById('new-notification').style.display = 'none';
-            document.getElementById('opened-notification').style.display = 'block';
+            allnotification.style.display = 'none';
+            newnotification.style.display = 'none';
+            openednotification.style.display = 'block';
         }
 
         function newNotification() {
@@ -287,7 +304,6 @@ VALUES (:sender_id, :recipient_id, :message)";
 
         // Expose functions to global scope
         window.showModal = showModal;
-        window.cancel = cancel;
         window.openNotification = openNotification;
     });
     </script>

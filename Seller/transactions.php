@@ -146,53 +146,58 @@ try {
         <div class="allProducts-container">
             <div class="table">
                 <div class="row-header" style="padding: 20px 60px 20px 0;margin-left:25px;margin-right:auto;">
-                    <div class="cell">No.</div>
+                    <div class="small-cell">No.</div>
                     <div class="bigger-cell2">Client Name</div>
                     <div class="cell">Order No.</div>
                     <div class="bigger-cell">Transaction Type</div>
                     <div class="bigger-cell">Payment Methods</div>
                     <div class="bigger-cell">Payment Number</div>
                     <div class="cell">Amount</div>
-                    <div class="bigger-cell" style="text-align: center;">Transaction Date</div>
+                    <div class="cell">Commission</div>
+
+                    <div class="bigger-cell" style="text-align: centre;">Transaction Date</div>
                 </div>
                 <div class="order-rows">
                     <?php if (!empty($transactions)): ?>
 
-                        <!-- Adding the order items -->
-                        <?php foreach ($transactions as $transaction): ?>
-                            <div class="row">
-                                <div class="cell">
-                                    <?php echo $transaction['serialno'];
+                    <!-- Adding the order items -->
+                    <?php foreach ($transactions as $transaction): ?>
+                    <div class="row">
+                        <div class="small-cell">
+                            <?php echo $transaction['serialno'];
                                     ?>
-                                </div>
-                                <div class="bigger-cell2">
-                                    <?php echo $transaction['client_name']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $transaction['order_id'];
+                        </div>
+                        <div class="bigger-cell2">
+                            <?php echo $transaction['client_name']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $transaction['order_id'];
                                     ?>
-                                </div>
-                                <div class="bigger-cell">
-                                    <?php echo $transaction['transaction_type']; ?>
-                                </div>
-                                <div class="bigger-cell">
-                                    <?php echo $transaction['payment_method']; ?>
-                                </div>
-                                <div class="bigger-cell">
-                                    <?php echo $transaction['payment_number']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $transaction['amount']; ?>
-                                </div>
-                                <div class="bigger-cell" style="text-align: center;">
-                                    <?php echo $transaction['transaction_date']; ?>
-                                </div>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $transaction['transaction_type']; ?>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $transaction['payment_method']; ?>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $transaction['payment_number']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $transaction['amount']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo intval(($transaction['amount']) * 0.2); ?>
+                        </div>
+                        <div class="bigger-cell" style="text-align: center;">
+                            <?php echo $transaction['transaction_date']; ?>
+                        </div>
 
 
-                                <!-- <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
                         </div> -->
-                                <!-- <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="transactions"
                                 data-pk="?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
                                 <i class="fa-solid fa-trash"></i>
@@ -204,12 +209,12 @@ try {
 
 
 
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <!-- <div class="row"> -->
-                        <h2>No Transactions to display yet.</h2>
                     </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- <div class="row"> -->
+                    <h2>No Transactions to display yet.</h2>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -219,71 +224,71 @@ try {
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
 
 
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get all elements with the class "delete-link"
-        var deleteLinks = document.querySelectorAll('.delete-link');
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // Get all elements with the class "delete-link"
+    var deleteLinks = document.querySelectorAll('.delete-link');
 
-        // Loop through each delete link
-        deleteLinks.forEach(function (link) {
-            // Add click event listener to each delete link
-            link.addEventListener('click', function (event) {
-                // Prevent the default behavior (i.e., following the href)
-                event.preventDefault();
+    // Loop through each delete link
+    deleteLinks.forEach(function(link) {
+        // Add click event listener to each delete link
+        link.addEventListener('click', function(event) {
+            // Prevent the default behavior (i.e., following the href)
+            event.preventDefault();
 
-                // Get the table name, primary key column name, and primary key value from the data attributes
-                var tableName = link.getAttribute('data-table');
-                var primaryKey = link.getAttribute('data-pk');
-                var pkName = link.getAttribute('data-pk-name');
+            // Get the table name, primary key column name, and primary key value from the data attributes
+            var tableName = link.getAttribute('data-table');
+            var primaryKey = link.getAttribute('data-pk');
+            var pkName = link.getAttribute('data-pk-name');
 
-                // Perform AJAX request to the delete script
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                    primaryKey +
-                    '&pk_name=' + pkName, true);
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        // Handle successful deletion (if needed)
-                        // For example, you can remove the deleted row from the DOM
-                        link.parentElement.parentElement.remove();
-                    } else {
-                        // Handle error (if needed)
-                        console.error('Error:', xhr.statusText);
-                    }
-                };
-                xhr.onerror = function () {
-                    // Handle network errors (if needed)
-                    console.error('Request failed');
-                };
-                xhr.send();
-            });
+            // Perform AJAX request to the delete script
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+                primaryKey +
+                '&pk_name=' + pkName, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Handle successful deletion (if needed)
+                    // For example, you can remove the deleted row from the DOM
+                    link.parentElement.parentElement.remove();
+                } else {
+                    // Handle error (if needed)
+                    console.error('Error:', xhr.statusText);
+                }
+            };
+            xhr.onerror = function() {
+                // Handle network errors (if needed)
+                console.error('Request failed');
+            };
+            xhr.send();
         });
     });
+});
 
-    // Add event listener to the export button
-    // document.getElementById('exportButton').addEventListener('click', function () {
-    //     // Redirect to the same page with export parameter set to true
-    //     window.location.href = window.location.href + '?export=true';
-    // });
+// Add event listener to the export button
+// document.getElementById('exportButton').addEventListener('click', function () {
+//     // Redirect to the same page with export parameter set to true
+//     window.location.href = window.location.href + '?export=true';
+// });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var exportButton = document.getElementById('exportButton');
-        exportButton.addEventListener('click', function () {
-            // Update the href attribute of the export button with the desired URL
-            var currentHref = window.location.href;
-            var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
-                '?export=true';
-            exportButton.querySelector('a').setAttribute('href', exportUrl);
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    var exportButton = document.getElementById('exportButton');
+    exportButton.addEventListener('click', function() {
+        // Update the href attribute of the export button with the desired URL
+        var currentHref = window.location.href;
+        var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
+            '?export=true';
+        exportButton.querySelector('a').setAttribute('href', exportUrl);
     });
+});
 </script>
 
 </script>

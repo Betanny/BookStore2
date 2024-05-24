@@ -119,20 +119,22 @@ try {
         <div class="allProducts-container">
             <div class="table">
                 <div class="row-header" style="padding: 20px 60px 20px 0;margin-left:25px;margin-right:auto;">
-                    <div class="cell">No.</div>
+                    <div class="small-cell">No.</div>
                     <div class="bigger-cell2">Client Name</div>
                     <div class="cell">Order No.</div>
                     <div class="bigger-cell">Transaction Type</div>
                     <div class="bigger-cell">Payment Methods</div>
                     <div class="bigger-cell">Payment Number</div>
                     <div class="cell">Amount</div>
+                    <div class="cell">Commission</div>
+
                     <div class="bigger-cell" style="text-align: center;">Transaction Date</div>
                 </div>
                 <div class="order-rows">
                     <!-- Adding the order items -->
                     <?php foreach ($transactions as $transaction): ?>
                     <div class="row">
-                        <div class="cell">
+                        <div class="small-cell">
                             <?php echo $transaction['serialno'];
                                 ?>
                         </div>
@@ -155,15 +157,18 @@ try {
                         <div class="cell">
                             <?php echo $transaction['amount']; ?>
                         </div>
+                        <div class="cell">
+                            <?php echo intval(($transaction['amount']) * 0.2); ?>
+                        </div>
                         <div class="bigger-cell" style="text-align: center;">
                             <?php echo $transaction['transaction_date']; ?>
                         </div>
 
-
+                        <!-- 
                         <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
                         </div>
-                        <!-- 
+                        
                         <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="transactions"
                                 data-pk="?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">

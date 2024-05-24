@@ -257,7 +257,7 @@ VALUES (:sender_id, :recipient_id, :message)";
     <script>
     function showModal() {
         const container = document.getElementsByClassName('modal');
-        if (container.style.display === "none" || container.style.display === "") {
+        if (container.style.display != "block") {
             container.style.display = "block";
             console.log("Showing modal"); // Debug statement
 

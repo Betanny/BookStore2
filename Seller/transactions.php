@@ -16,6 +16,22 @@ $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
 try {
+    $query = '';
+    $queryCondition = '';
+
+    // Check if a search query is provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        $query = $_GET['query'];
+        $queryCondition .= " AND (
+            LOWER(clients.first_name) LIKE LOWER(:query) OR 
+            LOWER(clients.last_name) LIKE LOWER(:query) OR 
+            LOWER(clients.organization_name) LIKE LOWER(:query) OR 
+            transactions.transaction_type LIKE :query OR 
+            transactions.payment_method LIKE :query OR 
+            transactions.payment_number LIKE :query)";
+    }
+
+    // Construct the SQL query
     $sql = "SELECT 
             transactions.transaction_id,
             ROW_NUMBER() OVER() AS serialno,
@@ -38,11 +54,19 @@ try {
         WHERE 
             orders.seller_id = :user_id";
 
+    // Append the search condition if provided
+    $sql .= $queryCondition;
+
     // Prepare the SQL statement
     $stmt = $db->prepare($sql);
 
     // Bind the user ID parameter
     $stmt->bindParam(':user_id', $user_id);
+
+    // Bind the search query parameter if provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        $stmt->bindValue(':query', $query, PDO::PARAM_STR);
+    }
 
     // Execute the query
     $stmt->execute();
@@ -127,17 +151,21 @@ try {
             </div>
 
             <div class="right-filter">
-                <div class="filter-dropdown">
+                <!-- <div class="filter-dropdown">
                     <select id="genre-filter" class="filter-bar" placeholder="sort">
-                        <option value="All">All</option>
+                        <option value="All">Purchase</option>
                         <option value="Latest">Latest</option>
                         <option value="Popularity">Popularity</option>
                         <option value="Rating">Rating</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
                 </div>
 
             </div>
@@ -200,9 +228,9 @@ try {
                         <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="transactions"
                                 data-pk="?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </div> -->
+                    <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div> -->
 
 
 

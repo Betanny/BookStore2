@@ -119,7 +119,7 @@ VALUES (:sender_id, :recipient_id, :message)";
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
-            <ul>
+            <ul id="nav-menu">
                 <li><a href="/Buyer/buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
                 <li><a href="/Home/products.php" class="link light-text">Products</a></li>
                 <li><a href="/Buyer/myorders.php" class="link light-text">My orders</a></li>
@@ -132,13 +132,13 @@ VALUES (:sender_id, :recipient_id, :message)";
                 <i class="fa-regular fa-bell" id="showNotificationsIcon" onclick="showModal();"
                     style="color:blue;cursor:pointer"></i>
                 <?php if ($unread_count > 0): ?>
-                <span class="notification-count"><?php echo $unread_count; ?></span>
+                    <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="icon">
                 <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <?php if ($cart_count > 0): ?>
-                <span class="notification-count"><?php echo $cart_count; ?></span>
+                    <span class="notification-count"><?php echo $cart_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="profile">
@@ -180,12 +180,12 @@ VALUES (:sender_id, :recipient_id, :message)";
             <div class="all-notifications" id="all-notifications">
                 <?php foreach ($notifications as $notification): ?>
 
-                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                    onclick="openNotification(this);">
-                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
-                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                </div>
+                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                        data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                        onclick="openNotification(this);">
+                        <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                    </div>
                 <?php endforeach; ?>
 
 
@@ -229,21 +229,6 @@ VALUES (:sender_id, :recipient_id, :message)";
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-    function showModal() {
-        if (container.style.display != "block";) {
-            container.style.display = "block";
-            console.log("Showing modal");
-        } else {
-            console.log("Hiding modal");
-            container.style.display = "none";
-        }
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-        const container = document.getElementById('modal');
-        const notificationIcon = document.getElementById('showNotificationsIcon');
-        const closeButton = document.querySelector('.close');
-
-
         function showModal() {
             if (container.style.display != "block";) {
                 container.style.display = "block";
@@ -253,13 +238,28 @@ VALUES (:sender_id, :recipient_id, :message)";
                 container.style.display = "none";
             }
         }
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById('modal');
+            const notificationIcon = document.getElementById('showNotificationsIcon');
+            const closeButton = document.querySelector('.close');
 
-        notificationIcon.addEventListener('click', function(event) {
+
+            function showModal() {
+                if (container.style.display != "block";) {
+            container.style.display = "block";
+            console.log("Showing modal");
+        } else {
+            console.log("Hiding modal");
+            container.style.display = "none";
+        }
+        }
+
+        notificationIcon.addEventListener('click', function (event) {
             event.preventDefault();
             showModal();
         });
 
-        closeButton.addEventListener('click', function() {
+        closeButton.addEventListener('click', function () {
             container.style.display = 'none';
         });
 
@@ -294,7 +294,7 @@ VALUES (:sender_id, :recipient_id, :message)";
             addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
         }
 
-        addButton.addEventListener('click', function() {
+        addButton.addEventListener('click', function () {
             if (this.innerHTML.includes('Back')) {
                 allNotification();
             } else {
@@ -305,6 +305,24 @@ VALUES (:sender_id, :recipient_id, :message)";
         // Expose functions to global scope
         window.showModal = showModal;
         window.openNotification = openNotification;
+
+
+
+        const navMenu = document.getElementById('nav-menu');
+        const links = navMenu.querySelectorAll('a');
+
+        links.forEach(link => {
+            link.addEventListener('click', function (event) {
+                // Prevent default behavior if needed
+                // event.preventDefault();
+
+                // Remove active-link class from all links
+                links.forEach(link => link.classList.remove('active-link'));
+
+                // Add active-link class to the clicked link
+                this.classList.add('active-link');
+            });
+        });
     });
     </script>
 </body>

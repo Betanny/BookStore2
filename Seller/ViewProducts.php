@@ -15,6 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
+
 try {
     // Define your SQL query to fetch data from the books and orders table
     $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, 
@@ -22,14 +23,55 @@ try {
                SUM(o.total_amount) AS total_values_generated
         FROM books b
         LEFT JOIN orders o ON b.bookid = o.product_id
-        WHERE b.seller_id = :seller_id
-        GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating";
+        WHERE b.seller_id = :seller_id";
 
-    // Prepare and execute the query
-    $stmt = $db->prepare($sql);
-    $stmt->execute([':seller_id' => $user_id]);
-    // Fetch the results into an associative array
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Initialize the $query variable
+    $query = '';
+
+    // Check if a search query is provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        // Set the $query variable
+        $query = $_GET['query'];
+
+        // Append a condition to search by title
+        $sql .= " AND LOWER(b.title) LIKE LOWER(:query)";
+
+        // Group by the relevant columns
+        $sql .= " GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating";
+
+        // Prepare and execute the query
+        $stmt = $db->prepare($sql);
+
+        // Bind the seller ID parameter
+        $stmt->bindValue(':seller_id', $user_id, PDO::PARAM_INT);
+
+        // Bind the search query parameter if provided
+        $stmt->bindValue(':query', '%' . $query . '%', PDO::PARAM_STR);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch the results into an associative array
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        // Prepare and execute the query without the search condition
+        $sql .= " GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating";
+
+        // Prepare and execute the query
+        $stmt = $db->prepare($sql);
+
+        // Bind the seller ID parameter
+        $stmt->bindValue(':seller_id', $user_id, PDO::PARAM_INT);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch the results into an associative array
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
     if (isset($_GET['bookid'])) {
 
         $bookid = $_GET['bookid'];
@@ -142,19 +184,22 @@ try {
 
             </div>
             <div class="right-filter">
-                <div class="filter-dropdown">
+                <!-- <div class="filter-dropdown">
                     <select id="genre-filter" class="filter-bar" placeholder="sort">
                         <option value="All">All</option>
                         <option value="Latest">Latest</option>
                         <option value="Popularity">Popularity</option>
                         <option value="Rating">Rating</option>
                     </select>
-                </div>
+                </div> -->
 
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
                 </div>
                 <!-- <div class="addproductsbutton">
                     <button type="button" class="add-button">Add <div class="icon-cell">
@@ -193,39 +238,40 @@ try {
                     <!-- Adding the product items -->
                     <?php if (!empty($products)): ?>
 
-                        <?php foreach ($products as $product): ?>
-                            <div class="row">
-                                <!-- <input type="checkbox" class="checkbox" name="product_id" value="php $product['bookid']; ?>"> -->
-                                <div class=" name-cell">
-                                    <?php echo $product['title']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['isbn']; ?>
-                                </div>
-                                <div class="bigger-cell">
-                                    <?php echo $product['subject']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['bookrating']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['copies_bought']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['total_values_generated']; ?>
-                                </div>
-                                <div class="icon-cell">
-                                    <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
-                                </div>
-                                <div class="icon-cell">
-                                    <i class="fa-solid fa-trash"></i>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <!-- <div class="row"> -->
-                        <h2>No Products to display yet.</h2>
+                    <?php foreach ($products as $product): ?>
+                    <div class="row">
+                        <!-- <input type="checkbox" class="checkbox" name="product_id" value="php $product['bookid']; ?>">
+                    -->
+                        <div class=" name-cell">
+                            <?php echo $product['title']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['isbn']; ?>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $product['subject']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['bookrating']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['copies_bought']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['total_values_generated']; ?>
+                        </div>
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
+                        </div>
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- <div class="row"> -->
+                    <h2>No Products to display yet.</h2>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -376,57 +422,57 @@ try {
 
 </body>
 <script>
-    function editProduct(bookId) {
-        // Redirect to the edit page with the book ID as a query parameter
-        window.location.href = 'ViewProducts.php?bookid=' + bookId;
-        console.log(bookId);
+function editProduct(bookId) {
+    // Redirect to the edit page with the book ID as a query parameter
+    window.location.href = 'ViewProducts.php?bookid=' + bookId;
+    console.log(bookId);
 
-        // Get the modal
-        var modal = document.getElementById("editproducts-modal");
-        modal.style.display = "block";
+    // Get the modal
+    var modal = document.getElementById("editproducts-modal");
+    modal.style.display = "block";
 
-    }
+}
 
-    function cancel() {
-        window.location.href = 'ViewProducts.php';
-    }
-
-
+function cancel() {
+    window.location.href = 'ViewProducts.php';
+}
 
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-
-            });
-        <?php if (isset($_GET['bookid'])): ?>
-            // If bookid is set, display the modal
-            document.getElementById("editproducts-modal").style.display = "block";
-        <?php endif; ?>
-
-    });
-
-    <?php foreach ($products as $product): ?>
-        console.log(<?php echo json_encode($product['bookid']); ?>);
-    <?php endforeach; ?>
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var addProductButton = document.getElementById('addProductButton');
 
 
-        addProductButton.addEventListener('click', function () {
-            // Redirect to the addproducts.html page
-            window.location.href = 'seller/addproducts.html';
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+
         });
+    <?php if (isset($_GET['bookid'])): ?>
+    // If bookid is set, display the modal
+    document.getElementById("editproducts-modal").style.display = "block";
+    <?php endif; ?>
+
+});
+
+<?php foreach ($products as $product): ?>
+console.log(<?php echo json_encode($product['bookid']); ?>);
+<?php endforeach; ?>
+
+document.addEventListener("DOMContentLoaded", function() {
+    var addProductButton = document.getElementById('addProductButton');
+
+
+    addProductButton.addEventListener('click', function() {
+        // Redirect to the addproducts.html page
+        window.location.href = 'seller/addproducts.html';
     });
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+});
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
     }
+}
 </script>
 
 </html>

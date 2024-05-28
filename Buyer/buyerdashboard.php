@@ -156,17 +156,17 @@ try {
                     <form action="" method="get">
                         <select id="filterDropdown" name="status" onchange="this.form.submit()">
                             <option value="All" <?php
-                            if ($_GET['status'] === 'All') {
+                            if (isset($_GET['status']) && $_GET['status'] === 'All') {
                                 echo "selected";
                             }
                             ; ?>>All</option>
                             <option value="Pending" <?php
-                            if ($_GET['status'] === 'Pending') {
+                            if (isset($_GET['status']) && $_GET['status'] === 'Pending') {
                                 echo "selected";
                             }
                             ; ?>>Pending</option>
                             <option value="Delivered" <?php
-                            if ($_GET['status'] === 'Delivered') {
+                            if (isset($_GET['status']) && $_GET['status'] === 'Delivered') {
                                 echo "selected";
                             }
                             ; ?>>Delivered</option>
@@ -287,7 +287,7 @@ try {
                                 <h5>Products reviewed</h5>
                             </div>
                             <div class="detail">
-                                <p>153</p>
+                                <p>15</p>
                                 <h5>Products rated</h5>
                             </div>
                         </div>

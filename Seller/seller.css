@@ -575,10 +575,11 @@ body {
  }
 
  .right-filter{
-    width: 35%;
+    width: 30%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: right;
+    align-items: right;
     align-content: center;
     /* justify-content: right; */
  }
@@ -610,15 +611,20 @@ body {
         height: 30px;
         border-radius: 30px;
         color: var(--primary-color);
-        width: 250px;
+        width: 200px;
         border-color: var(--primary-color);
-        padding-left: 20px;
+        padding: 0px 20px;
     }
-    .fa-magnifying-glass {
-        transform: translateY(-50%);
-        position: absolute;
-        right: 10px; /* Adjust the distance from the right side */
-        top: 50%; 
+
+    
+    .search-container{
+        margin-left: 30px;
+    }
+    .search-container .search-button {
+        transform: translateX(-200%);
+        background: transparent;
+        border: 0px;
+        cursor: pointer;
     }
     
     .filter-bar{

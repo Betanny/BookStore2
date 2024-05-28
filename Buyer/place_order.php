@@ -5,7 +5,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit; // Stop further execution
 }
 $user_id = $_SESSION['user_id'];
@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = "Pending"; // status is always pending
     $payment_method = $_POST['paymentMethod'];
     $payment_number = $_POST['paymentNumber'];
+    $delivery_option = $_POST['deliveryType'];
     var_dump($payment_number);
     $shipping_address = $_POST['shipping_address'];
     $product_type = "book"; // product_type is always book
@@ -31,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL statement to insert into orders table using named parameters
     $stmt = $db->prepare("
-        INSERT INTO orders (client_id, total_amount, status,dealer_status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
-        VALUES (:client_id, :total_amount, :status,:dealer_status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
+        INSERT INTO orders (client_id, total_amount,delivery_option, status,dealer_status, payment_method, shipping_address, product_type, product_id, unit_price, quantity, seller_id)
+        VALUES (:client_id, :total_amount,:delivery_option, :status,:dealer_status, :payment_method, :shipping_address, :product_type, :product_id, :unit_price, :quantity, :seller_id)
     ");
     $cartItems = json_decode($_POST['cart_items'], true);
 
@@ -55,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':total_amount', $total_amount);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':dealer_status', $status);
-
         $stmt->bindParam(':payment_method', $payment_method);
+        $stmt->bindParam(':delivery_option', $delivery_option);
         $stmt->bindParam(':shipping_address', $shipping_address);
         $stmt->bindParam(':product_type', $product_type);
         $stmt->bindParam(':product_id', $product_id);

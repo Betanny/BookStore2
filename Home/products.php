@@ -10,11 +10,29 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 
-
-//Getting books from the books table
-$bookrecsql = "SELECT DISTINCT bookid, front_page_image, grade, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
-$bookrecomendationstmt = $db->query($bookrecsql);
-$books = $bookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
+$query = isset($_GET['query']) ? $_GET['query'] : '';
+if ($query) {
+    // Search query to fetch matching books
+    $sql = "SELECT * FROM (
+                SELECT DISTINCT ON (bookid) bookid, front_page_image, grade, title, price, bookrating, RANDOM() as rand 
+                FROM books 
+                WHERE LOWER(title) LIKE LOWER(:query) OR grade LIKE :query
+            ) AS distinct_books
+            ORDER BY rand 
+            LIMIT 6";
+    $stmt = $db->prepare($sql);
+    $stmt->execute(['query' => '%' . $query . '%']);
+} else {
+    // Getting books from the books table
+    $bookrecsql = "SELECT * FROM (
+                    SELECT DISTINCT ON (bookid) bookid, front_page_image, grade, title, price, bookrating, RANDOM() as rand 
+                    FROM books
+                  ) AS distinct_books
+                  ORDER BY rand 
+                  LIMIT 6";
+    $stmt = $db->query($bookrecsql);
+}
+$books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 global $books;
 
 //Getting approved books from the approved books table
@@ -149,31 +167,31 @@ global $best_selling;
 
         </div>
         <div class="maincontent">
-            <div class="slideshow-container">
+            <!-- <div class="slideshow-container">
                 <div class="slideshow-book">
                     <h5>Best Selling Book</h5>
-                    <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $best_selling['front_page_image']); ?>"
+                    <img src="<php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $best_selling['front_page_image']); ?>"
                         alt="Best Selling Book">
                     <p>
-                        <?php echo $best_selling['title']; ?>
+                        <php echo $best_selling['title']; ?>
                     </p>
                 </div>
                 <div class="slideshow-book">
-                    <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $most_popular['front_page_image']); ?>"
+                    <img src="<php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $most_popular['front_page_image']); ?>"
                         alt="Most Popular Book">
                     <p>
-                        <?php echo $most_popular['title']; ?>
+                        <php echo $most_popular['title']; ?>
                     </p>
                 </div>
                 <div class="slideshow-book">
-                    <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $best_rated_book['front_page_image']); ?>"
+                    <img src="<php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $best_rated_book['front_page_image']); ?>"
                         alt="
                         Highest Rated Book">
                     <p>
-                        <?php echo $best_rated_book['title']; ?>
+                        <php echo $best_rated_book['title']; ?>
                     </p>
                 </div>
-            </div>
+            </div> -->
 
 
 
@@ -188,10 +206,14 @@ global $best_selling;
                         </select>
                     </div>
                     <div class="search-container">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-
-                        <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                        <form action="" method="GET">
+                            <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                                value="<?php echo htmlspecialchars($query); ?>">
+                            <button class="search-button" type="submit"><i
+                                    class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
                     </div>
+
 
 
 
@@ -278,49 +300,29 @@ global $best_selling;
 
 
 <script>
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     // fetch('/Shared Components/header.php')
-    //     //     .then(response => response.text())
-    //     //     .then(data => {
-    //     //         document.getElementById('header-container').innerHTML = data;
-    //     //     });
-    //     fetch('/Shared Components/footer.html')
-    //         .then(response => response.text())
-    //         .then(data => {
-    //             document.getElementById('footer-container').innerHTML = data;
-    //         });
-    // });
-    const categoryToggles = document.querySelectorAll('.category-toggle');
+// Function to rotate the slides
+function rotateSlides() {
+    const slideshow = document.querySelector('.slideshow-container');
+    const slides = slideshow.querySelectorAll('.slideshow-book');
 
-    categoryToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const subCategories = toggle.nextElementSibling;
-            subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
-        });
-    });
-    // Function to rotate the slides
-    function rotateSlides() {
-        const slideshow = document.querySelector('.slideshow-container');
-        const slides = slideshow.querySelectorAll('.slideshow-book');
+    // Find the active slide
+    const activeSlide = slideshow.querySelector('.active');
 
-        // Find the active slide
-        const activeSlide = slideshow.querySelector('.active');
+    // Get the index of the active slide
+    const activeIndex = Array.from(slides).indexOf(activeSlide);
 
-        // Get the index of the active slide
-        const activeIndex = Array.from(slides).indexOf(activeSlide);
+    // Calculate the index of the next slide
+    const nextIndex = (activeIndex + 1) % slides.length;
 
-        // Calculate the index of the next slide
-        const nextIndex = (activeIndex + 1) % slides.length;
+    // Remove the active class from the current slide
+    activeSlide.classList.remove('active');
 
-        // Remove the active class from the current slide
-        activeSlide.classList.remove('active');
+    // Add the active class to the next slide
+    slides[nextIndex].classList.add('active');
+}
 
-        // Add the active class to the next slide
-        slides[nextIndex].classList.add('active');
-    }
-
-    // Rotate the slides every 3 seconds
-    setInterval(rotateSlides, 3000);
+// Rotate the slides every 3 seconds
+setInterval(rotateSlides, 3000);
 </script>
 
 </html>

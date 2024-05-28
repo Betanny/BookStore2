@@ -15,34 +15,112 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
+//try {
+// Define SQL query to fetch orders data
+// Set the default status filter to 'all'
+// $statusFilter = 'All';
+
+// Check if a filter has been selected
+// if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+//     $statusFilter = $_GET['status'];
+// }
+// if ($statusFilter == 'All') {
+
+//     $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
+//         FROM orders o
+//         INNER JOIN books b ON o.product_id = b.bookid
+//         WHERE o.seller_id = :seller_id";
+// } else {
+//     $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
+//     FROM orders o
+//     INNER JOIN books b ON o.product_id = b.bookid
+//     WHERE o.seller_id = :seller_id AND status = '$statusFilter'";
+// }
+
+// Prepare and execute the query
+// $stmt = $db->prepare($sql);
+// $stmt->execute([':seller_id' => $user_id]);
+// Define your SQL query to fetch data from the books and orders table
+$statusFilter = 'All';
+$query = '';
+
+// Check if a filter has been selected
+if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+    $statusFilter = $_GET['status'];
+}
+
+// Check if a search query is provided
+if (isset($_GET['query']) && !empty($_GET['query'])) {
+    // Set the $query variable
+    $query = $_GET['query'];
+
+    // Append a condition to search by title
+    $queryCondition = " AND LOWER(b.title) LIKE LOWER(:query)";
+} else {
+    $queryCondition = "";
+}
+
 try {
-    // Define SQL query to fetch orders data
-    // Set the default status filter to 'all'
     $statusFilter = 'All';
+    $queryCondition = '';
 
     // Check if a filter has been selected
     if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
         $statusFilter = $_GET['status'];
     }
-    if ($statusFilter == 'All') {
 
-        $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
-            FROM orders o
-            INNER JOIN books b ON o.product_id = b.bookid
-            WHERE o.seller_id = :seller_id";
-    } else {
-        $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address,o.dealer_delivery_date, o.quantity, o.status,o.dealer_status, o.delivery_date
-        FROM orders o
-        INNER JOIN books b ON o.product_id = b.bookid
-        WHERE o.seller_id = :seller_id AND status = '$statusFilter'";
+    // Check if a search query is provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        $query = $_GET['query']; // Add wildcards to search for partial matches
+        $queryCondition .= " AND (LOWER(b.title) LIKE LOWER(:query) OR b.grade LIKE :query)";
     }
+
+    $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, 
+                   COUNT(o.product_id) AS copies_bought, 
+                   SUM(o.total_amount) AS total_values_generated,
+                   o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date
+            FROM books b
+            LEFT JOIN orders o ON b.bookid = o.product_id
+            WHERE b.seller_id = :seller_id";
+
+    // Append status filter condition if not 'All'
+    if ($statusFilter != 'All') {
+        $sql .= " AND o.status = :status";
+    }
+
+    // Append search query condition if provided
+    $sql .= $queryCondition;
+
+    // Group by relevant columns
+    $sql .= " GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date";
 
     // Prepare and execute the query
     $stmt = $db->prepare($sql);
-    $stmt->execute([':seller_id' => $user_id]);
 
+    // Bind the seller ID parameter
+    $stmt->bindValue(':seller_id', $user_id, PDO::PARAM_INT);
+
+    // Bind the status parameter if applicable
+    if ($statusFilter != 'All') {
+        $stmt->bindValue(':status', $statusFilter, PDO::PARAM_STR);
+    }
+
+    // Bind the search query parameter if provided
+    if (!empty($query)) {
+        $stmt->bindValue(':query', '%' . $query . '%', PDO::PARAM_STR);
+    }
+
+    // Execute the query
+    $stmt->execute();
     // Fetch the results into an associative array
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['confirm_delivery'])) {
             // Confirm Delivery form submission 
@@ -114,17 +192,17 @@ try {
                     <form action="" method="get">
                         <select id="filterDropdown" class="filter-bar" name="status" onchange="this.form.submit()">
                             <option value="All" <?php
-                            if ($_GET['status'] === 'All') {
+                            if (isset($_GET['status']) && $_GET['status'] === 'All') {
                                 echo "selected";
                             }
                             ; ?>>All</option>
                             <option value="Pending" <?php
-                            if ($_GET['status'] === 'Pending') {
+                            if (isset($_GET['status']) && $_GET['status'] === 'Pending') {
                                 echo "selected";
                             }
                             ; ?>>Pending</option>
                             <option value="Delivered" <?php
-                            if ($_GET['status'] === 'Delivered') {
+                            if (isset($_GET['status']) && $_GET['status'] === 'Delivered') {
                                 echo "selected";
                             }
                             ; ?>>Delivered</option>
@@ -132,11 +210,15 @@ try {
 
                     </form>
                 </div>
-                <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
-                </div>
 
+                <div class="search-container">
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -160,7 +242,7 @@ try {
                             <?php echo $order['title']; ?>
                         </div>
                         <div class="cell">
-                            <?php echo $order['order_date']; ?>
+                            <?php echo isset($order['order_date']) ? $order['order_date'] : ''; ?>
                         </div>
                         <div class="bigger-cell2">
                             <?php echo $order['shipping_address']; ?>

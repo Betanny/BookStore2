@@ -110,7 +110,7 @@ try {
         $session_id = session_id();
 
         // Redirect to buyer dashboard
-        header("Location: ../Seller/dealeragreement.php");
+        header("Location: ../Seller/dealeraggreement.php");
         exit();
     }
 } catch (PDOException $e) {

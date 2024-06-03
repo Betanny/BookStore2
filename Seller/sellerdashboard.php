@@ -100,7 +100,13 @@ try {
     $sql_best_rated = "SELECT * FROM books WHERE seller_id = $user_id ORDER BY bookrating DESC LIMIT 1";
     $stmt_best_rated = $db->query($sql_best_rated);
     $best_rated_book = $stmt_best_rated->fetch(PDO::FETCH_ASSOC);
-    $best_rated_title = $best_rated_book['title'];
+    // Check if a book was found
+    if ($best_rated_book !== false) {
+        $best_rated_title = $best_rated_book['title'];
+    } else {
+        // Handle case where no book was found
+        $best_rated_title = null; // Or any default value you want
+    }
     global $best_rated_title;
 
     $sql_best_selling = "
@@ -117,8 +123,17 @@ try {
     // Execute the query to fetch the best-selling book
     $stmt_best_selling = $db->query($sql_best_selling);
     $best_selling_book = $stmt_best_selling->fetch(PDO::FETCH_ASSOC);
-    $best_selling_title = $best_selling_book['title'];
+    // Check if a book was found
+    if ($best_rated_book !== false) {
+        $best_selling_title = $best_selling_book['title'];
+    } else {
+        // Handle case where no book was found
+        $best_rated_title = null; // Or any default value you want
+    }
+
     global $best_selling_title;
+
+
 
     // SQL to get the most popular book
     $sql_most_popular = "
@@ -134,7 +149,14 @@ try {
     // Execute the query to fetch the most popular book
     $stmt_most_popular = $db->query($sql_most_popular);
     $most_popular_book = $stmt_most_popular->fetch(PDO::FETCH_ASSOC);
-    $most_popular_title = $most_popular_book['title'];
+    // Check if a book was found
+    if ($best_rated_book !== false) {
+        $most_popular_title = $most_popular_book['title'];
+    } else {
+        // Handle case where no book was found
+        $best_rated_title = null; // Or any default value you want
+    }
+
     global $most_popular_title;
 
 
@@ -251,13 +273,10 @@ try {
         }
     }
     $total_status_count = $pending_count + $delivered_count + $declined_count;
-    $pending_percentage = round(($pending_count / $total_status_count) * 100);
-    $delivered_percentage = round(($delivered_count / $total_status_count) * 100);
-    $declined_percentage = round(($declined_count / $total_status_count) * 100);
-    var_dump($pending_percentage);
-    var_dump($delivered_percentage);
-    var_dump($declined_percentage);
-
+    // Calculate percentages, handling division by zero
+    $pending_percentage = ($total_status_count > 0) ? round(($pending_count / $total_status_count) * 100) : 0;
+    $delivered_percentage = ($total_status_count > 0) ? round(($delivered_count / $total_status_count) * 100) : 0;
+    $declined_percentage = ($total_status_count > 0) ? round(($declined_count / $total_status_count) * 100) : 0;
 
 
     global $salesDataMonthly, $salesDataYearly, $order_counts;
@@ -501,7 +520,6 @@ try {
 
 
 </body>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 function showModal() {

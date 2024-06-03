@@ -295,7 +295,7 @@
 
 }
 .sub-categories {
-    display: none;
+    display: block;
     margin-left: 20px; /* Indentation */
 }
 
@@ -377,10 +377,15 @@ margin: auto;
     border-radius: 10px;
 }
 
-/* .books-container{
-    background-color: var(--accent-color2);
+.books-container{
+max-height: 450px;
+overflow-y: auto;
+min-height: auto;
+scrollbar-width:thin;
+scrollbar-color: var(--accent-color);
 
-} */
+
+}
 .booksheader{
     height: 40px;
     display: flex;

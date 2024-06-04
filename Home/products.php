@@ -334,25 +334,25 @@ global $best_selling;
                             <?php else: ?>
                             <!-- <div class="row"> -->
                             <h2>No Products with that keyword.</h2>
-                            </di v>
-                            <?php endif; ?>
-
-
                         </div>
+                        <?php endif; ?>
+
+
                     </div>
-
-
                 </div>
+
+
             </div>
-
-
-
-
-
-
-
-
         </div>
+
+
+
+
+
+
+
+
+    </div>
 
 
 

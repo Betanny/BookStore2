@@ -17,14 +17,55 @@ $category = $_SESSION['category'];
 
 try {
     // Define SQL query to fetch orders data
-    $sql = "SELECT o.order_id, b.title, o.order_date, o.shipping_address, o.quantity, o.status, o.delivery_date
-    FROM orders o
-    INNER JOIN books b ON o.product_id = b.bookid";
+    $statusFilter = 'All';
+    $query = ''; // Initialize the query variable
+    $queryCondition = '';
+
+    // Check if a filter has been selected
+    if (isset($_GET['status']) && ($_GET['status'] == 'All' || $_GET['status'] == 'Pending' || $_GET['status'] == 'Delivered')) {
+        $statusFilter = $_GET['status'];
+    }
+
+    // Check if a search query is provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        $query = $_GET['query']; // Add wildcards to search for partial matches
+        $queryCondition .= " AND (LOWER(b.title) LIKE LOWER(:query) OR b.grade LIKE :query)";
+    }
+
+    $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, 
+                   COUNT(o.product_id) AS copies_bought, 
+                   SUM(o.total_amount) AS total_values_generated,
+                   o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date
+            FROM books b
+            INNER JOIN orders o ON b.bookid = o.product_id";
+
+    // Append status filter condition if not 'All'
+    if ($statusFilter != 'All') {
+        $sql .= " AND o.status = :status";
+    }
+
+    // Append search query condition if provided
+    $sql .= $queryCondition;
+
+    // Group by relevant columns
+    $sql .= " GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date";
 
     // Prepare and execute the query
     $stmt = $db->prepare($sql);
-    $stmt->execute();
 
+
+    // Bind the status parameter if applicable
+    if ($statusFilter != 'All') {
+        $stmt->bindValue(':status', $statusFilter, PDO::PARAM_STR);
+    }
+
+    // Bind the search query parameter if provided
+    if (!empty($query)) {
+        $stmt->bindValue(':query', '%' . $query . '%', PDO::PARAM_STR);
+    }
+
+    // Execute the query
+    $stmt->execute();
     // Fetch the results into an associative array
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     global $orders;
@@ -60,16 +101,34 @@ try {
             </div>
             <div class="right-filter">
                 <div class="filter-dropdown">
-                    <select id="genre-filter" class="filter-bar" placeholder="sort">
-                        <option value="All">All</option>
-                        <option value="Latest">Latest</option>
-                        <option value="Popularity">Popularity</option>
-                        <option value="Rating">Rating</option>
-                    </select>
+                    <form action="" method="get">
+                        <select id="filterDropdown" class="filter-bar" name="status" onchange="this.form.submit()">
+                            <option value="All" <?php
+                            if (isset($_GET['status']) && $_GET['status'] === 'All') {
+                                echo "selected";
+                            }
+                            ; ?>>All</option>
+                            <option value="Pending" <?php
+                            if (isset($_GET['status']) && $_GET['status'] === 'Pending') {
+                                echo "selected";
+                            }
+                            ; ?>>Pending</option>
+                            <option value="Delivered" <?php
+                            if (isset($_GET['status']) && $_GET['status'] === 'Delivered') {
+                                echo "selected";
+                            }
+                            ; ?>>Delivered</option>
+                        </select>
+
+                    </form>
                 </div>
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
                 </div>
 
             </div>
@@ -83,7 +142,9 @@ try {
                     <div class="bigger-cell2">Shipping Address</div>
                     <div class="small-cell">Quantity</div>
                     <div class="cell">Status</div>
-                    <div class="bigger-cell" style="text-align: center;">Delivery Date</div>
+                    <div class="cell" style="text-align: center;">Client Delivery Date</div>
+                    <div class="cell" style="text-align: center;">Dealer Delivery Date</div>
+
                 </div>
                 <div class="order-rows">
                     <!-- Adding the order items -->
@@ -122,18 +183,34 @@ try {
 
 
                         <div class="bigger-cell" style="text-align: center;">
+                            <?php if (strtolower($order['dealer_status']) === 'pending' || strtolower($order['dealer_status']) === 'declined'): ?>
+                            ---
+                            <?php else: ?>
                             <?php echo $order['delivery_date']; ?>
+
+                            <!-- <button class="update-button">Update</button> -->
+                            <?php endif; ?>
+                        </div>
+                        <div class="cell">
+
+                            <?php if (strtolower($order['dealer_status']) === 'pending' || strtolower($order['dealer_status']) === 'declined'): ?>
+                            ---
+                            <?php else: ?>
+                            <?php echo $order['dealer_delivery_date']; ?>
+
+                            <!-- <button class="update-button">Update</button> -->
+                            <?php endif; ?>
                         </div>
 
-                        <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
                         </div>
                         <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="orders"
-                                data-pk="<?php echo $order['order_id']; ?>" data-pk-name="order_id">
-                                <i class="fa-solid fa-trash"></i>
+                                data-pk="<php echo $order['order_id']; ?>" data-pk-name="order_id">
+                            <i class="fa-solid fa-trash"></i>
                             </a>
-                        </div>
+                        </div> -->
 
 
 

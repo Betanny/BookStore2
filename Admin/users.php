@@ -16,38 +16,64 @@ $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
 try {
-    // SQL command to select all columns from the users table
-    $sql = "
-    SELECT 
-    user_id,
+    $roleFilter = 'All';
+    $query = ''; // Initialize the query variable
+    $queryCondition = '';
+
+    // Check if a filter has been selected
+    if (isset($_GET['role']) && ($_GET['role'] == 'All' || $_GET['role'] == 'Client' || $_GET['role'] == 'Dealer')) {
+        $roleFilter = $_GET['role'];
+    }
+
+    // Check if a search query is provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        $query = $_GET['query'];
+        $queryCondition = "WHERE 
+            (LOWER(users.email) LIKE LOWER(:query)
+            OR LOWER(users.role) LIKE LOWER(:query)
+            OR LOWER(users.category) LIKE LOWER(:query))";
+    }
+
+    // Add role filter to the query condition
+    if ($roleFilter != 'All') {
+        if (!empty($queryCondition)) {
+            $queryCondition .= " AND users.role = :role";
+        } else {
+            $queryCondition = "WHERE users.role = :role";
+        }
+    }
+
+    // Build the final SQL query
+    $sql = "SELECT 
+        user_id,
         ROW_NUMBER() OVER() AS serialno,
         email,
         role,
         category,
         DATE(createdat) AS date_joined
     FROM 
-        users
-";
+        users 
+    $queryCondition";
 
-    // Prepare the SQL statement
+    // Prepare and execute the query
     $stmt = $db->prepare($sql);
 
-    // Execute the SQL statement
+    // Bind values if necessary
+    if (!empty($query)) {
+        $stmt->bindValue(':query', '%' . $query . '%', PDO::PARAM_STR);
+    }
+    if ($roleFilter != 'All') {
+        $stmt->bindValue(':role', $roleFilter, PDO::PARAM_STR);
+    }
+
     $stmt->execute();
 
     // Fetch the results into an associative array
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Check category and retrieve name accordingly
-
 } catch (PDOException $e) {
-    // Handle PDO exception
     echo "Error: " . $e->getMessage();
 }
-
-// Display the fetched data
-// var_dump($users);
-// echo "Name: $name <br>";
 ?>
 
 
@@ -81,26 +107,45 @@ try {
 
             </div>
             <div class="right-filter">
+
                 <div class="filter-dropdown">
-                    <select id="genre-filter" class="filter-bar" placeholder="sort">
-                        <option value="All">All</option>
-                        <option value="Latest">Latest</option>
-                        <option value="Popularity">Popularity</option>
-                        <option value="Rating">Rating</option>
-                    </select>
+                    <form action="" method="get">
+                        <select id="filterDropdown" class="filter-bar" name="role" onchange="this.form.submit()">
+                            <option value="All" <?php
+                            if (isset($_GET['role']) && $_GET['role'] === 'All') {
+                                echo "selected";
+                            }
+                            ; ?>>All</option>
+                            <option value="Client" <?php
+                            if (isset($_GET['role']) && $_GET['role'] === 'Client') {
+                                echo "selected";
+                            }
+                            ; ?>>Client</option>
+                            <option value="Dealer" <?php
+                            if (isset($_GET['role']) && $_GET['role'] === 'Dealer') {
+                                echo "selected";
+                            }
+                            ; ?>>Dealer</option>
+                        </select>
+                    </form>
                 </div>
+
 
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
 
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
                 </div>
-                <div class="addproductsbutton">
+                <!-- <div class="addproductsbutton">
                     <button type="submit" class="add-button">Add <div class="icon-cell">
                             <i class="fa-solid fa-plus"></i>
                         </div></button>
 
-                </div>
+                </div> -->
 
             </div>
         </div>

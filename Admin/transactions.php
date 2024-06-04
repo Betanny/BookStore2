@@ -16,31 +16,76 @@ $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
 try {
-    // Define SQL query to fetch transactions data
-    $sql = "SELECT 
-                transactions.transaction_id,
-                ROW_NUMBER() OVER() AS serialno,
-                transactions.order_id,
-                CASE 
-                    WHEN clients.client_type = 'Individual' THEN CONCAT(clients.first_name, ' ', clients.last_name)
-                    ELSE clients.organization_name
-                END AS client_name,
-                transactions.amount,
-                transactions.transaction_type,
-                transactions.payment_method,
-                transactions.payment_number,
-                DATE(transactions.transaction_date) AS transaction_date
-            FROM 
-                transactions
-            JOIN 
-                clients ON clients.client_id = transactions.client_id";
+    // Define SQL query to fetch orders data
+    $statusFilter = 'All';
+    $query = ''; // Initialize the query variable
+    $transactions = [];
+    $queryCondition = '';
+    $sql = ''; // Initialize the query variable
 
-    // Prepare and execute the query
-    $stmt = $db->prepare($sql);
+    // Define SQL query to fetch transactions data
+
+
+    // Check if a search query is provided
+    if (isset($_GET['query']) && !empty($_GET['query'])) {
+        $query = $_GET['query'];
+        $sql = "SELECT 
+        transactions.transaction_id,
+        ROW_NUMBER() OVER() AS serialno,
+        transactions.order_id,
+        CASE 
+            WHEN clients.client_type = 'Individual' THEN CONCAT(clients.first_name, ' ', clients.last_name)
+            ELSE clients.organization_name
+        END AS client_name,
+        transactions.amount,
+        transactions.transaction_type,
+        transactions.payment_method,
+        transactions.payment_number,
+        DATE(transactions.transaction_date) AS transaction_date
+    FROM 
+        transactions
+    JOIN 
+        clients ON clients.client_id = transactions.client_id
+        WHERE 
+                    LOWER(CONCAT(clients.first_name, ' ', clients.last_name)) LIKE LOWER(:query)
+                    OR LOWER(clients.organization_name) LIKE LOWER(:query)
+                    OR LOWER(transactions.transaction_type) LIKE LOWER(:query)
+                    OR LOWER(transactions.payment_method) LIKE LOWER(:query)
+                    OR (transactions.payment_number) LIKE (:query)";
+
+
+        // Prepare and execute the query
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':query', '%' . $query . '%', PDO::PARAM_STR);
+    } else {
+        $sql = "SELECT 
+        transactions.transaction_id,
+        ROW_NUMBER() OVER() AS serialno,
+        transactions.order_id,
+        CASE 
+            WHEN clients.client_type = 'Individual' THEN CONCAT(clients.first_name, ' ', clients.last_name)
+            ELSE clients.organization_name
+        END AS client_name,
+        transactions.amount,
+        transactions.transaction_type,
+        transactions.payment_method,
+        transactions.payment_number,
+        DATE(transactions.transaction_date) AS transaction_date
+    FROM 
+        transactions
+    JOIN 
+        clients ON clients.client_id = transactions.client_id";
+
+        $stmt = $db->prepare($sql);
+
+    }
+
     $stmt->execute();
 
     // Fetch the results into an associative array
     $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    global $transactions;
+
 
     if (isset($_GET['export']) && $_GET['export'] === 'true') {
 
@@ -100,17 +145,21 @@ try {
                 </button>
             </div>
             <div class="right-filter">
-                <div class="filter-dropdown">
+                <!-- <div class="filter-dropdown">
                     <select id="genre-filter" class="filter-bar" placeholder="sort">
                         <option value="All">All</option>
                         <option value="Latest">Latest</option>
                         <option value="Popularity">Popularity</option>
                         <option value="Rating">Rating</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
                 </div>
 
             </div>
@@ -132,18 +181,20 @@ try {
                 </div>
                 <div class="order-rows">
                     <!-- Adding the order items -->
+                    <?php if (!empty($transactions)): ?>
+
                     <?php foreach ($transactions as $transaction): ?>
                     <div class="row">
                         <div class="small-cell">
                             <?php echo $transaction['serialno'];
-                                ?>
+                                    ?>
                         </div>
                         <div class="bigger-cell2">
                             <?php echo $transaction['client_name']; ?>
                         </div>
                         <div class="cell">
                             <?php echo $transaction['order_id'];
-                                ?>
+                                    ?>
                         </div>
                         <div class="bigger-cell">
                             <?php echo $transaction['transaction_type']; ?>
@@ -172,9 +223,9 @@ try {
                         <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="transactions"
                                 data-pk="?php echo $transaction['transaction_id']; ?>" data-pk-name=" transaction_id">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </div> -->
+                    <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div> -->
 
 
 
@@ -182,9 +233,14 @@ try {
 
                     </div>
                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- <div class="row"> -->
+                    <h2>Sorry, Transaction not found.</h2>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

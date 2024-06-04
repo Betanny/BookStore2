@@ -3,9 +3,8 @@
 require_once '../Shared Components/dbconnection.php';
 
 // Start session
-// if (session_status() === PHP_SESSION_NONE) {
 session_start();
-// }
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
@@ -18,26 +17,80 @@ $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 
 try {
+    $query = isset($_GET['query']) ? $_GET['query'] : '';
+    $filter = isset($_GET['filter']) ? $_GET['filter'] : 'All';
+
     // Define your SQL query to fetch data from the books and orders table
-    $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, 
-               COUNT(o.product_id) AS copies_bought, 
-               SUM(o.total_amount) AS total_values_generated
-        FROM books b
-        LEFT JOIN orders o ON b.bookid = o.product_id
-        GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating";
+    if ($query) {
+        // Search query to fetch matching books
+        $sql = "SELECT * FROM (
+                    SELECT DISTINCT ON (b.bookid) b.bookid, b.title, b.isbn, b.subject, b.bookrating, b.grade, 
+                    COUNT(o.product_id) AS copies_bought,
+                    SUM(o.total_amount) AS total_values_generated
+                    FROM books b
+                    LEFT JOIN orders o ON b.bookid = o.product_id
+                    WHERE LOWER(b.title) LIKE LOWER(:query) 
+                       OR LOWER(b.grade) LIKE LOWER(:query) 
+                       OR LOWER(b.author) LIKE LOWER(:query) 
+                       OR LOWER(b.publisher) LIKE LOWER(:query)
+                    GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, b.grade
+                ) AS distinct_books";
+        $params = ['query' => '%' . $query . '%'];
+    } else {
+        // Non-search query
+        $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, b.grade, 
+                COUNT(o.product_id) AS copies_bought, 
+                SUM(o.total_amount) AS total_values_generated
+                FROM books b
+                LEFT JOIN orders o ON b.bookid = o.product_id
+                GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, b.grade";
+        $params = [];
+    }
 
     // Prepare and execute the query
     $stmt = $db->prepare($sql);
-    $stmt->execute();
+    $stmt->execute($params);
 
     // Fetch the results into an associative array
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Define the isKICDApproved function
+    function isKICDApproved($title, $grade, $appbooks)
+    {
+        foreach ($appbooks as $book) {
+            preg_match('/\d+/', $book['grade'], $matches);
+            $dbGrade = $matches[0];
+
+            if ($book['title'] === $title && $book['grade'] == $dbGrade) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Getting approved books from the approved books table
+    $appbookrecsql = "SELECT * FROM kicdapprovedbooks";
+    $appbookrecomendationstmt = $db->query($appbookrecsql);
+    $appbooks = $appbookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Filter books based on the selected filter
+    if ($filter == 'KICD') {
+        $products = array_filter($products, function ($product) use ($appbooks) {
+            return isset($product['grade']) && isKICDApproved($product['title'], $product['grade'], $appbooks);
+        });
+    } elseif ($filter == 'Non-KICD') {
+        $products = array_filter($products, function ($product) use ($appbooks) {
+            return !isset($product['grade']) || !isKICDApproved($product['title'], $product['grade'], $appbooks);
+        });
+    } else {
+        $books = $products; // If no specific filter is applied, show all books
+    }
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,8 +100,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/Shared Components/style.css">
-    <link rel="stylesheet" href="/Registration/Stylesheet.css">
     <link rel="stylesheet" href="/Seller/seller.css">
+
 
     <title>Document</title>
 </head>
@@ -70,25 +123,35 @@ try {
             </div>
             <div class="right-filter">
                 <div class="filter-dropdown">
-                    <select id="genre-filter" class="filter-bar" placeholder="sort">
-                        <option value="All">All</option>
-                        <option value="Latest">Latest</option>
-                        <option value="Popularity">Popularity</option>
-                        <option value="Rating">Rating</option>
-                    </select>
+                    <form action="" method="GET">
+                        <input type="hidden" name="query" value="<?php echo htmlspecialchars($query); ?>">
+                        <select id="genre-filter" class="filter-bar" name="filter" onchange="this.form.submit()">
+                            <option value="All" <?php if ($filter == 'All')
+                                echo 'selected'; ?>>All</option>
+                            <option value="KICD" <?php if ($filter == 'KICD')
+                                echo 'selected'; ?>>KICD approved
+                            </option>
+                            <option value="Non-KICD" <?php if ($filter == 'Non-KICD')
+                                echo 'selected'; ?>>Non KICD
+                                approved</option>
+                        </select>
+                    </form>
                 </div>
 
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <input type="text" id="search-input" class="search-bar" placeholder="Search...">
+                    <form action="" method="GET">
+                        <input type="text" name="query" id="search-input" class="search-bar" placeholder="Search..."
+                            value="<?php echo htmlspecialchars($query); ?>">
+                        <button class="search-button" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
                 </div>
-                <div class="addproductsbutton">
+                <!-- <div class="addproductsbutton">
                     <button type="submit" class="add-button">Add <div class="icon-cell">
                             <i class="fa-solid fa-plus"></i>
                         </div></button>
 
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -97,37 +160,40 @@ try {
             <div class="table">
                 <div class="row-header">
                     <div class="name-cell">Title</div>
-                    <div class="cell">ISBN</div>
+                    <div class="bigger-cell">ISBN</div>
                     <div class="bigger-cell">Subject</div>
-                    <div class="cell">Rating</div>
-                    <div class="cell">Copies Bought</div>
-                    <div class="cell">Total Income</div>
+                    <div class="bigger-cell">Rating</div>
+                    <div class="bigger-cell">Copies Bought</div>
+                    <div class="bigger-cell">Total Income</div>
 
 
                 </div>
                 <div class="rows">
                     <!-- Adding the product items -->
+                    <?php if (!empty($products)): ?>
+
                     <?php foreach ($products as $product): ?>
                     <div class="row">
                         <!-- <input type="checkbox" class="checkbox" name="product_id" value="?php $product['bookid']; ?>"> -->
                         <div class=" name-cell">
                             <?php echo $product['title']; ?>
                         </div>
-                        <div class="cell">
+                        <div class="bigger-cell">
                             <?php echo $product['isbn']; ?>
                         </div>
                         <div class="bigger-cell">
                             <?php echo $product['subject']; ?>
                         </div>
-                        <div class="cell">
+                        <div class="bigger-cell">
                             <?php echo $product['bookrating']; ?>
                         </div>
-                        <div class="cell">
+                        <div class="bigger-cell">
                             <?php echo $product['copies_bought']; ?>
                         </div>
-                        <div class="cell">
-                            <?php echo $product['total_values_generated']; ?>
+                        <div class="bigger-cell">
+                            <?php echo $product['copies_bought'] == 0 ? '---' : $product['total_values_generated']; ?>
                         </div>
+
                         <!-- Add the icon with a class to handle click events -->
                         <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash toggle-icon"></i>
@@ -141,10 +207,15 @@ try {
                         </div> -->
                     </div>
                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <h2>No Products with that keyword.</h2>
                 </div>
-            </div>
+                <?php endif; ?>
 
+            </div>
         </div>
+
+    </div>
     </div>
 
 

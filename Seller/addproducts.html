@@ -290,18 +290,17 @@
                     <div class="other-pages-container">
                         <div class="image-container">
                             <div class="inputcontrol">
-                            <label class="regular-label">Relevant page</label>
-                            <label class="img-label" for="relevant-page1">Upload Image</label>
+                            <label class="regular-label no-asterisk">Relevant page</label>
+                            <label class="img-label no-asterisk" for="relevant-page1">Upload Image</label>
                             <input type="file" id="relevant-page1" name="relevant-page1" accept=".jpg,.jpeg,.png,gif">
                             <img class="book-images" id="relevant-page1-preview" src="" >
-                        <div class="error"></div>
                     </div>
                  </div>
 
                         <div class="image-container">
                             <div class="inputcontrol">
-                            <label class="regular-label">Relevant page</label>
-                            <label class="img-label" for="relevant-page2">Select Image</label>
+                            <label class="regular-label no-asterisk">Relevant page</label>
+                            <label class="img-label no-asterisk" for="relevant-page2">Select Image</label>
                             <input type="file" id="relevant-page2" name="relevant-page2" accept=".jpg,.jpeg,.png,gif">
                             <img class="book-images" id="relevant-page2-preview" src="">
                         <div class="error"></div>
@@ -309,8 +308,8 @@
                     </div>
                     <div class="image-container">
                         <div class="inputcontrol">
-                        <label class="regular-label">Relevant page</label>
-                        <label class="img-label" for="relevant-page3">Select Image</label>
+                        <label class="regular-label no-asterisk">Relevant page</label>
+                        <label class="img-label no-asterisk" for="relevant-page3">Select Image</label>
                         <input type="file" id="relevant-page3" name="relevant-page3" accept=".jpg,.jpeg,.png,gif">
                         <img class="book-images" id="relevant-page3-preview" src="">
                     <div class="error"></div>
@@ -737,9 +736,6 @@ function validateFileUploads() {
     var isValid = true;
     isValid = validateFileUpload('Front-cover', 'Front cover image is required') && isValid;
     isValid = validateFileUpload('Back-cover', 'Back cover image is required') && isValid;
-    isValid = validateFileUpload('relevant-page1', 'Relevant page 1 image is required') && isValid;
-    isValid = validateFileUpload('relevant-page2', 'Relevant page 2 image is required') && isValid;
-    isValid = validateFileUpload('relevant-page3', 'Relevant page 3 image is required') && isValid;
     return isValid;
 }
 </script>

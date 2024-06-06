@@ -68,6 +68,11 @@ try {
         // Insert the review into the database
         $stmt = $db->prepare("INSERT INTO reviews (product_id, user_id, product_type, rating, review_text, likes, dislikes, additional_comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$selected_product_id, $user_id, "Book", $rating, $review, $likes, $dislikes, $comments]);
+
+        header("Location: /Buyer/bookselect.php");
+
+
+
     }
     // Redirect to a success page
 } catch (PDOException $e) {

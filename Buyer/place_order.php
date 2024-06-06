@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $client_id = $client_id_result['client_id'];
 
 
-
+    var_dump($client_id);
     // Assign form data to variables
     $status = "Pending"; // status is always pending
     $payment_method = $_POST['paymentMethod'];

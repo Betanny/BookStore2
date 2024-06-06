@@ -66,7 +66,7 @@ try {
     <title>Select Book</title>
 </head>
 
-<body>
+<b>
     <div id="header-container"></div>
     <form id="order-form" action="place_order.php" method="post">
         <input type="hidden" name="cart_items" value='<?php echo json_encode($cartItems); ?>'>
@@ -247,7 +247,8 @@ try {
                     <div class="input-box">
                         <div class="inputcontrol">
                             <label for="RecipientName">Recipient Name</label>
-                            <input type="text" class="inputfield" name="RecipientName" />
+                            <input type="text" class="inputfield" name="RecipientName"
+                                oninput="updatePaymentNumber('mpesa')" />
                             <div class="error"></div>
                         </div>
                     </div>
@@ -267,9 +268,9 @@ try {
                     </div>
                     <div class="input-box">
                         <div class="inputcontrol">
-                            <label for="DeliveryMethod" class="no-asterisk">Delivery Method</label>
+                            <label for="deliveryType" class="no-asterisk">Delivery Method</label>
                             <div class="delivery-filter">
-                                <select id="deliveryType" onchange="showCountyDropdown()">
+                                <select id="deliveryType" name="deliveryType" onchange="showCountyDropdown()">
                                     <option value="personal">Personal</option>
                                     <option value="company">Company</option>
                                 </select>
@@ -354,15 +355,29 @@ try {
 
 
                 </div>
-                <div class="return-container">
-                    <button id="order-button" class="order-button">Place Order</button>
-                </div>
             </div>
+        </div>
+
+        <div class="return-container">
+            <button id="order-button" class="order-button">Place Order</button>
         </div>
     </form>
 
     <script>
-    // Define a function to submit the form
+    function updatePaymentNumber(paymentMethod) {
+        console.log("update paymentMethod");
+        console.log(paymentMethod);
+
+        if (paymentMethod === 'mpesa') {
+            document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value;
+            let num = document.getElementById('mpesaNumber').value
+            console.log(num);
+        } else if (paymentMethod === 'airtelmoney') {
+            document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
+        } else if (paymentMethod === 'card') {
+            document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
+        }
+    }
 
 
 
@@ -385,19 +400,19 @@ try {
         if (paymentMethod === "mpesa") {
             mpesaFields.style.display = "block";
             document.getElementById('paymentMethod').value = 'mpesa';
-            document.getElementById('paymentNumber') = document.getElementById('mpesaNumber');
+            // document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value;
             console.log("mpesa");
 
         } else if (paymentMethod === "airtelmoney") {
             airtelmoneyFields.style.display = "block";
             document.getElementById('paymentMethod').value = 'airtelmoney';
-            document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
+            // document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
 
 
         } else if (paymentMethod === "card") {
             cardFields.style.display = "block";
             document.getElementById('paymentMethod').value = 'card';
-            document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
+            // document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
 
 
         }
@@ -499,12 +514,15 @@ try {
     });
 
     document.getElementById("order-form").addEventListener('submit', function(e) {
-        // Prevent the default form submission
         e.preventDefault();
-        validateForm();
-        console.log("Starting to submit the form");
-
+        if (validateForm()) {
+            console.log("Form is valid, submitting...");
+            this.submit();
+        } else {
+            console.log("Form is invalid, not submitting.");
+        }
     });
+
     var isValid = false;
 
     function validateField(fieldName, errorMessage) {
@@ -639,10 +657,9 @@ try {
         const totalPrice = basePrice + deliveryPrice;
         document.getElementById('totalPrice').innerText = totalPrice;
     }
-    updateTotalPrice();
     </script>
 
 
-</body>
+    </body>
 
 </html>

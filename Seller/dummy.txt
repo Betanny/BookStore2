@@ -1,4 +1,0 @@
-<!--value="<?php echo $book['isbn']; ?
-
-
-onclick="editProduct(<?php echo $product['bookid']; ?>)"

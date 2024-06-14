@@ -4,7 +4,7 @@ require_once '../Shared Components/dbconnection.php';
 session_start();
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 

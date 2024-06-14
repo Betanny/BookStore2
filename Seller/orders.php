@@ -78,7 +78,7 @@ try {
     $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, 
                    COUNT(o.product_id) AS copies_bought, 
                    SUM(o.total_amount) AS total_values_generated,
-                   o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date
+                   o.order_id, o.order_date,o.delivery_option, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date
             FROM books b
             LEFT JOIN orders o ON b.bookid = o.product_id
             WHERE b.seller_id = :seller_id";
@@ -229,6 +229,7 @@ try {
                     <div class="cell">Order Date</div>
                     <div class="bigger-cell2">Shipping Address</div>
                     <div class="small-cell">Quantity</div>
+                    <div class="cell">Delivery Option</div>
                     <div class="cell">Client Delivery Status</div>
                     <div class="cell">Dealer Delivery Status</div>
                     <div class="cell">Delivery Date</div>
@@ -249,6 +250,15 @@ try {
                         </div>
                         <div class="small-cell">
                             <?php echo $order['quantity']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php
+                                    if (isset($order) && isset($order['delivery_option'])) {
+                                        echo $order['delivery_option'];
+                                    } else {
+                                        echo 'Delivery option not available';
+                                    }
+                                    ?>
                         </div>
                         <div class="cell" style="background-color:
     <?php

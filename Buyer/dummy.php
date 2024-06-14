@@ -3,7 +3,7 @@ require_once '../Shared Components/dbconnection.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit(); // Ensure script termination after redirection
 }
 

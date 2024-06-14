@@ -7,7 +7,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 
@@ -35,7 +35,7 @@ try {
     $sql = "SELECT b.bookid, b.title, b.isbn, b.subject, b.bookrating, 
                    COUNT(o.product_id) AS copies_bought, 
                    SUM(o.total_amount) AS total_values_generated,
-                   o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date
+                   o.order_id, o.order_date, o.shipping_address,o.delivery_option, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date
             FROM books b
             INNER JOIN orders o ON b.bookid = o.product_id";
 
@@ -144,6 +144,8 @@ try {
                     <div class="cell">Status</div>
                     <div class="cell" style="text-align: center;">Client Delivery Date</div>
                     <div class="cell" style="text-align: center;">Dealer Delivery Date</div>
+                    <div class="cell" style="text-align: center;">Delivery Type</div>
+
 
                 </div>
                 <div class="order-rows">
@@ -201,6 +203,15 @@ try {
                             <!-- <button class="update-button">Update</button> -->
                             <?php endif; ?>
                         </div>
+                        <div class="cell">
+                            <?php
+                                if (isset($order) && isset($order['delivery_option'])) {
+                                    echo $order['delivery_option'];
+                                } else {
+                                    echo 'Delivery option not available';
+                                }
+                                ?>
+                        </div>
 
                         <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
@@ -225,17 +236,17 @@ try {
     </div>
 </body>
 
+
+</html>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // Fetch and insert header
     fetch('header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
 
-
-});
-document.addEventListener("DOMContentLoaded", function() {
     // Get all elements with the class "delete-link"
     var deleteLinks = document.querySelectorAll('.delete-link');
 
@@ -254,13 +265,11 @@ document.addEventListener("DOMContentLoaded", function() {
             // Perform AJAX request to the delete script
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                primaryKey +
-                '&pk_name=' + pkName, true);
+                primaryKey + '&pk_name=' + pkName, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Handle successful deletion (if needed)
                     // For example, you can remove the deleted row from the DOM
-                    console.log(link);
                     link.parentElement.parentElement.remove();
                 } else {
                     // Handle error (if needed)
@@ -276,5 +285,3 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
-
-</html>

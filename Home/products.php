@@ -122,8 +122,8 @@ global $best_selling;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
-    <title>Document</title>
 </head>
 
 <body>
@@ -289,7 +289,7 @@ global $best_selling;
 
                         <div class="all-books">
                             <?php if (!empty($books)): ?>
-                            <?php
+                                <?php
                                 foreach ($books as $book) {
                                     $front_image = str_replace('D:\xammp2\htdocs\BookStore2', '', $book['front_page_image']);
 
@@ -332,9 +332,9 @@ global $best_selling;
                                 }
                                 ?>
                             <?php else: ?>
-                            <!-- <div class="row"> -->
-                            <h2>No Products with that keyword.</h2>
-                        </div>
+                                <!-- <div class="row"> -->
+                                <h2>No Products with that keyword.</h2>
+                            </div>
                         <?php endif; ?>
 
 
@@ -371,29 +371,29 @@ global $best_selling;
 
 
 <script>
-// Function to rotate the slides
-function rotateSlides() {
-    const slideshow = document.querySelector('.slideshow-container');
-    const slides = slideshow.querySelectorAll('.slideshow-book');
+    // Function to rotate the slides
+    function rotateSlides() {
+        const slideshow = document.querySelector('.slideshow-container');
+        const slides = slideshow.querySelectorAll('.slideshow-book');
 
-    // Find the active slide
-    const activeSlide = slideshow.querySelector('.active');
+        // Find the active slide
+        const activeSlide = slideshow.querySelector('.active');
 
-    // Get the index of the active slide
-    const activeIndex = Array.from(slides).indexOf(activeSlide);
+        // Get the index of the active slide
+        const activeIndex = Array.from(slides).indexOf(activeSlide);
 
-    // Calculate the index of the next slide
-    const nextIndex = (activeIndex + 1) % slides.length;
+        // Calculate the index of the next slide
+        const nextIndex = (activeIndex + 1) % slides.length;
 
-    // Remove the active class from the current slide
-    activeSlide.classList.remove('active');
+        // Remove the active class from the current slide
+        activeSlide.classList.remove('active');
 
-    // Add the active class to the next slide
-    slides[nextIndex].classList.add('active');
-}
+        // Add the active class to the next slide
+        slides[nextIndex].classList.add('active');
+    }
 
-// Rotate the slides every 3 seconds
-setInterval(rotateSlides, 3000);
+    // Rotate the slides every 3 seconds
+    setInterval(rotateSlides, 3000);
 </script>
 
 </html>

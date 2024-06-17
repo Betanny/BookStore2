@@ -36,8 +36,8 @@ $user_data = getUserData();
     <link rel="stylesheet" href="/Shared Components/header.css">
     <link rel="stylesheet" href="/Buyer/buyer.css">
 
-    <!-- Additional stylesheets if needed -->
-    <title>Document</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+    <title>SmartCBC</title>
 </head>
 
 <body>

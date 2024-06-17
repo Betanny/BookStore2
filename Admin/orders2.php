@@ -44,7 +44,7 @@ try {
     <link rel="stylesheet" href="/Registration/Stylesheet.css">
     <link rel="stylesheet" href="/Seller/seller.css">
 
-    <title>My Orders</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 </head>
 
 <body>
@@ -88,20 +88,20 @@ try {
                 <div class="order-rows">
                     <!-- Adding the order items -->
                     <?php foreach ($orders as $order): ?>
-                    <div class="row">
-                        <div class="ordername-cell">
-                            <?php echo $order['title']; ?>
-                        </div>
-                        <div class="cell">
-                            <?php echo $order['order_date']; ?>
-                        </div>
-                        <div class="bigger-cell2">
-                            <?php echo $order['shipping_address']; ?>
-                        </div>
-                        <div class="small-cell">
-                            <?php echo $order['quantity']; ?>
-                        </div>
-                        <div class="cell" style="background-color:
+                        <div class="row">
+                            <div class="ordername-cell">
+                                <?php echo $order['title']; ?>
+                            </div>
+                            <div class="cell">
+                                <?php echo $order['order_date']; ?>
+                            </div>
+                            <div class="bigger-cell2">
+                                <?php echo $order['shipping_address']; ?>
+                            </div>
+                            <div class="small-cell">
+                                <?php echo $order['quantity']; ?>
+                            </div>
+                            <div class="cell" style="background-color:
     <?php
     // Determine background color based on status
     $status = strtolower($order['status']);
@@ -117,30 +117,30 @@ try {
     ?>
 ; border-radius: 15px; padding: 5px;
                             ">
-                            <?php echo $order['status']; ?>
+                                <?php echo $order['status']; ?>
+                            </div>
+
+
+                            <div class="bigger-cell" style="text-align: center;">
+                                <?php echo $order['delivery_date']; ?>
+                            </div>
+
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                            <div class="icon-cell">
+                                <a href="#" class="delete-link" data-table="orders"
+                                    data-pk="<?php echo $order['order_id']; ?>" data-pk-name="order_id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+
+
+
+
+
+
                         </div>
-
-
-                        <div class="bigger-cell" style="text-align: center;">
-                            <?php echo $order['delivery_date']; ?>
-                        </div>
-
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-eye-slash"></i>
-                        </div>
-                        <div class="icon-cell">
-                            <a href="#" class="delete-link" data-table="orders"
-                                data-pk="<?php echo $order['order_id']; ?>" data-pk-name="order_id">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </div>
-
-
-
-
-
-
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -160,68 +160,68 @@ try {
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
 
 
-});
+    });
 
-deleteLinks.forEach(function(link) {
-    link.addEventListener('click', function(event) {
-        event.preventDefault();
+    deleteLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
 
-        // Get the table name, primary key column name, and primary key value from the data attributes
-        var tableName = link.getAttribute('data-table');
-        var primaryKey = link.getAttribute('data-pk');
-        var pkName = link.getAttribute('data-pk-name');
+            // Get the table name, primary key column name, and primary key value from the data attributes
+            var tableName = link.getAttribute('data-table');
+            var primaryKey = link.getAttribute('data-pk');
+            var pkName = link.getAttribute('data-pk-name');
 
-        // Open the delete confirmation modal
-        var modal = document.getElementById('deleteModal');
-        modal.style.display = 'block';
+            // Open the delete confirmation modal
+            var modal = document.getElementById('deleteModal');
+            modal.style.display = 'block';
 
-        // Get the confirm delete button and add a click event listener
-        var confirmDeleteButton = document.getElementById('confirmDelete');
-        confirmDeleteButton.addEventListener('click', function() {
-            // Perform AJAX request to the delete script
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                primaryKey + '&pk_name=' + pkName, true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Handle successful deletion (if needed)
-                    // For example, you can remove the deleted row from the DOM
-                    link.parentElement.parentElement.remove();
-                    modal.style.display = 'none';
-                } else {
-                    // Handle error (if needed)
-                    console.error('Error:', xhr.statusText);
-                }
-            };
-            xhr.onerror = function() {
-                // Handle network errors (if needed)
-                console.error('Request failed');
-            };
-            xhr.send();
-        });
+            // Get the confirm delete button and add a click event listener
+            var confirmDeleteButton = document.getElementById('confirmDelete');
+            confirmDeleteButton.addEventListener('click', function () {
+                // Perform AJAX request to the delete script
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+                    primaryKey + '&pk_name=' + pkName, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Handle successful deletion (if needed)
+                        // For example, you can remove the deleted row from the DOM
+                        link.parentElement.parentElement.remove();
+                        modal.style.display = 'none';
+                    } else {
+                        // Handle error (if needed)
+                        console.error('Error:', xhr.statusText);
+                    }
+                };
+                xhr.onerror = function () {
+                    // Handle network errors (if needed)
+                    console.error('Request failed');
+                };
+                xhr.send();
+            });
 
-        // Get the close button and add a click event listener to close the modal
-        var closeButton = document.getElementsByClassName('close-button')[0];
-        closeButton.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        // Close the modal when clicking outside of it
-        window.addEventListener('click', function(event) {
-            if (event.target == modal) {
+            // Get the close button and add a click event listener to close the modal
+            var closeButton = document.getElementsByClassName('close-button')[0];
+            closeButton.addEventListener('click', function () {
                 modal.style.display = 'none';
-            }
+            });
+
+            // Close the modal when clicking outside of it
+            window.addEventListener('click', function (event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
         });
     });
-});
 </script>
 
 </html>

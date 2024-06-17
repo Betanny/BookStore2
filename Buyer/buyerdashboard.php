@@ -35,7 +35,7 @@ try {
 
 
     //Getting book reccomendations from the books table
-    $bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 6";
+    $bookrecsql = "SELECT DISTINCT bookid, front_page_image, title, price, bookrating, RANDOM() as rand FROM books ORDER BY rand LIMIT 4";
     $bookrecomendationstmt = $db->query($bookrecsql);
     $books = $bookrecomendationstmt->fetchAll(PDO::FETCH_ASSOC);
     global $books;
@@ -122,7 +122,10 @@ try {
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
 
-    <title>Document</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+
+
+
     <style>
     .task {
         height: 100%;
@@ -287,7 +290,8 @@ try {
                                 <h5>Products reviewed</h5>
                             </div>
                             <div class="detail">
-                                <p>15</p>
+                                <p> <?php echo $totalItemsReviewed; ?>
+                                </p>
                                 <h5>Products rated</h5>
                             </div>
                         </div>

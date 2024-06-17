@@ -125,8 +125,9 @@ VALUES (:sender_id, :recipient_id, :message)";
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
-    <title>Document</title>
+    <title>SmartCBC</title>
 </head>
 
 <body>
@@ -157,7 +158,7 @@ VALUES (:sender_id, :recipient_id, :message)";
             <div class="icon">
                 <a onclick="showModal();"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
-                <span class="notification-count"><?php echo $unread_count; ?></span>
+                    <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="profile">
@@ -208,12 +209,12 @@ VALUES (:sender_id, :recipient_id, :message)";
             <div class="all-notifications" id="all-notifications">
                 <?php foreach ($notifications as $notification): ?>
 
-                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                    onclick="openNotification(this);">
-                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
-                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                </div>
+                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                        data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                        onclick="openNotification(this);">
+                        <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                    </div>
                 <?php endforeach; ?>
 
 
@@ -255,68 +256,68 @@ VALUES (:sender_id, :recipient_id, :message)";
         </div>
     </div>
     <script>
-    function showModal() {
-        const container = document.getElementsByClassName('modal');
-        if (container.style.display != "block") {
-            container.style.display = "block";
-            console.log("Showing modal"); // Debug statement
+        function showModal() {
+            const container = document.getElementsByClassName('modal');
+            if (container.style.display != "block") {
+                container.style.display = "block";
+                console.log("Showing modal"); // Debug statement
 
-        } else {
-            console.log("Hiding modal"); // Debug statement
-            container.style.display = "none";
+            } else {
+                console.log("Hiding modal"); // Debug statement
+                container.style.display = "none";
+            }
         }
-    }
 
-    function cancel() {
-        window.location.href = 'ViewProducts.php';
-    }
-    var allnotification = document.getElementById('all-notifications');
-    var openednotification = document.getElementById('opened-notification');
-    var newnotification = document.getElementById('new-notification');
-    var addButton = document.querySelector('.add-button');
-
-
-    // function openNotification() {
-    //     allnotification.style.display = 'none';
-    //     newnotification.style.display = 'none';
-    //     openednotification.style.display = 'block';
-
-    // }
-    function openNotification(element) {
-        const email = element.getAttribute('data-email');
-        const message = element.getAttribute('data-message');
-
-        document.getElementById('sender-email').innerText = 'Sender: ' + email;
-        document.getElementById('notification-message').innerText = 'Message: ' + message;
-
-        document.getElementById('all-notifications').style.display = 'none';
-        document.getElementById('new-notification').style.display = 'none';
-        document.getElementById('opened-notification').style.display = 'block';
-    }
-
-    function newNotification() {
-        allnotification.style.display = 'none';
-        newnotification.style.display = 'block';
-        openednotification.style.display = 'none';
-        addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-
-
-    }
-
-    function allNotification() {
-        allnotification.style.display = 'block';
-        newnotification.style.display = 'none';
-        openednotification.style.display = 'none';
-        addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-
-    }
-    addButton.addEventListener('click', function() {
-        if (this.innerHTML.includes('Back')) {
-            allNotification();
-        } else {
-            newNotification();
+        function cancel() {
+            window.location.href = 'ViewProducts.php';
         }
-    });
+        var allnotification = document.getElementById('all-notifications');
+        var openednotification = document.getElementById('opened-notification');
+        var newnotification = document.getElementById('new-notification');
+        var addButton = document.querySelector('.add-button');
+
+
+        // function openNotification() {
+        //     allnotification.style.display = 'none';
+        //     newnotification.style.display = 'none';
+        //     openednotification.style.display = 'block';
+
+        // }
+        function openNotification(element) {
+            const email = element.getAttribute('data-email');
+            const message = element.getAttribute('data-message');
+
+            document.getElementById('sender-email').innerText = 'Sender: ' + email;
+            document.getElementById('notification-message').innerText = 'Message: ' + message;
+
+            document.getElementById('all-notifications').style.display = 'none';
+            document.getElementById('new-notification').style.display = 'none';
+            document.getElementById('opened-notification').style.display = 'block';
+        }
+
+        function newNotification() {
+            allnotification.style.display = 'none';
+            newnotification.style.display = 'block';
+            openednotification.style.display = 'none';
+            addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+
+
+        }
+
+        function allNotification() {
+            allnotification.style.display = 'block';
+            newnotification.style.display = 'none';
+            openednotification.style.display = 'none';
+            addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
+
+        }
+        addButton.addEventListener('click', function () {
+            if (this.innerHTML.includes('Back')) {
+                allNotification();
+            } else {
+                newNotification();
+            }
+        });
     </script>
 </body>
 

@@ -63,8 +63,9 @@ try {
     <link rel="stylesheet" href="/Shared Components/style.css">
     <link rel="stylesheet" href="/Registration/Stylesheet.css">
     <link rel="stylesheet" href="seller.css">
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
-    <title>Document</title>
+
 </head>
 
 <body>
@@ -132,29 +133,29 @@ try {
                 </div> -->
                 <!-- ?php endif; ?> -->
                 <?php if ($category == 'Organization'): ?>
-                <h4><br><br>Contact Person details</h4><br>
-                <div class="input-box">
-                    <div class="inputcontrol">
-                        <label class="no-asterisk" for="full_name">Full Name</label class="no-asterisk">
-                        <input type="text" class="inputfield" name="full_name"
-                            value="<?php echo $contact_full_name; ?>" />
-                    </div>
-                </div>
-                <div class="input-box">
-                    <div class="inputcontrol">
-                        <label class="no-asterisk" for="Email">Email</label class="no-asterisk">
-                        <input type="text" class="inputfield" name="Email"
-                            value="<?php echo $profile['contact_email']; ?>" />
+                    <h4><br><br>Contact Person details</h4><br>
+                    <div class="input-box">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="full_name">Full Name</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="full_name"
+                                value="<?php echo $contact_full_name; ?>" />
+                        </div>
                     </div>
                     <div class="input-box">
                         <div class="inputcontrol">
-                            <label class="no-asterisk" for="phone">phone</label class="no-asterisk">
-                            <input type="text" class="inputfield" name="phone"
-                                value="<?php echo $profile['contact_phone']; ?>" />
+                            <label class="no-asterisk" for="Email">Email</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Email"
+                                value="<?php echo $profile['contact_email']; ?>" />
                         </div>
-                    </div>
+                        <div class="input-box">
+                            <div class="inputcontrol">
+                                <label class="no-asterisk" for="phone">phone</label class="no-asterisk">
+                                <input type="text" class="inputfield" name="phone"
+                                    value="<?php echo $profile['contact_phone']; ?>" />
+                            </div>
+                        </div>
 
-                </div>
+                    </div>
                 <?php endif; ?>
 
 
@@ -174,44 +175,44 @@ try {
 
 </body>
 <script>
-var modal = document.getElementById("editprofile-modal");
+    var modal = document.getElementById("editprofile-modal");
 
-function editProfile() {
-    // Get the modal
-    modal.style.display = "block";
-}
+    function editProfile() {
+        // Get the modal
+        modal.style.display = "block";
+    }
 
-function goBack() {
-    modal.style.display = "none";
-    window.history.back();
+    function goBack() {
+        modal.style.display = "none";
+        window.history.back();
 
-}
+    }
 
-<?php if ($role == 'Client'): ?>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('../Buyer/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
+    <?php if ($role == 'Client'): ?>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('../Buyer/header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
         });
-});
-<?php elseif ($role == 'Dealer'): ?>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('../Seller/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
+    <?php elseif ($role == 'Dealer'): ?>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('../Seller/header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
         });
-});
-<?php else: ?>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Buyer/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
+    <?php else: ?>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/Buyer/header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
         });
-});
-<?php endif; ?>
+    <?php endif; ?>
 </script>
 
 

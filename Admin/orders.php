@@ -49,6 +49,9 @@ try {
 
     // Group by relevant columns
     $sql .= " GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, o.order_id, o.order_date, o.shipping_address, o.dealer_delivery_date, o.quantity, o.status, o.dealer_status, o.delivery_date";
+    //Order using delivery date
+    $sql .= " ORDER BY o.order_date ASC";
+
 
     // Prepare and execute the query
     $stmt = $db->prepare($sql);
@@ -84,8 +87,7 @@ try {
     <link rel="stylesheet" href="/Shared Components/style.css">
     <link rel="stylesheet" href="/Registration/Stylesheet.css">
     <link rel="stylesheet" href="/Seller/seller.css">
-
-    <title>My Orders</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 </head>
 
 <body>
@@ -237,7 +239,6 @@ try {
 </body>
 
 
-</html>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Fetch and insert header
@@ -247,12 +248,13 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('header-container').innerHTML = data;
         });
 
+
     // Get all elements with the class "delete-link"
     var deleteLinks = document.querySelectorAll('.delete-link');
 
-    // Loop through each delete link
+    // Loop through each delete  link
     deleteLinks.forEach(function(link) {
-        // Add click event listener to each delete link
+        // Add click event listener to each del ete link
         link.addEventListener('click', function(event) {
             // Prevent the default behavior (i.e., following the href)
             event.preventDefault();
@@ -265,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Perform AJAX request to the delete script
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                primaryKey + '&pk_name=' + pkName, true);
+                primaryKey + '&pk _name=' + pkName, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Handle successful deletion (if needed)
@@ -285,3 +287,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+
+</html>

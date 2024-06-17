@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="/Shared Components/smartcbc.svg">
-    <title>Document</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+
+    <title>SmartCBC</title>
 </head>
 
 <body>
@@ -33,42 +34,42 @@
 </body>
 
 <script>
-// Get all the links
-const links = document.getElementsByClassName('link');
-document.addEventListener("DOMContentLoaded", function() {
+    // Get all the links
+    const links = document.getElementsByClassName('link');
+    document.addEventListener("DOMContentLoaded", function () {
 
-    // Add click event listeners to each link
-    Array.from(links).forEach(link => {
-        link.addEventListener('click', function(event) {
-            // Prevent the default action
+        // Add click event listeners to each link
+        Array.from(links).forEach(link => {
+            link.addEventListener('click', function (event) {
+                // Prevent the default action
 
-            // Remove the 'active-link' class from all links
-            Array.from(links).forEach(link => {
-                link.classList.remove('active-link');
+                // Remove the 'active-link' class from all links
+                Array.from(links).forEach(link => {
+                    link.classList.remove('active-link');
+                });
+
+                // Add the 'active-link' class to the clicked link
+                this.classList.add('active-link');
+
+
             });
+        });
 
-            // Add the 'active-link' class to the clicked link
-            this.classList.add('active-link');
+        const navMenu = document.getElementById('nav-menu');
+        const links = navMenu.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function (event) {
+                // Prevent default behavior if needed
+                // event.preventDefault();
 
+                // Remove active-link class from all links
+                links.forEach(link => link.classList.remove('active-link'));
 
+                // Add active-link class to the clicked link
+                this.classList.add('active-link');
+            });
         });
     });
-
-    const navMenu = document.getElementById('nav-menu');
-    const links = navMenu.querySelectorAll('a');
-    links.forEach(link => {
-        link.addEventListener('click', function(event) {
-            // Prevent default behavior if needed
-            // event.preventDefault();
-
-            // Remove active-link class from all links
-            links.forEach(link => link.classList.remove('active-link'));
-
-            // Add active-link class to the clicked link
-            this.classList.add('active-link');
-        });
-    });
-});
 </script>
 
 </html>

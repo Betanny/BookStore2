@@ -210,7 +210,7 @@ try {
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <title>Document</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
     <style>
     .chart {
         width: 200px;

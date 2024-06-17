@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+
 try {
     $table_name = 'clients';
 
@@ -21,14 +22,22 @@ try {
     if ($data) {
         $clientid = $data['client_id'];
 
-        $ordersql = "SELECT orders.*, books.title AS title 
-                        FROM orders 
-                        INNER JOIN books ON orders.product_id = books.bookid
-                        WHERE orders.client_id = ? AND status = 'Delivered'";
+        // $ordersql = "SELECT orders.*, books.title AS title
+        // FROM orders
+        // INNER JOIN books ON orders.product_id = books.bookid
+        // WHERE orders.client_id = ? AND status = 'Delivered'
+        // GROUP BY books.bookid";
+
+        $ordersql = "SELECT orders.product_id, books.title AS title, MIN(orders.order_id) as order_id
+        FROM orders
+        INNER JOIN books ON orders.product_id = books.bookid
+        WHERE orders.client_id = ? AND status = 'Delivered'
+        GROUP BY orders.product_id, books.title";
 
         $ordersstmt = $db->prepare($ordersql);
         $ordersstmt->execute([$clientid]);
         $orders = $ordersstmt->fetchAll(PDO::FETCH_ASSOC);
+        global $orders;
     }
 } catch (PDOException $e) {
     error_log("Error: " . $e->getMessage());
@@ -48,7 +57,8 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Select Book</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+
 </head>
 
 <body>

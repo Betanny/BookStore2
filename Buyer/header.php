@@ -109,7 +109,9 @@ VALUES (:sender_id, :recipient_id, :message)";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-    <title>Document</title>
+    <title>SmartCBC</title>
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+
 </head>
 
 <body>
@@ -132,13 +134,13 @@ VALUES (:sender_id, :recipient_id, :message)";
                 <i class="fa-regular fa-bell" id="showNotificationsIcon" onclick="showModal();"
                     style="color:blue;cursor:pointer"></i>
                 <?php if ($unread_count > 0): ?>
-                    <span class="notification-count"><?php echo $unread_count; ?></span>
+                <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="icon">
                 <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <?php if ($cart_count > 0): ?>
-                    <span class="notification-count"><?php echo $cart_count; ?></span>
+                <span class="notification-count"><?php echo $cart_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="profile">
@@ -180,12 +182,12 @@ VALUES (:sender_id, :recipient_id, :message)";
             <div class="all-notifications" id="all-notifications">
                 <?php foreach ($notifications as $notification): ?>
 
-                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                        data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                        onclick="openNotification(this);">
-                        <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
-                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                    </div>
+                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                    onclick="openNotification(this);">
+                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                </div>
                 <?php endforeach; ?>
 
 
@@ -229,6 +231,21 @@ VALUES (:sender_id, :recipient_id, :message)";
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+    function showModal() {
+        if (container.style.display != "block";) {
+            container.style.display = "block";
+            console.log("Showing modal");
+        } else {
+            console.log("Hiding modal");
+            container.style.display = "none";
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.getElementById('modal');
+        const notificationIcon = document.getElementById('showNotificationsIcon');
+        const closeButton = document.querySelector('.close');
+
+
         function showModal() {
             if (container.style.display != "block";) {
                 container.style.display = "block";
@@ -238,28 +255,13 @@ VALUES (:sender_id, :recipient_id, :message)";
                 container.style.display = "none";
             }
         }
-        document.addEventListener("DOMContentLoaded", function () {
-            const container = document.getElementById('modal');
-            const notificationIcon = document.getElementById('showNotificationsIcon');
-            const closeButton = document.querySelector('.close');
 
-
-            function showModal() {
-                if (container.style.display != "block";) {
-            container.style.display = "block";
-            console.log("Showing modal");
-        } else {
-            console.log("Hiding modal");
-            container.style.display = "none";
-        }
-        }
-
-        notificationIcon.addEventListener('click', function (event) {
+        notificationIcon.addEventListener('click', function(event) {
             event.preventDefault();
             showModal();
         });
 
-        closeButton.addEventListener('click', function () {
+        closeButton.addEventListener('click', function() {
             container.style.display = 'none';
         });
 
@@ -294,7 +296,7 @@ VALUES (:sender_id, :recipient_id, :message)";
             addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
         }
 
-        addButton.addEventListener('click', function () {
+        addButton.addEventListener('click', function() {
             if (this.innerHTML.includes('Back')) {
                 allNotification();
             } else {
@@ -312,7 +314,7 @@ VALUES (:sender_id, :recipient_id, :message)";
         const links = navMenu.querySelectorAll('a');
 
         links.forEach(link => {
-            link.addEventListener('click', function (event) {
+            link.addEventListener('click', function(event) {
                 // Prevent default behavior if needed
                 // event.preventDefault();
 

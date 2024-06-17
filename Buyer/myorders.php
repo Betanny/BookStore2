@@ -29,7 +29,7 @@ try {
 
     // Getting the book orders made
     $clientid = $data['client_id'];
-
+    var_dump($clientid);
     $statusFilter = 'All';
     $query = '';
     $queryCondition = '';
@@ -91,6 +91,20 @@ try {
             $stmt->bindParam(':orderId', $orderId);
             $stmt->bindParam(':delivery_date', $current_date);
             $stmt->execute();
+
+
+            // Add points
+            $points_to_add = 250;
+
+            // Update the points in the database directly
+            // Update the points in the database directly
+            $update_sql = "UPDATE $table_name SET points = points + :points_to_add WHERE client_id = :client_id";
+            $update_stmt = $db->prepare($update_sql);
+            $update_stmt->bindParam(':points_to_add', $points_to_add, PDO::PARAM_INT);
+            $update_stmt->bindParam(':client_id', $clientid, PDO::PARAM_INT);
+            $update_stmt->execute();
+
+
         } elseif (isset($_POST['decline_order'])) {
             // Decline Order form submission
             $orderId = $_POST['order_id'];
@@ -159,8 +173,8 @@ try {
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
-    <title>Document</title>
 </head>
 
 <body>

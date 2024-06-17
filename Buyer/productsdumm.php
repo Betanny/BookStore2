@@ -245,49 +245,49 @@ global $best_selling;
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Shared Components/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-    fetch('/Shared Components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer-container').innerHTML = data;
-        });
-});
-const categoryToggles = document.querySelectorAll('.category-toggle');
-
-categoryToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-        const subCategories = toggle.nextElementSibling;
-        subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/Shared Components/header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+        fetch('/Shared Components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
     });
-});
-// Function to rotate the slides
-function rotateSlides() {
-    const slideshow = document.querySelector('.slideshow-container');
-    const slides = slideshow.querySelectorAll('.slideshow-book');
+    const categoryToggles = document.querySelectorAll('.category-toggle');
 
-    // Find the active slide
-    const activeSlide = slideshow.querySelector('.active');
+    categoryToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const subCategories = toggle.nextElementSibling;
+            subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+    // Function to rotate the slides
+    function rotateSlides() {
+        const slideshow = document.querySelector('.slideshow-container');
+        const slides = slideshow.querySelectorAll('.slideshow-book');
 
-    // Get the index of the active slide
-    const activeIndex = Array.from(slides).indexOf(activeSlide);
+        // Find the active slide
+        const activeSlide = slideshow.querySelector('.active');
 
-    // Calculate the index of the next slide
-    const nextIndex = (activeIndex + 1) % slides.length;
+        // Get the index of the active slide
+        const activeIndex = Array.from(slides).indexOf(activeSlide);
 
-    // Remove the active class from the current slide
-    activeSlide.classList.remove('active');
+        // Calculate the index of the next slide
+        const nextIndex = (activeIndex + 1) % slides.length;
 
-    // Add the active class to the next slide
-    slides[nextIndex].classList.add('active');
-}
+        // Remove the active class from the current slide
+        activeSlide.classList.remove('active');
 
-// Rotate the slides every 3 seconds
-setInterval(rotateSlides, 3000);
+        // Add the active class to the next slide
+        slides[nextIndex].classList.add('active');
+    }
+
+    // Rotate the slides every 3 seconds
+    setInterval(rotateSlides, 3000);
 </script>
 
 </html>

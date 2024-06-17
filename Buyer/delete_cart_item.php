@@ -35,4 +35,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cartId'])) {
     // If the request method is not POST or the cartId parameter is not set, send a bad request response
     http_response_code(400); // Bad request status code
 }
-?>

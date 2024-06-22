@@ -472,7 +472,9 @@ font-style: italic;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    background-color: var(--accent-color2);
+    /* background-color: var(--accent-color2); */
+    background-color: var(--background-color);
+
 }
 .book{
     border-radius: 15px;
@@ -481,7 +483,9 @@ font-style: italic;
     width: auto;
     align-items: center;
     text-align: center;
-    
+    /* background-color: var(--background-color2); */
+    background-color: var(--accent-color2);
+
 }
 .book-img{
     width: auto;

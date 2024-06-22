@@ -29,7 +29,6 @@ try {
 
     // Getting the book orders made
     $clientid = $data['client_id'];
-    var_dump($clientid);
     $statusFilter = 'All';
     $query = '';
     $queryCondition = '';

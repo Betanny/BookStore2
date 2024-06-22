@@ -67,19 +67,19 @@ if (isset($_POST['logout'])) {
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php').then(response => response.text()).then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php').then(response => response.text()).then(data => {
+        document.getElementById('header-container').innerHTML = data;
     });
+});
 
-    function reloadPage() {
-        location.reload(); // Reload the current page
-    }
+function reloadPage() {
+    location.reload(); // Reload the current page
+}
 
-    function goBack() {
-        window.history.back();
-    }
+function goBack() {
+    window.history.back();
+}
 </script>
 
 </html>

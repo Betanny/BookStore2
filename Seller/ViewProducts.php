@@ -150,6 +150,15 @@ try {
         }
     }
 
+    // Check if an action parameter is set (for hiding products)
+    if (isset($_GET['action']) && $_GET['action'] === 'hide' && isset($_GET['bookid'])) {
+        $bookId = $_GET['bookid'];
+
+        // Update viewStatus to 'hidden' for the specified bookid
+        $updateSql = "UPDATE books SET view_status = 'hidden' WHERE bookid = :bookid";
+        $updateStmt = $db->prepare($updateSql);
+        $updateStmt->bindValue(':bookid', $bookId, PDO::PARAM_INT);
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -239,40 +248,40 @@ try {
                     <!-- Adding the product items -->
                     <?php if (!empty($products)): ?>
 
-                        <?php foreach ($products as $product): ?>
-                            <div class="row">
-                                <!-- <input type="checkbox" class="checkbox" name="product_id" value="php $product['bookid']; ?>">
+                    <?php foreach ($products as $product): ?>
+                    <div class="row">
+                        <!-- <input type="checkbox" class="checkbox" name="product_id" value="php $product['bookid']; ?>">
                     -->
-                                <div class=" name-cell">
-                                    <?php echo $product['title']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['isbn']; ?>
-                                </div>
-                                <div class="bigger-cell">
-                                    <?php echo $product['subject']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['bookrating']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['copies_bought']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $product['copies_bought'] == 0 ? '---' : $product['total_values_generated']; ?>
-                                </div>
-                                <div class="icon-cell">
-                                    <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
-                                </div>
-                                <div class="icon-cell">
-                                    <i class="fa-solid fa-trash"></i>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <!-- <div class="row"> -->
-                        <h2>No Products to display yet.</h2>
+                        <div class=" name-cell">
+                            <?php echo $product['title']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['isbn']; ?>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $product['subject']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['bookrating']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['copies_bought']; ?>
+                        </div>
+                        <div class="cell">
+                            <?php echo $product['copies_bought'] == 0 ? '---' : $product['total_values_generated']; ?>
+                        </div>
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
+                        </div>
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-trash" onclick="hideProduct(<?php echo $product['bookid']; ?>)"></i>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- <div class="row"> -->
+                    <h2>No Products to display yet.</h2>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -423,57 +432,102 @@ try {
 
 </body>
 <script>
-    function editProduct(bookId) {
-        // Redirect to the edit page with the book ID as a query parameter
-        window.location.href = 'ViewProducts.php?bookid=' + bookId;
-        console.log(bookId);
+function editProduct(bookId) {
+    // Redirect to the edit page with the book ID as a query parameter
+    window.location.href = 'ViewProducts.php?bookid=' + bookId;
+    console.log(bookId);
 
-        // Get the modal
-        var modal = document.getElementById("editproducts-modal");
-        modal.style.display = "block";
+    // Get the modal
+    var modal = document.getElementById("editproducts-modal");
+    modal.style.display = "block";
 
-    }
+}
 
-    function cancel() {
-        window.location.href = 'ViewProducts.php';
-    }
-
-
+function cancel() {
+    window.location.href = 'ViewProducts.php';
+}
 
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-
-            });
-        <?php if (isset($_GET['bookid'])): ?>
-            // If bookid is set, display the modal
-            document.getElementById("editproducts-modal").style.display = "block";
-        <?php endif; ?>
-
-    });
-
-    <?php foreach ($products as $product): ?>
-        console.log(<?php echo json_encode($product['bookid']); ?>);
-    <?php endforeach; ?>
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var addProductButton = document.getElementById('addProductButton');
 
 
-        addProductButton.addEventListener('click', function () {
-            // Redirect to the addproducts.html page
-            window.location.href = 'seller/addproducts.html';
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+
         });
+    <?php if (isset($_GET['bookid'])): ?>
+    // If bookid is set, display the modal
+    document.getElementById("editproducts-modal").style.display = "block";
+    <?php endif; ?>
+
+});
+
+<?php foreach ($products as $product): ?>
+console.log(<?php echo json_encode($product['bookid']); ?>);
+<?php endforeach; ?>
+
+document.addEventListener("DOMContentLoaded", function() {
+    var addProductButton = document.getElementById('addProductButton');
+
+
+    addProductButton.addEventListener('click', function() {
+        // Redirect to the addproducts.html page
+        window.location.href = 'seller/addproducts.html';
     });
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+});
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
     }
+}
+
+
+// function hideProduct(bookId) {
+//     // Send a POST request to update viewStatus to 'hidden' for the given bookId
+//     fetch('ViewProducts.php?action=hide&bookid=' + bookId, {
+//             method: 'GET',
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to hide product');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log('Product hidden successfully:', data);
+//             location.reload(); // Example: Reloads the page to reflect changes
+//         })
+//         .catch(error => {
+//             console.error('Error hiding product:', error);
+//             // Handle error scenario
+//         });
+
+// }
+
+function hideProduct(bookId) {
+    // Send a POST request to update viewStatus to 'hidden' for the given bookId
+    fetch('ViewProducts.php?action=hide&bookid=' + bookId, {
+            method: 'GET',
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to hide product');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Product hidden successfully:', data);
+            location.reload(); // Example: Reloads the page to reflect changes
+        })
+        .catch(error => {
+            console.error('Error hiding product:', error);
+            // Handle error scenario
+        });
+
+}
 </script>
 
 </html>

@@ -239,6 +239,7 @@ function validatePassword(fieldName1, fieldName2) {
 
 }
 
+ 
 // Function to validate phone number
 function validatePhoneNumber(fieldName) {
     var inputField = document.getElementsByName(fieldName)[0];
@@ -254,8 +255,49 @@ function validatePhoneNumber(fieldName) {
         inputControl.classList.remove('success');
         errorDisplay.textContent = errorMessage;
         return false;
+    }
+    
+    // Check if the phone number is exactly 10 digits long
+    if (phoneNumber.length !== 10) {
+        var errorMessage = "Phone number must be exactly 10 digits long";
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = errorMessage;
+        return false;
+    }
+
+    errorDisplay.textContent = "";
+    inputControl.classList.add('success');
+    inputControl.classList.remove('error');
+    return true;
+}
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     var passwordField = document.getElementById("password");
+//     var toggleIcon = document.getElementById("togglePassword");
+
+//     toggleIcon.addEventListener("click", function() {
+//         if (passwordField.type === "password") {
+//             passwordField.type = "text";
+//             toggleIcon.classList.remove("fa-eye-slash");
+//             toggleIcon.classList.add("fa-eye");
+//         } else {
+//             passwordField.type = "password";
+//             toggleIcon.classList.remove("fa-eye");
+//             toggleIcon.classList.add("fa-eye-slash");
+//         }
+//     });
+// });
+
+function togglePasswordVisibility(icon) {
+    var passwordField = icon.previousElementSibling; // Get the input field before the icon
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
     } else {
-        errorDisplay.textContent = "";
-        return true;
+        passwordField.type = "password";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
     }
 }

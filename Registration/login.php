@@ -107,7 +107,9 @@ try {
                     <div class="input-box">
                         <div class="inputcontrol">
                             <label for="Password">Password</label>
-                            <input type="password" class="inputfield" name="password" />
+                            <input type="password" class="inputfield" id="password" name="password" />
+                            <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility(this)"></i>
+
                             <div class="error"><?php echo $passwordError; ?></div>
                         </div>
                     </div>
@@ -199,6 +201,19 @@ try {
             } else {
                 errorDisplay.textContent = "";
                 return true;
+            }
+        }
+
+        function togglePasswordVisibility(icon) {
+            var passwordField = icon.previousElementSibling; // Get the input field before the icon
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
             }
         }
     </script>

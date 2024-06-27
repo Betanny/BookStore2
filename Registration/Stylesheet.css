@@ -404,3 +404,12 @@ label {
 .login-text a:hover {
     text-decoration: underline; /* Add underline on hover */
 }
+
+
+
+.toggle-password {
+    position: absolute;
+    transform: translateX(-100%);
+    cursor: pointer;
+    padding: 10px 10px;
+}

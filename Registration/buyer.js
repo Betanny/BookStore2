@@ -218,8 +218,31 @@ function validatePhoneNumber(fieldName) {
         inputControl.classList.remove('success');
         errorDisplay.textContent = errorMessage;
         return false;
+    }
+    
+    // Check if the phone number is exactly 10 digits long
+    if (phoneNumber.length !== 10) {
+        var errorMessage = "Phone number must be exactly 10 digits long";
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = errorMessage;
+        return false;
+    }
+
+    errorDisplay.textContent = "";
+    inputControl.classList.add('success');
+    inputControl.classList.remove('error');
+    return true;
+}
+function togglePasswordVisibility(icon) {
+    var passwordField = icon.previousElementSibling; // Get the input field before the icon
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
     } else {
-        errorDisplay.textContent = "";
-        return true;
+        passwordField.type = "password";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
     }
 }

@@ -1,5 +1,8 @@
 <?php
+include '../Shared Components\logger.php';
 require_once '../Shared Components/dbconnection.php';
+
+
 session_start();
 try {
 
@@ -30,6 +33,7 @@ try {
                 $dbpass = $user_data['password'];
                 $role = $user_data['role'];
                 $category = $user_data['category'];
+                $user_id = $user_data['user_id'];
 
                 // Hash the provided password using SHA256 for comparison
                 $hashed_input_password = hash('sha256', $password);
@@ -41,6 +45,7 @@ try {
                     $_SESSION['user_id'] = $user_data['user_id'];
                     $_SESSION['category'] = $category;
                     $_SESSION['role'] = $role;
+                    writeLog($db, "User logged in", "INFO", $user_id);
 
                     // Redirect based on user category
                     switch ($role) {
@@ -59,11 +64,15 @@ try {
                     }
                     exit();
                 } else {
+                    writeLog($db, "User failed to log in due to wrong credentials", "ERROR", $user_id);
+
                     // Display error notification if credentials are incorrect
                     $passwordError = 'Incorrect email or password. Please try again.';
+
                 }
             } else {
                 // Display error notification if user with the provided email does not exist
+                writeLog($db, "User failed to log in as user does not exist", "ERROR", $user_id);
                 $emailError = 'User with the provided email does not exist.';
             }
         }

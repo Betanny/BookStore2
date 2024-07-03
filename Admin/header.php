@@ -79,7 +79,7 @@ try {
                 <li><a href="users.php" class="link light-text">Users</a></li>
                 <li><a href="orders.php" class="link light-text">Orders</a></li>
                 <li><a href="transactions.php" class="link light-text">Transactions</a></li>
-                <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li>
+                <!-- <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li> -->
 
             </ul>
 
@@ -92,7 +92,7 @@ try {
             <div class="icon">
                 <a href="#"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
-                    <span class="notification-count"><?php echo $unread_count; ?></span>
+                <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="profile">

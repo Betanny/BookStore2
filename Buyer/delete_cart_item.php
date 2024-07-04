@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 require_once '../Shared Components/dbconnection.php';
 session_start();
 
@@ -7,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../Registration/login.php");
     exit();
 }
+$user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cartId'])) {
     $cartId = $_POST['cartId'];
@@ -20,6 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cartId'])) {
 
         // Check if any rows were affected
         if ($stmt->rowCount() > 0) {
+            writeLog($db, "User deleted item from the cart ", "INFO", $user_id);
+
             // If deletion is successful, send a success response
             http_response_code(200); // OK status code
         } else {

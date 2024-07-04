@@ -1,4 +1,7 @@
 <?php
+include '../Shared Components\logger.php';
+
+
 require_once '../Shared Components/dbconnection.php';
 
 session_start();
@@ -68,6 +71,7 @@ try {
         // Insert the review into the database
         $stmt = $db->prepare("INSERT INTO reviews (product_id, user_id, product_type, rating, review_text, likes, dislikes, additional_comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$selected_product_id, $user_id, "Book", $rating, $review, $likes, $dislikes, $comments]);
+        writeLog($db, "User has reviewed a book with id " . $selected_product_id, "INFO", $user_id);
 
         header("Location: /Buyer/bookselect.php");
 
@@ -227,17 +231,17 @@ try {
 
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+    });
 
-        function returnToBooks() {
-            window.location.href = "/Buyer/bookselect.php";
-        }
+    function returnToBooks() {
+        window.location.href = "/Buyer/bookselect.php";
+    }
     </script>
 </body>
 

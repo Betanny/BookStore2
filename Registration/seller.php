@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 session_start(); // Start the session
 
 $host = "localhost";
@@ -108,6 +110,7 @@ try {
         $_SESSION['role'] = "Dealer";
         echo "New record created successfully";
         $session_id = session_id();
+        writeLog($db, "User has registered as a dealer", "INFO", $user_id);
 
         // Redirect to buyer dashboard
         header("Location: ../Seller/dealeraggreement.php");

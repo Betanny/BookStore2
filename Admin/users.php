@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
@@ -165,14 +167,14 @@ try {
                 <div class="rows">
                     <!-- Adding the user items -->
                     <?php foreach ($users as $user): ?>
-                        <div class="row">
-                            <div class="cell">
-                                <?php echo $user['serialno'];
+                    <div class="row">
+                        <div class="cell">
+                            <?php echo $user['serialno'];
                                 ?>
-                            </div>
+                        </div>
 
-                            <div class="bigger-cell2">
-                                <?php
+                        <div class="bigger-cell2">
+                            <?php
 
                                 // Check category and retrieve name accordingly
                                 switch ($user['category']) {
@@ -241,43 +243,43 @@ try {
                                 }
                                 echo $name;
                                 ?>
-                            </div>
+                        </div>
 
-                            <div class="bigger-cell2">
-                                <?php echo $user['email']; ?>
-                            </div>
-                            <div class="bigger-cell">
-                                <?php echo $user['role']; ?>
-                            </div>
-                            <div class="bigger-cell">
-                                <?php echo $user['category']; ?>
-                            </div>
+                        <div class="bigger-cell2">
+                            <?php echo $user['email']; ?>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $user['role']; ?>
+                        </div>
+                        <div class="bigger-cell">
+                            <?php echo $user['category']; ?>
+                        </div>
 
-                            <div class="bigger-cell">
-                                <?php echo $user['date_joined']; ?>
-                            </div>
-                            <!-- <div class="cell">
+                        <div class="bigger-cell">
+                            <?php echo $user['date_joined']; ?>
+                        </div>
+                        <!-- <div class="cell">
                             </div> -->
 
-                            <div class="icon-cell">
-                                <i class="fa-solid fa-eye-slash"></i>
-                            </div>
-                            <div class="icon-cell">
-                                <i class="fa-solid fa-pen"></i>
-                            </div>
-                            <!-- <div class="icon-cell">
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </div>
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-pen"></i>
+                        </div>
+                        <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="books"
                                 data-pk="<php echo $product['bookid']; ?>" data-pk-name="bookid">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </div> -->
-                            <div class="icon-cell">
-                                <a href="#" class="delete-link" data-table="users" data-pk="<?php echo $user['user_id']; ?>"
-                                    data-pk-name="user_id">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </div>
+                        <div class="icon-cell">
+                            <a href="#" class="delete-link" data-table="users" data-pk="<?php echo $user['user_id']; ?>"
+                                data-pk-name="user_id">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
                         </div>
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -299,122 +301,122 @@ try {
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
 
 
-    });
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     document.querySelectorAll('.delete-link').forEach(link => {
-    //         link.addEventListener('click', function(event) {
-    //             event.preventDefault();
-    //             showDeleteModal(link);
-    //         });
-    //     });
-    // });
+});
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.querySelectorAll('.delete-link').forEach(link => {
+//         link.addEventListener('click', function(event) {
+//             event.preventDefault();
+//             showDeleteModal(link);
+//         });
+//     });
+// });
 
-    // let tableName, primaryKey, pkName, deleteLink;
+// let tableName, primaryKey, pkName, deleteLink;
 
-    // function showDeleteModal(link) {
-    //     document.getElementById('delete-modal').style.display = 'block';
-    //     tableName = link.getAttribute('data-table');
-    //     primaryKey = link.getAttribute('data-pk');
-    //     pkName = link.getAttribute('data-pk-name');
-    //     deleteLink = link;
-    // }
+// function showDeleteModal(link) {
+//     document.getElementById('delete-modal').style.display = 'block';
+//     tableName = link.getAttribute('data-table');
+//     primaryKey = link.getAttribute('data-pk');
+//     pkName = link.getAttribute('data-pk-name');
+//     deleteLink = link;
+// }
 
-    // function cancelDelete() {
-    //     document.getElementById('delete-modal').style.display = 'none';
-    // }
+// function cancelDelete() {
+//     document.getElementById('delete-modal').style.display = 'none';
+// }
 
-    // document.getElementById('confirm-delete-button').addEventListener('click', function() {
-    //     confirmDelete();
-    // });
+// document.getElementById('confirm-delete-button').addEventListener('click', function() {
+//     confirmDelete();
+// });
 
-    // function confirmDelete() {
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' + primaryKey + '&pk_name=' + pkName,
-    //         true);
-    //     xhr.onload = function() {
-    //         if (xhr.status === 200) {
-    //             // Handle successful deletion
-    //             deleteLink.closest('.row').remove();
-    //             cancelDelete();
-    //         } else {
-    //             console.error('Error:', xhr.statusText);
-    //         }
-    //     };
-    //     xhr.onerror = function() {
-    //         console.error('Request failed');
-    //     };
-    //     xhr.send();
-    // }
-    let tableName, primaryKey, pkName, deleteLink;
+// function confirmDelete() {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' + primaryKey + '&pk_name=' + pkName,
+//         true);
+//     xhr.onload = function() {
+//         if (xhr.status === 200) {
+//             // Handle successful deletion
+//             deleteLink.closest('.row').remove();
+//             cancelDelete();
+//         } else {
+//             console.error('Error:', xhr.statusText);
+//         }
+//     };
+//     xhr.onerror = function() {
+//         console.error('Request failed');
+//     };
+//     xhr.send();
+// }
+let tableName, primaryKey, pkName, deleteLink;
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get all elements with the class "delete-link"
-        var deleteLinks = document.querySelectorAll('.delete-link');
+document.addEventListener("DOMContentLoaded", function() {
+    // Get all elements with the class "delete-link"
+    var deleteLinks = document.querySelectorAll('.delete-link');
 
-        // Loop through each delete link
-        deleteLinks.forEach(function (link) {
-            // Add click event listener to each delete link
-            link.addEventListener('click', function (event) {
-                // Prevent the default behavior (i.e., following the href)
+    // Loop through each delete link
+    deleteLinks.forEach(function(link) {
+        // Add click event listener to each delete link
+        link.addEventListener('click', function(event) {
+            // Prevent the default behavior (i.e., following the href)
 
-                // Get the table name, primary key column name, and primary key value from the data attributes
-                tableName = link.getAttribute('data-table');
-                primaryKey = link.getAttribute('data-pk');
-                pkName = link.getAttribute('data-pk-name');
-                deleteLink = link;
-                var row = link.closest('.row'); // Get the closest row element
+            // Get the table name, primary key column name, and primary key value from the data attributes
+            tableName = link.getAttribute('data-table');
+            primaryKey = link.getAttribute('data-pk');
+            pkName = link.getAttribute('data-pk-name');
+            deleteLink = link;
+            var row = link.closest('.row'); // Get the closest row element
 
-                event.preventDefault();
-                document.getElementById('delete-modal').style.display = 'block';
+            event.preventDefault();
+            document.getElementById('delete-modal').style.display = 'block';
 
-            });
         });
     });
+});
 
-    document.getElementById('confirm-delete-button').addEventListener('click', function () {
-        confirmDelete(tableName, primaryKey, pkName, deleteLink);
-    });
-    // Perform AJAX request to the delete script
-    function confirmDelete(tableName, primaryKey, pkName, link) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-            primaryKey +
-            '&pk_name=' + pkName, true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                // Handle successful deletion (if needed)
-                // For example, you can remove the deleted row from the DOM
-                link.parentElement.parentElement.remove();
-                // console.log(pkName + " " + primaryKey);
-                console.log(pkName + " " + primaryKey + " " + tableName + "   " + link);
+document.getElementById('confirm-delete-button').addEventListener('click', function() {
+    confirmDelete(tableName, primaryKey, pkName, deleteLink);
+});
+// Perform AJAX request to the delete script
+function confirmDelete(tableName, primaryKey, pkName, link) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+        primaryKey +
+        '&pk_name=' + pkName, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Handle successful deletion (if needed)
+            // For example, you can remove the deleted row from the DOM
+            link.parentElement.parentElement.remove();
+            // console.log(pkName + " " + primaryKey);
+            console.log(pkName + " " + primaryKey + " " + tableName + "   " + link);
 
-                console.log("removing");
-            } else {
-                // Handle error (if needed)
-                console.error('Error:', xhr.statusText);
-            }
-        };
-        xhr.onerror = function () {
-            // Handle network errors (if needed)
-            console.error('Request failed');
-        };
-        console.log("Sending");
-        xhr.send();
+            console.log("removing");
+        } else {
+            // Handle error (if needed)
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        // Handle network errors (if needed)
+        console.error('Request failed');
+    };
+    console.log("Sending");
+    xhr.send();
 
-    }
+}
 
 
-    function cancelDelete() {
-        document.getElementById('delete-modal').style.display = 'none';
-    }
+function cancelDelete() {
+    document.getElementById('delete-modal').style.display = 'none';
+}
 </script>
 
 </html>

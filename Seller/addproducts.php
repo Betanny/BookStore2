@@ -159,6 +159,7 @@ try {
             ':otherImages' => $otherImages,
             ':sellercategory' => $sellercategory
         ]);
+        writeLog($db, "The user has added a product to the system", "INFO", $user_id);
 
         // After successfully inserting the data, you can redirect the user or show a success message
         header("Location: /Seller/ViewProducts.php");

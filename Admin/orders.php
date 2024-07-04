@@ -1,5 +1,6 @@
 <?php
-// Include database connection file
+include '../Shared Components\logger.php';
+
 require_once '../Shared Components/dbconnection.php';
 
 // Start session
@@ -252,9 +253,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Get all elements with the class "delete-link"
     var deleteLinks = document.querySelectorAll('.delete-link');
 
-    // Loop through each delete  link
+    // Loop through each delete   link
     deleteLinks.forEach(function(link) {
-        // Add click event listener to each del ete link
+        // Add click event listener to each del  ete link
         link.addEventListener('click', function(event) {
             // Prevent the default behavior (i.e., following the href)
             event.preventDefault();
@@ -267,13 +268,14 @@ document.addEventListener("DOMContentLoaded", function() {
             // Perform AJAX request to the delete script
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                primaryKey + '&pk _name=' + pkName, true);
+                primaryKey + '&pk  _name=' + pkName, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Handle successful deletion (if needed)
                     // For example, you can remove the deleted row from the DOM
                     link.parentElement.parentElement.remove();
-                } else {
+                }
+                el se {
                     // Handle error (if needed)
                     console.error('Error:', xhr.statusText);
                 }

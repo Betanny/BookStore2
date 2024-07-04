@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 session_start(); // Start the session
 
 $host = "localhost";
@@ -55,6 +57,7 @@ try {
             $_SESSION['user_id'] = $user_id;
             $_SESSION['category'] = "Individual";
             $_SESSION['role'] = "Client";
+            writeLog($db_connection, "User has registered as a client", "INFO", $user_id);
 
             header("Location: ../Buyer/buyerdashboard.php");
             exit();
@@ -98,6 +101,7 @@ try {
             $_SESSION['user_id'] = $user_id;
             $_SESSION['category'] = "Organization";
             $_SESSION['role'] = "Dealer";
+            writeLog($db_connection, "User has registered as a client", "INFO", $user_id);
 
             header("Location: ../Buyer/buyerdashboard.php");
             exit();

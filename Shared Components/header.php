@@ -34,42 +34,43 @@
 </body>
 
 <script>
-    // Get all the links
-    const links = document.getElementsByClassName('link');
-    document.addEventListener("DOMContentLoaded", function () {
+// Get all the links
+const links = document.getElementsByClassName('link');
+document.addEventListener("DOMContentLoaded", function() {
 
-        // Add click event listeners to each link
-        Array.from(links).forEach(link => {
-            link.addEventListener('click', function (event) {
-                // Prevent the default action
+    // Add click event listeners to each link
+    Array.from(links).forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Prevent the default action
 
-                // Remove the 'active-link' class from all links
-                Array.from(links).forEach(link => {
-                    link.classList.remove('active-link');
-                });
-
-                // Add the 'active-link' class to the clicked link
-                this.classList.add('active-link');
-
-
+            // Remove the 'active-link' class from all links
+            Array.from(links).forEach(link => {
+                link.classList.remove('active-link');
             });
+
+            // Add the 'active-link' class to the clicked link
+            this.classList.add('active-link');
+
+
         });
 
-        const navMenu = document.getElementById('nav-menu');
-        const links = navMenu.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', function (event) {
-                // Prevent default behavior if needed
-                // event.preventDefault();
+    });
 
-                // Remove active-link class from all links
-                links.forEach(link => link.classList.remove('active-link'));
+    const navMenu = document.getElementById('nav-menu');
+    const links = navMenu.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Prevent default behavior if needed
+            // event.preventDefault();
 
-                // Add active-link class to the clicked link
-                this.classList.add('active-link');
-            });
+            // Remove active-link class from all links
+            links.forEach(link => link.classList.remove('active-link'));
+
+            // Add active-link class to the clicked link
+            this.classList.add('active-link');
         });
     });
+});
 </script>
 
 </html>

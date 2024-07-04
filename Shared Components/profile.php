@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
@@ -174,44 +176,44 @@ try {
 
 </body>
 <script>
-    var modal = document.getElementById("editprofile-modal");
+var modal = document.getElementById("editprofile-modal");
 
-    function editProfile() {
-        // Get the modal
-        modal.style.display = "block";
-    }
+function editProfile() {
+    // Get the modal
+    modal.style.display = "block";
+}
 
-    function goBack() {
-        modal.style.display = "none";
-        window.history.back();
+function goBack() {
+    modal.style.display = "none";
+    window.history.back();
 
-    }
+}
 
-    <?php if ($role == 'Client'): ?>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('../Buyer/header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
+<?php if ($role == 'Client'): ?>
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('../Buyer/header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
         });
-    <?php elseif ($role == 'Dealer'): ?>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('../Seller/header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
+});
+<?php elseif ($role == 'Dealer'): ?>
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('../Seller/header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
         });
-    <?php else: ?>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('/Buyer/header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
+});
+<?php else: ?>
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('/Buyer/header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
         });
-    <?php endif; ?>
+});
+<?php endif; ?>
 </script>
 
 

@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
@@ -23,6 +25,7 @@ if (isset($_POST['logout'])) {
 
     // Destroy the session
     session_destroy();
+    writeLog($db, "User has logged out of the system", "INFO", $user_id);
 
     // Redirect to the home page
     header("Location: ../Home/homepage.html");

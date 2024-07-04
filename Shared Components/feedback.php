@@ -1,4 +1,5 @@
 <?php
+include '../Shared Components\logger.php';
 
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
@@ -51,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_POST['submit'])) {
 
         // Execute SQL statement
         $stmt->execute();
+        writeLog($db, "User has submitted feadback for the system", "INFO", $user_id);
 
     } catch (PDOException $e) {
         // Handle database errors
@@ -77,204 +79,204 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_POST['submit'])) {
 
 <body>
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            justify-content: space-around;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        justify-content: space-around;
 
-        }
+    }
 
-        .feedback-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-        }
+    .feedback-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+    }
 
-        .upper-container {
-            background-color: var(--accent-color2);
-            height: 300px;
-            text-align: center;
-            padding: 30px;
-            width: 100%;
+    .upper-container {
+        background-color: var(--accent-color2);
+        height: 300px;
+        text-align: center;
+        padding: 30px;
+        width: 100%;
 
-        }
+    }
 
-        .feedback-form {
-            position: relative;
-            margin-top: 40px;
-            width: 40%;
-            background: var(--primary-color);
-            padding: 20px 30px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            flex-direction: column;
-            left: 30%;
-        }
+    .feedback-form {
+        position: relative;
+        margin-top: 40px;
+        width: 40%;
+        background: var(--primary-color);
+        padding: 20px 30px;
+        border: 1px solid #444;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        left: 30%;
+    }
 
-        .feedback-form .post {
-            display: none;
-        }
+    .feedback-form .post {
+        display: none;
+    }
 
-        .feedback-form .text {
-            font-size: 25px;
-            color: #666;
-            font-weight: 500;
-        }
+    .feedback-form .text {
+        font-size: 25px;
+        color: #666;
+        font-weight: 500;
+    }
 
-        .feedback-form .edit {
-            position: absolute;
-            left: 10px;
-            top: 5px;
-            font-size: 16px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
+    .feedback-form .edit {
+        position: absolute;
+        left: 10px;
+        top: 5px;
+        font-size: 16px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+    }
 
-        .feedback-form .exit {
-            position: absolute;
-            right: 10px;
-            top: 5px;
-            font-size: 20px;
-            color: white;
-            font-weight: 100;
-            cursor: pointer;
-        }
-
-
-        .feedback-form .edit:hover {
-            text-decoration: underline;
-        }
-
-        .feedback-form .exit:hover {
-            text-decoration: underline;
-        }
-
-        .feedback-form .star-widget input {
-            display: none;
-        }
-
-        .upper-container h4 {
-            color: var(--primary-color);
-            font-size: 30px;
-        }
+    .feedback-form .exit {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        font-size: 20px;
+        color: white;
+        font-weight: 100;
+        cursor: pointer;
+    }
 
 
-        .star-widget label {
-            font-size: 40px;
-            color: #444;
-            padding: 10px;
-            float: right;
-            transition: all 0.2s ease;
-        }
+    .feedback-form .edit:hover {
+        text-decoration: underline;
+    }
 
-        input:not(:checked)~label:hover,
-        input:not(:checked)~label:hover~label {
-            color: #fd4;
-        }
+    .feedback-form .exit:hover {
+        text-decoration: underline;
+    }
 
-        input:checked~label {
-            color: #fd4;
-        }
+    .feedback-form .star-widget input {
+        display: none;
+    }
 
-        input#rate-5:checked~label {
-            color: #fe7;
-            text-shadow: 0 0 20px #952;
-        }
+    .upper-container h4 {
+        color: var(--primary-color);
+        font-size: 30px;
+    }
 
-        #rate-1:checked~form header:before {
-            content: "I just hate it ";
-        }
 
-        #rate-2:checked~form header:before {
-            content: "I don't like it ";
-        }
+    .star-widget label {
+        font-size: 40px;
+        color: #444;
+        padding: 10px;
+        float: right;
+        transition: all 0.2s ease;
+    }
 
-        #rate-3:checked~form header:before {
-            content: "It is awesome ";
-        }
+    input:not(:checked)~label:hover,
+    input:not(:checked)~label:hover~label {
+        color: #fd4;
+    }
 
-        #rate-4:checked~form header:before {
-            content: "I just like it ";
-        }
+    input:checked~label {
+        color: #fd4;
+    }
 
-        #rate-5:checked~form header:before {
-            content: "I just love it ";
-        }
+    input#rate-5:checked~label {
+        color: #fe7;
+        text-shadow: 0 0 20px #952;
+    }
 
-        .feedback-form form {
-            display: none;
-        }
+    #rate-1:checked~form header:before {
+        content: "I just hate it ";
+    }
 
-        input:checked~form {
-            display: block;
-        }
+    #rate-2:checked~form header:before {
+        content: "I don't like it ";
+    }
 
-        form header {
-            width: 100%;
-            font-size: 25px;
-            color: #fe7;
-            font-weight: 500;
-            margin: 5px 0 20px 0;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
+    #rate-3:checked~form header:before {
+        content: "It is awesome ";
+    }
 
-        form .textarea {
-            height: 100px;
-            width: 100%;
-            overflow: hidden;
-        }
+    #rate-4:checked~form header:before {
+        content: "I just like it ";
+    }
 
-        form .textarea textarea {
-            height: 100%;
-            width: 100%;
-            outline: none;
-            color: var(---primary-color);
-            border: 1px solid #333;
-            background: var(--background-color2);
-            padding: 10px;
-            font-size: 17px;
-            resize: none;
-        }
+    #rate-5:checked~form header:before {
+        content: "I just love it ";
+    }
 
-        .textarea textarea:focus {
-            border-color: #444;
-        }
+    .feedback-form form {
+        display: none;
+    }
 
-        form .btn {
-            height: 45px;
-            width: 100%;
-            margin: 15px 0;
-        }
+    input:checked~form {
+        display: block;
+    }
 
-        form .btn button {
-            height: 100%;
-            width: 100%;
-            border: 1px solid #444;
-            outline: none;
-            background: var(--background-color2);
-            color: var(--primary-color);
-            font-size: 17px;
-            font-weight: 500;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 10px;
-        }
+    form header {
+        width: 100%;
+        font-size: 25px;
+        color: #fe7;
+        font-weight: 500;
+        margin: 5px 0 20px 0;
+        text-align: center;
+        transition: all 0.2s ease;
+    }
 
-        form .btn button:hover {
-            background: #1b1b1b;
-        }
+    form .textarea {
+        height: 100px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    form .textarea textarea {
+        height: 100%;
+        width: 100%;
+        outline: none;
+        color: var(---primary-color);
+        border: 1px solid #333;
+        background: var(--background-color2);
+        padding: 10px;
+        font-size: 17px;
+        resize: none;
+    }
+
+    .textarea textarea:focus {
+        border-color: #444;
+    }
+
+    form .btn {
+        height: 45px;
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    form .btn button {
+        height: 100%;
+        width: 100%;
+        border: 1px solid #444;
+        outline: none;
+        background: var(--background-color2);
+        color: var(--primary-color);
+        font-size: 17px;
+        font-weight: 500;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 10px;
+    }
+
+    form .btn button:hover {
+        background: #1b1b1b;
+    }
     </style>
 
     <!-- <div id="header-container"></div> -->
@@ -330,57 +332,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_POST['submit'])) {
     </div>
     </form>
     <script>
-        const btn = document.querySelector("button");
-        const post = document.querySelector(".post");
-        const widget = document.querySelector(".star-widget");
-        const editBtn = document.querySelector(".edit");
-        btn.onclick = () => {
+    const btn = document.querySelector("button");
+    const post = document.querySelector(".post");
+    const widget = document.querySelector(".star-widget");
+    const editBtn = document.querySelector(".edit");
+    btn.onclick = () => {
 
-            const rating = document.querySelector('input[name="rate"]:checked').value;
-            console.log(rating);
+        const rating = document.querySelector('input[name="rate"]:checked').value;
+        console.log(rating);
 
-            // Set the value of the hidden input field
-            document.getElementById("rating").value = rating;
-            document.getElementById("feedback-form").submit();
-            widget.style.display = "none";
-            post.style.display = "block";
-        }
+        // Set the value of the hidden input field
+        document.getElementById("rating").value = rating;
+        document.getElementById("feedback-form").submit();
+        widget.style.display = "none";
+        post.style.display = "block";
+    }
 
-        editBtn.onclick = () => {
-            widget.style.display = "block";
-            post.style.display = "none";
+    editBtn.onclick = () => {
+        widget.style.display = "block";
+        post.style.display = "none";
 
-            return false;
-        }
+        return false;
+    }
 
 
 
-        <?php if ($role === 'Client'): ?>
-            document.addEventListener("DOMContentLoaded", function () {
-                fetch('../Buyer/header.php')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('header-container').innerHTML = data;
-                    });
+    <?php if ($role === 'Client'): ?>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('../Buyer/header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
             });
-        <?php else: ?>
-            document.addEventListener("DOMContentLoaded", function () {
-                fetch('/Buyer/header.php')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('header-container').innerHTML = data;
-                    });
+    });
+    <?php else: ?>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/Buyer/header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
             });
-        <?php endif; ?>
+    });
+    <?php endif; ?>
 
 
 
-        //Function to navigate back to the previous page
+    //Function to navigate back to the previous page
 
-        function goBack() {
-            window.history.back();
+    function goBack() {
+        window.history.back();
 
-        }
+    }
     </script>
 
 </body>

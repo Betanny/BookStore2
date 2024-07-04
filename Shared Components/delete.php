@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 

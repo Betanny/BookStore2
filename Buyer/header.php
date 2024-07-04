@@ -1,4 +1,5 @@
 <?php
+include "../Shared Components/notifications.php";
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
@@ -49,9 +50,6 @@ try {
     $stmt_cart_count->execute(['user_id' => $user_id]);
     $cart_count = $stmt_cart_count->fetch(PDO::FETCH_ASSOC)['cart_items'];
 
-
-
-
     $sql_notifications = "SELECT notifications.*, users.email 
     FROM public.notifications 
     JOIN users ON notifications.sender_id = users.user_id 
@@ -59,7 +57,6 @@ try {
     $stmt_notifications = $db->prepare($sql_notifications);
     $stmt_notifications->execute(['user_id' => $user_id]);
     $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
-
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $recipient_email = $_POST['recipient'];
@@ -82,12 +79,6 @@ VALUES (:sender_id, :recipient_id, :message)";
 
     }
 
-
-
-
-
-
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -100,6 +91,10 @@ VALUES (:sender_id, :recipient_id, :message)";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="buyer.css">
+    <link rel="stylesheet" href="/Home/home.css">
+    <link rel="stylesheet" href="/Shared Components/style.css">
+
+
     <link rel="stylesheet" href="/Shared Components/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -114,7 +109,7 @@ VALUES (:sender_id, :recipient_id, :message)";
 
 </head>
 
-<body>
+<>
     <header>
         <div class="logo">
             <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
@@ -165,168 +160,13 @@ VALUES (:sender_id, :recipient_id, :message)";
             <div></div>
         </label>
     </header>
-    <div class="modal" id="modal" style="display:none;">
-        <div class="modal-header">
-            <div class="left-section">
-
-                <button type="submit" class="add-button">New<div class="icon-cell">
-                        <i class="fa-solid fa-plus"></i>
-                    </div></button>
-            </div>
-            <h2 class="modal-title">Notifications</h2>
-            <div class="close">
-                <i class="fa-solid fa-xmark" onclick="cancel();"></i>
-            </div>
-        </div>
-        <div class="modal-content">
-            <div class="all-notifications" id="all-notifications">
-                <?php foreach ($notifications as $notification): ?>
-
-                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                    onclick="openNotification(this);">
-                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
-                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                </div>
-                <?php endforeach; ?>
 
 
-            </div>
-            <div class="opened-notification" id="opened-notification" style="display:none;">
-                <h4 id="sender-email">Sender : </h4>
-                <p id="notification-message"> Message : </p>
 
 
-                <button class="button">Reply</button>
-
-            </div>
-            <div class="new-notification" id="new-notification" style="display:none;">
-                <form action="#" method="post" id="new-notification-form">
-
-                    <div class="notification-header">
-                        <h4>To: </h4>
-                        <div class="form-group">
-                            <div class="inputcontrol">
-                                <label class="no-asterisk" for="recipient"></label>
-                                <input type="text" class="inputfield" name="recipient" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-box">
-                        <div class="inputcontrol">
-                            <label class="no-asterisk" for="message"></label>
-                            <textarea class="inputfield" name="message"
-                                style="height: 150px; width: 85%; margin-left: 25px;"></textarea>
-                            <div class="error"></div>
-
-                        </div>
-
-                    </div>
-                    <button type="submit" class="button">Send</button>
-                </form>
-
-            </div>
-        </div>
-    </div>
+    </body>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-    function showModal() {
-        if (container.style.display != "block";) {
-            container.style.display = "block";
-            console.log("Showing modal");
-        } else {
-            console.log("Hiding modal");
-            container.style.display = "none";
-        }
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-        const container = document.getElementById('modal');
-        const notificationIcon = document.getElementById('showNotificationsIcon');
-        const closeButton = document.querySelector('.close');
 
-
-        function showModal() {
-            if (container.style.display != "block";) {
-                container.style.display = "block";
-                console.log("Showing modal");
-            } else {
-                console.log("Hiding modal");
-                container.style.display = "none";
-            }
-        }
-
-        notificationIcon.addEventListener('click', function(event) {
-            event.preventDefault();
-            showModal();
-        });
-
-        closeButton.addEventListener('click', function() {
-            container.style.display = 'none';
-        });
-
-        var allnotification = document.getElementById('all-notifications');
-        var openednotification = document.getElementById('opened-notification');
-        var newnotification = document.getElementById('new-notification');
-        var addButton = document.querySelector('.add-button');
-
-        function openNotification(element) {
-            const email = element.getAttribute('data-email');
-            const message = element.getAttribute('data-message');
-
-            document.getElementById('sender-email').innerText = 'Sender: ' + email;
-            document.getElementById('notification-message').innerText = 'Message: ' + message;
-
-            allnotification.style.display = 'none';
-            newnotification.style.display = 'none';
-            openednotification.style.display = 'block';
-        }
-
-        function newNotification() {
-            allnotification.style.display = 'none';
-            newnotification.style.display = 'block';
-            openednotification.style.display = 'none';
-            addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-        }
-
-        function allNotification() {
-            allnotification.style.display = 'block';
-            newnotification.style.display = 'none';
-            openednotification.style.display = 'none';
-            addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-        }
-
-        addButton.addEventListener('click', function() {
-            if (this.innerHTML.includes('Back')) {
-                allNotification();
-            } else {
-                newNotification();
-            }
-        });
-
-        // Expose functions to global scope
-        window.showModal = showModal;
-        window.openNotification = openNotification;
-
-
-
-        const navMenu = document.getElementById('nav-menu');
-        const links = navMenu.querySelectorAll('a');
-
-        links.forEach(link => {
-            link.addEventListener('click', function(event) {
-                // Prevent default behavior if needed
-                // event.preventDefault();
-
-                // Remove active-link class from all links
-                links.forEach(link => link.classList.remove('active-link'));
-
-                // Add active-link class to the clicked link
-                this.classList.add('active-link');
-            });
-        });
-    });
-    </script>
-</body>
 
 </html>

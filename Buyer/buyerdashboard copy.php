@@ -324,7 +324,71 @@ try {
 
         </div>
 
+        <div class="modal" id="notifications-modal">
+            <div class="modal-header">
+                <div class="left-section">
 
+                    <button type="submit" class="add-button">New <div class="icon-cell">
+                            <i class="fa-solid fa-plus"></i>
+                        </div></button>
+
+
+                </div>
+                <h2 class="modal-title">Notifications</h2>
+                <div class="close">
+                    <i class="fa-solid fa-xmark" onclick="cancel();"></i>
+                </div>
+            </div>
+            <div class="modal-content">
+                <div class="all-notifications" id="all-notifications">
+                    <?php foreach ($notifications as $notification): ?>
+
+                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                        data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
+                        onclick="openNotification(this);">
+                        <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                    </div>
+                    <?php endforeach; ?>
+
+
+                </div>
+                <div class="opened-notification" id="opened-notification" style="display:none;">
+                    <h4 id="sender-email">Sender : </h4>
+                    <p id="notification-message"> Message : </p>
+
+
+                    <button class="button">Reply</button>
+
+                </div>
+                <div class="new-notification" id="new-notification" style="display:none;">
+                    <form action="#" method="post" id="new-notification-form">
+
+                        <div class="notification-header">
+                            <h4>To: </h4>
+                            <div class="form-group">
+                                <div class="inputcontrol">
+                                    <label class="no-asterisk" for="recipient"></label>
+                                    <input type="text" class="inputfield" name="recipient" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-box">
+                            <div class="inputcontrol">
+                                <label class="no-asterisk" for="message"></label>
+                                <textarea class="inputfield" name="message"
+                                    style="height: 150px; width: 85%; margin-left: 25px;"></textarea>
+                                <div class="error"></div>
+
+                            </div>
+
+                        </div>
+                        <button type="submit" class="button">Send</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
 
 
 </body>
@@ -336,15 +400,58 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('header-container').innerHTML = data;
         });
 
-
+    document.getElementById('notifications-modal').style.display = 'none';
 });
-// document.addEventListener("DOMContentLoaded", function() {
-//     fetch('/Shared Components/notifications.php').then(response => response.text()).then(data => {
-//         document.getElementById('notifications-container').innerHTML = data;
-//     });
+
+function cancel() {
+    window.location.href = 'ViewProducts.php';
+}
+var allnotification = document.getElementById('all-notifications');
+var openednotification = document.getElementById('opened-notification');
+var newnotification = document.getElementById('new-notification');
+var addButton = document.querySelector('.add-button');
 
 
-// });
+// function openNotification() {
+//     allnotification.style.display = 'none';
+//     newnotification.style.display = 'none';
+//     openednotification.style.display = 'block';
+
+// }
+function openNotification(element) {
+    const email = element.getAttribute('data-email');
+    const message = element.getAttribute('data-message');
+
+    document.getElementById('sender-email').innerText = 'Sender: ' + email;
+    document.getElementById('notification-message').innerText = 'Message: ' + message;
+
+    document.getElementById('all-notifications').style.display = 'none';
+    document.getElementById('new-notification').style.display = 'none';
+    document.getElementById('opened-notification').style.display = 'block';
+}
+
+function newNotification() {
+    allnotification.style.display = 'none';
+    newnotification.style.display = 'block';
+    openednotification.style.display = 'none';
+    addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+
+}
+
+function allNotification() {
+    allnotification.style.display = 'block';
+    newnotification.style.display = 'none';
+    openednotification.style.display = 'none';
+    addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
+
+}
+addButton.addEventListener('click', function() {
+    if (this.innerHTML.includes('Back')) {
+        allNotification();
+    } else {
+        newNotification();
+    }
+});
 </script>
 
 </html>

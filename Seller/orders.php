@@ -136,6 +136,8 @@ try {
             $stmt->bindParam(':orderId', $orderId);
             $stmt->bindParam(':delivery_date', $current_date);
             $stmt->execute();
+            writeLog($db, "Dealer has confirmed to have delivered the order " . $orderId, "INFO", $user_id);
+
         } elseif (isset($_POST['decline_order'])) {
             // Decline Order form submission
             $orderId = $_POST['order_id'];
@@ -150,6 +152,8 @@ try {
             $stmt->bindParam(':delivery_date', $current_date);
 
             $stmt->execute();
+            writeLog($db, "Dealer has declined the order " . $orderId, "INFO", $user_id);
+
         }
         header("Location: {$_SERVER['REQUEST_URI']}");
 

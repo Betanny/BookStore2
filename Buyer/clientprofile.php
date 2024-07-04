@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
@@ -16,6 +18,7 @@ $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
 $role = $_SESSION['role'];
 
+writeLog($db, "User is accessing their profile", "INFO", $user_id);
 
 try {
 

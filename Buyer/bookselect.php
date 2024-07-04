@@ -1,4 +1,7 @@
 <?php
+
+include '../Shared Components\logger.php';
+
 require_once '../Shared Components/dbconnection.php';
 
 session_start();
@@ -88,17 +91,17 @@ try {
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        });
 
-    // function setpid(productId) {
-    //     window.location.href = "bookreview.php?product_id=" + productId;
-    // }
+        // function setpid(productId) {
+        //     window.location.href = "bookreview.php?product_id=" + productId;
+        // }
     </script>
 </body>
 

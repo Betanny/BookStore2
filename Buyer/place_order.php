@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 require_once '../Shared Components/dbconnection.php';
 session_start();
 
@@ -70,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             echo "Order for product ID $product_id placed successfully.<br>";
             $order_id = $db->lastInsertId();
+            writeLog($db, "User has ordered a book with the id " . $product_id, "INFO", $user_id);
 
             // Prepare SQL statement to insert into transactions table
             $stmt_transaction = $db->prepare("
@@ -89,6 +92,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Execute the transaction insertion
             if ($stmt_transaction->execute()) {
+                writeLog($db, "User has made a transaction of " . $total_amount . " for the order a book with the id " . $product_id, "INFO", $user_id);
+
                 echo "Transaction completed successfully.<br>";
                 $stmt_delete_cart = $db->prepare("
             DELETE FROM cart WHERE cart_id = :cart_id 
@@ -97,10 +102,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt_delete_cart->execute();
             } else {
                 echo "Error processing transaction.<br>";
+                writeLog($db, "User has attempted to make a transaction of " . $total_amount . " for the order a book with the id " . $product_id, "ERROR", $user_id);
+
             }
 
         } else {
             echo "Error placing order for product ID $product_id.<br>";
+            writeLog($db, "Error placing order for product ID" . $product_id, "ERROR", $user_id);
+
         }
     }
     header('Location:/Buyer/CheckOut.php');

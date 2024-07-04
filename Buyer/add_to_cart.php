@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 session_start(); // Start the session
 
 // Include database connection file
@@ -40,6 +42,7 @@ try {
 
             // Fetch the book data
             $book_data = $bookstmt->fetch(PDO::FETCH_ASSOC);
+
             if ($newQuantity > $book_data['mininbulk']) {
                 $discount = (($book_data['price'] * ($newQuantity)) - ($newQuantity * $book_data['priceinbulk']));
             }
@@ -70,10 +73,12 @@ VALUES (:client_id, :product_id, :quantity, :product_type, :product_category, :u
 
     // Check if the insertion or update was successful
     if ($stmt->rowCount() > 0) {
+        writeLog($db, "User has added a book with id " . $book_id . " to the cart", "INFO", $user_id);
         header('Location:/Home/products.php');
         // Book added to cart successfully or quantity updated
         echo "Operation successful!";
     } else {
+        writeLog($db, "User has failed to add an item to the cart", "INFO", $user_id);
         // Error adding book to cart or updating quantity
         echo "Operation failed!";
     }

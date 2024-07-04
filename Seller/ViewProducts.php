@@ -101,7 +101,6 @@ try {
         $subject = $_POST['Subject'];
         $pages = $_POST['Pages'];
         $details = $_POST['details'];
-        // Add more fields as needed...
 
         // Update database
         try {
@@ -141,6 +140,7 @@ try {
                 ':details' => $details,
                 ':bookid' => $bookid
             ]);
+            writeLog($db, "Dealer has edited their product ", "INFO", $user_id);
 
             // Redirect to a success page or reload the current page
             header("Location: ViewProducts.php");
@@ -158,6 +158,8 @@ try {
         $updateSql = "UPDATE books SET view_status = 'hidden' WHERE bookid = :bookid";
         $updateStmt = $db->prepare($updateSql);
         $updateStmt->bindValue(':bookid', $bookId, PDO::PARAM_INT);
+        writeLog($db, "Dealer has deleted a product", "INFO", $user_id);
+
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();

@@ -1,4 +1,6 @@
 <?php
+include '../Shared Components\logger.php';
+
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
 
@@ -102,6 +104,7 @@ try {
             $update_stmt->bindParam(':points_to_add', $points_to_add, PDO::PARAM_INT);
             $update_stmt->bindParam(':client_id', $clientid, PDO::PARAM_INT);
             $update_stmt->execute();
+            writeLog($db, "User has confirmed that the order " . $order_id . " has been delivered", "INFO", $user_id);
 
 
         } elseif (isset($_POST['decline_order'])) {
@@ -118,6 +121,8 @@ try {
             $stmt->bindParam(':improvement', $improvement);
             $stmt->bindParam(':orderId', $orderId);
             $stmt->execute();
+            writeLog($db, "User has confirmed that the order " . $order_id . " has been declined", "INFO", $user_id);
+
         }
         header("Location: {$_SERVER['REQUEST_URI']}");
 
@@ -125,6 +130,7 @@ try {
 
 
     if (isset($_GET['export']) && $_GET['export'] === 'true') {
+        writeLog($db, "User has exported their orders in csv format", "INFO", $user_id);
 
         $filename = 'myorders_report.csv';
 

@@ -101,6 +101,26 @@ try {
     $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
 
 
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $recipient_email = $_POST['recipient'];
+        $message = $_POST['message'];
+        $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
+        $stmt->execute(['email' => $recipient_email]);
+        $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $recipient_id = $recipient['user_id'];
+
+        // Insert new notification
+        $sql = "INSERT INTO notifications (sender_id, recipient_id, notification_message) 
+                    VALUES (:sender_id, :recipient_id, :message)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            'sender_id' => $user_id,
+            'recipient_id' => $recipient_id,
+            'message' => $message
+        ]);
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -394,7 +414,7 @@ try {
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
+    fetch('header copy.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;

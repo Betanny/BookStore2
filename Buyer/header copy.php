@@ -85,173 +85,179 @@ VALUES (:sender_id, :recipient_id, :message)";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="buyer.css">
-    <link rel="stylesheet" href="/Home/home.css">
-    <link rel="stylesheet" href="/Shared Components/style.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="buyer.css">
+        <link rel="stylesheet" href="/Home/home.css">
+        <link rel="stylesheet" href="/Shared Components/style.css">
 
 
-    <link rel="stylesheet" href="/Shared Components/header.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="icon" type="image/svg+xml" href="/Shared Components/smartcbc.svg">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <title>SmartCBC</title>
-    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+        <link rel="stylesheet" href="/Shared Components/header.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="icon" type="image/svg+xml" href="/Shared Components/smartcbc.svg">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet">
+        <title>SmartCBC</title>
+        <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
-</head>
+    </head>
 
-<>
-    <header>
-        <div class="logo">
-            <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
-        </div>
-        <input type="checkbox" id="nav_check" hidden>
-        <nav>
-            <ul id="nav-menu">
-                <li><a href="/Buyer/buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="/Home/products.php" class="link light-text">Products</a></li>
-                <li><a href="/Buyer/myorders.php" class="link light-text">My orders</a></li>
-                <li><a href="/Shared Components/feedback.php" class="link light-text">Feedback</a></li>
-                <li><a href="/Buyer/bookselect.php" class="link light-text">Review a book</a></li>
-            </ul>
-        </nav>
-        <div class="user-panel">
-            <div class="icon">
-                <a onclick="showModal();"><i class="fa-regular fa-bell"></i></a>
-                <?php if ($unread_count > 0): ?>
-                <span class="notification-count"><?php echo $unread_count; ?></span>
-                <?php endif; ?>
+    <body>
+
+        <header>
+            <div class="logo">
+                <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
             </div>
-            <div class="icon">
-                <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
-                <?php if ($cart_count > 0): ?>
-                <span class="notification-count"><?php echo $cart_count; ?></span>
-                <?php endif; ?>
-            </div>
-            <div class="profile">
-                <div class="user-image">
-                    <img src="/Images/Illustrations/profile.svg" class="img-profile">
+            <input type="checkbox" id="nav_check" hidden>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="/Buyer/buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
+                    <li><a href="/Home/products.php" class="link light-text">Products</a></li>
+                    <li><a href="/Buyer/myorders.php" class="link light-text">My orders</a></li>
+                    <li><a href="/Shared Components/feedback.php" class="link light-text">Feedback</a></li>
+                    <li><a href="/Buyer/bookselect.php" class="link light-text">Review a book</a></li>
+                </ul>
+            </nav>
+            <div class="user-panel">
+                <div class="icon" id="notificationIcon">
+                    <a href="../Shared Components/notifications.php"><i class="fa-regular fa-bell"></i></a>
+                    <?php if ($unread_count > 0): ?>
+                    <span class="notification-count"><?php echo $unread_count; ?></span>
+                    <?php endif; ?>
                 </div>
-                <div class="user-name">
-                    <h4><?php echo htmlspecialchars($full_name); ?></h4>
-                    <div class="dropdown">
-                        <button class="dropbtn"><i class="fa-solid fa-angle-down"></i></button>
-                        <div class="dropdown-content">
-                            <a href="clientprofile.php">Edit</a>
-                            <a href="/Shared Components/logout.php">Logout</a>
-                        </div>
+                <div class="icon">
+                    <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <?php if ($cart_count > 0): ?>
+                    <span class="notification-count"><?php echo $cart_count; ?></span>
+                    <?php endif; ?>
+                </div>
+                <div class="profile">
+                    <div class="user-image">
+                        <img src="/Images/Illustrations/profile.svg" class="img-profile">
                     </div>
-                </div>
-            </div>
-        </div>
-        <label for="nav_check" class="hamburger">
-            <div></div>
-            <div></div>
-            <div></div>
-        </label>
-    </header>
-    <div class="modal" style="display:none;" id="notificationmodal">
-        <div class="modal-header">
-            <div class="left-section">
-
-                <button type="submit" class="add-button">New <div class="icon-cell">
-                        <i class="fa-solid fa-plus"></i>
-                    </div></button>
-
-
-            </div>
-            <h2 class="modal-title">Notifications</h2>
-            <div class="close">
-                <i class="fa-solid fa-xmark" onclick="cancel();"></i>
-            </div>
-        </div>
-        <div class="modal-content">
-            <div class="all-notifications" id="all-notifications">
-                <?php foreach ($notifications as $notification): ?>
-
-                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                    data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
-                    onclick="openNotification(this);">
-                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
-                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                </div>
-                <?php endforeach; ?>
-
-
-            </div>
-            <div class="opened-notification" id="opened-notification" style="display:none;">
-                <h4 id="sender-email">Sender : </h4>
-                <p id="notification-message"> Message : </p>
-
-
-                <button class="button">Reply</button>
-
-            </div>
-            <div class="new-notification" id="new-notification" style="display:none;">
-                <form action="#" method="post" id="new-notification-form">
-
-                    <div class="notification-header">
-                        <h4>To: </h4>
-                        <div class="form-group">
-                            <div class="inputcontrol">
-                                <label class="no-asterisk" for="recipient"></label>
-                                <input type="text" class="inputfield" name="recipient" />
+                    <div class="user-name">
+                        <h4><?php echo htmlspecialchars($full_name); ?></h4>
+                        <div class="dropdown">
+                            <button class="dropbtn"><i class="fa-solid fa-angle-down"></i></button>
+                            <div class="dropdown-content">
+                                <a href="clientprofile.php">Edit</a>
+                                <a href="/Shared Components/logout.php">Logout</a>
                             </div>
                         </div>
                     </div>
-                    <div class="input-box">
-                        <div class="inputcontrol">
-                            <label class="no-asterisk" for="message"></label>
-                            <textarea class="inputfield" name="message"
-                                style="height: 150px; width: 85%; margin-left: 25px;"></textarea>
-                            <div class="error"></div>
+                </div>
+            </div>
+            <label for="nav_check" class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </label>
+        </header>
+        <div class="modal" id="notificationmodal" style="display:none;">
+            <div class="modal-header">
+                <div class="left-section">
+
+                    <button type="submit" class="add-button">New <div class="icon-cell">
+                            <i class="fa-solid fa-plus"></i>
+                        </div></button>
+
+
+                </div>
+                <h2 class="modal-title">Notifications</h2>
+                <div class="close">
+                    <i class="fa-solid fa-xmark" onclick="cancel();"></i>
+                </div>
+            </div>
+            <div class="modal-content">
+                <div class="all-notifications" id="all-notifications">
+                    <?php foreach ($notifications as $notification): ?>
+
+                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                        data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
+                        onclick="openNotification(this);">
+                        <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                    </div>
+                    <?php endforeach; ?>
+
+
+                </div>
+                <div class="opened-notification" id="opened-notification" style="display:none;">
+                    <h4 id="sender-email">Sender : </h4>
+                    <p id="notification-message"> Message : </p>
+
+
+                    <button class="button">Reply</button>
+
+                </div>
+                <div class="new-notification" id="new-notification" style="display:none;">
+                    <form action="#" method="post" id="new-notification-form">
+
+                        <div class="notification-header">
+                            <h4>To: </h4>
+                            <div class="form-group">
+                                <div class="inputcontrol">
+                                    <label for="recipient" class="no-asterisk"></label>
+                                    <input type="text" class="inputfield" id="recipient" name="recipient" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-box">
+                            <div class="inputcontrol">
+                                <label for="message" class="no-asterisk"></label>
+                                <textarea class="inputfield" name="message" id="message"
+                                    style="height: 150px; width: 85%; margin-left: 25px;"></textarea>
+                                <div class="error"></div>
+
+                            </div>
 
                         </div>
+                        <button type="submit" class="button">Send</button>
+                    </form>
 
-                    </div>
-                    <button type="submit" class="button">Send</button>
-                </form>
-
+                </div>
             </div>
         </div>
-    </div>
-
-
-
 
     </body>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
     <script>
+    alert("JavaScript is working!");
+
     document.addEventListener("DOMContentLoaded", function() {
+        alert("JavaScript is working!");
+
+        console.log("DOM fully loaded and parsed"); // This should print when the DOM is loaded
+
         document.getElementById('notificationmodal').style.display = 'none';
+        console.log("showModal function called"); // Add this line to test the function
+        document.getElementById('notificationIcon').addEventListener('click', showModal);
+
+        function showModal() {
+            document.getElementById('notificationmodal').style.display = 'block';
+        }
     });
 
     function cancel() {
         window.location.href = 'ViewProducts.php';
     }
+
     var allnotification = document.getElementById('all-notifications');
     var openednotification = document.getElementById('opened-notification');
     var newnotification = document.getElementById('new-notification');
     var addButton = document.querySelector('.add-button');
 
-
-    // function openNotification() {
-    //     allnotification.style.display = 'none';
-    //     newnotification.style.display = 'none';
-    //     openednotification.style.display = 'block';
-
-    // }
     function openNotification(element) {
         const email = element.getAttribute('data-email');
         const message = element.getAttribute('data-message');
@@ -269,7 +275,6 @@ VALUES (:sender_id, :recipient_id, :message)";
         newnotification.style.display = 'block';
         openednotification.style.display = 'none';
         addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-
     }
 
     function allNotification() {
@@ -277,8 +282,8 @@ VALUES (:sender_id, :recipient_id, :message)";
         newnotification.style.display = 'none';
         openednotification.style.display = 'none';
         addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-
     }
+
     addButton.addEventListener('click', function() {
         if (this.innerHTML.includes('Back')) {
             allNotification();
@@ -286,8 +291,12 @@ VALUES (:sender_id, :recipient_id, :message)";
             newNotification();
         }
     });
+
+    function showModal() {
+        document.getElementById('notificationmodal').style.display = 'block';
+    }
     </script>
 
 
-</html>
-</script>
+
+    </html>

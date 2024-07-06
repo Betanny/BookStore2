@@ -1,6 +1,7 @@
 <?php
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
+include '../Shared Components/logger.php';
 
 // Start session
 session_start();
@@ -159,6 +160,30 @@ try {
 
     }
 
+    if (isset($_GET['export']) && $_GET['export'] === 'true') {
+        writeLog($db, "User has extracted a copy of the products ", "INFO", $user_id);
+
+        $filename = 'orders_report.csv';
+
+        // Set headers for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        // Open output stream
+        $output = fopen('php://output', 'w');
+
+        // Write CSV headers
+        fputcsv($output, array_keys($orders[0]));
+
+        // Write transaction data to CSV
+        foreach ($orders as $order) {
+            fputcsv($output, $order);
+        }
+
+        // Close output stream
+        fclose($output);
+        exit();
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -187,9 +212,13 @@ try {
             <h4>My Orders</h4>
 
             <div class="left-filter">
-                <button type="submit" class="add-button">Export <div class="icon-cell">
-                        <i class="fa-solid fa-file-arrow-down"></i>
-                    </div></button>
+                <button type="button" class="add-button" id="exportButton">Export
+                    <a href="#" class="icon-cell" style="color: white;">
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                        </div>
+                    </a>
+                </button>
             </div>
             <div class="right-filter">
                 <div class="filter-dropdown">
@@ -463,6 +492,20 @@ document.addEventListener("DOMContentLoaded",
             deliveredButton.classList.remove('active');
         });
     });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var exportButton = document.getElementById('exportButton');
+    exportButton.addEventListener('click', function() {
+        // Update the href attribute of the export button with the desired URL
+        var currentHref = window.location.href;
+        var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
+            '?export=true';
+        exportButton.querySelector('a').setAttribute('href', exportUrl);
+    });
+});
 </script>
 
 

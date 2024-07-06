@@ -343,8 +343,7 @@ try {
             </div>
 
         </div>
-
-        <div class="modal" id="notifications-modal">
+        <div class="modal" id="notificationmodal" style="display:none;">
             <div class="modal-header">
                 <div class="left-section">
 
@@ -365,7 +364,7 @@ try {
 
                     <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
                         data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
-                        onclick="openNotification(this);">
+                        onclick=" openNotification(this);">
                         <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
                         <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
                     </div>
@@ -388,15 +387,15 @@ try {
                             <h4>To: </h4>
                             <div class="form-group">
                                 <div class="inputcontrol">
-                                    <label class="no-asterisk" for="recipient"></label>
-                                    <input type="text" class="inputfield" name="recipient" />
+                                    <label for="recipient" class="no-asterisk"></label>
+                                    <input type="text" class="inputfield" id="recipient" name="recipient" />
                                 </div>
                             </div>
                         </div>
                         <div class="input-box">
                             <div class="inputcontrol">
-                                <label class="no-asterisk" for="message"></label>
-                                <textarea class="inputfield" name="message"
+                                <label for="message" class="no-asterisk"></label>
+                                <textarea class="inputfield" name="message" id="message"
                                     style="height: 150px; width: 85%; margin-left: 25px;"></textarea>
                                 <div class="error"></div>
 
@@ -410,7 +409,6 @@ try {
             </div>
         </div>
 
-
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -419,25 +417,32 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
+    alert("JavaScript is working!");
 
-    document.getElementById('notifications-modal').style.display = 'none';
+    document.getElementById('notificationmodal').style.display = 'none';
+
+    function openNotification(element) {
+        const email = element.getAttribute('data-email');
+        const message = element.getAttribute('data-message');
+
+        document.getElementById('sender-email').innerText = 'Sender: ' + email;
+        document.getElementById('notification-message').innerText = 'Message: ' + message;
+
+        document.getElementById('all-notifications').style.display = 'none';
+        document.getElementById('new-notification').style.display = 'none';
+        document.getElementById('opened-notification').style.display = 'block';
+    }
 });
 
 function cancel() {
     window.location.href = 'ViewProducts.php';
 }
+
 var allnotification = document.getElementById('all-notifications');
 var openednotification = document.getElementById('opened-notification');
 var newnotification = document.getElementById('new-notification');
 var addButton = document.querySelector('.add-button');
 
-
-// function openNotification() {
-//     allnotification.style.display = 'none';
-//     newnotification.style.display = 'none';
-//     openednotification.style.display = 'block';
-
-// }
 function openNotification(element) {
     const email = element.getAttribute('data-email');
     const message = element.getAttribute('data-message');
@@ -455,7 +460,6 @@ function newNotification() {
     newnotification.style.display = 'block';
     openednotification.style.display = 'none';
     addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-
 }
 
 function allNotification() {
@@ -463,8 +467,8 @@ function allNotification() {
     newnotification.style.display = 'none';
     openednotification.style.display = 'none';
     addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-
 }
+
 addButton.addEventListener('click', function() {
     if (this.innerHTML.includes('Back')) {
         allNotification();
@@ -472,6 +476,12 @@ addButton.addEventListener('click', function() {
         newNotification();
     }
 });
+
+function showModal() {
+    document.getElementById('notificationmodal').style.display = 'block';
+}
 </script>
+
+
 
 </html>

@@ -214,23 +214,15 @@ try {
 
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
     <style>
-        .chart {
-            width: 200px;
-            height: 200px;
-            margin: 10px auto;
-            border-radius: 50%;
-            background: conic-gradient(green 0%
-                    <?php echo $delivered_percentage; ?>
-                    %,
-                    orange
-                    <?php echo $delivered_percentage; ?>
-                    %
-                    <?php echo $pending_percentage + $delivered_percentage; ?>
-                    %,
-                    red
-                    <?php echo $pending_percentage + $delivered_percentage; ?>
-                    % 100%);
-        }
+    .chart {
+        width: 200px;
+        height: 200px;
+        margin: 10px auto;
+        border-radius: 50%;
+        background: conic-gradient(green 0% <?php echo $delivered_percentage . "%"; ?>,
+                orange <?php echo $delivered_percentage . "%"; ?> <?php echo $pending_percentage + $delivered_percentage . "%"; ?>,
+                red <?php echo $pending_percentage + $delivered_percentage . "%"?> 100%);
+    }
     </style>
 </head>
 
@@ -312,9 +304,9 @@ try {
 
                     <div id="monthly-graph" style="display: block;">
                         <?php if (empty($salesDataMonthly || $salesDataYearly)): ?>
-                            <h2>Nothing to display yet</h2>
+                        <h2>Nothing to display yet</h2>
                         <?php else: ?>
-                            <?php
+                        <?php
                             $months = [
                                 1 => 'January',
                                 2 => 'February',
@@ -330,21 +322,21 @@ try {
                                 12 => 'December'
                             ];
                             foreach ($salesDataMonthly as $month => $totalSales): ?>
-                                <div class="bar-container">
-                                    <div class="bar-label"><?php echo $months[$month]; ?>:</div>
-                                    <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
-                                    <div class="bar-value"><?php echo $totalSales; ?></div>
-                                </div>
-                            <?php endforeach; ?>
+                        <div class="bar-container">
+                            <div class="bar-label"><?php echo $months[$month]; ?>:</div>
+                            <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
+                            <div class="bar-value"><?php echo $totalSales; ?></div>
                         </div>
-                        <div id="yearly-graph" style="display: none;">
-                            <?php foreach ($salesDataYearly as $year => $totalSales): ?>
-                                <div class="bar-container">
-                                    <div class="bar-label"><?php echo $year; ?>:</div>
-                                    <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
-                                    <div class="bar-value"><?php echo $totalSales; ?></div>
-                                </div>
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
+                    <div id="yearly-graph" style="display: none;">
+                        <?php foreach ($salesDataYearly as $year => $totalSales): ?>
+                        <div class="bar-container">
+                            <div class="bar-label"><?php echo $year; ?>:</div>
+                            <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
+                            <div class="bar-value"><?php echo $totalSales; ?></div>
+                        </div>
+                        <?php endforeach; ?>
                         <?php endif; ?>
 
                     </div>
@@ -411,18 +403,18 @@ try {
                 <h4>Notifications</h4>
                 <div class="tasks-container">
                     <?php if (empty($notifications)): ?>
-                        <p>You have no notifications</p>
+                    <p>You have no notifications</p>
                     <?php else: ?>
-                        <div class="task">
+                    <div class="task">
 
-                            <?php foreach ($notifications as $notification): ?>
-                                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                                    onclick="openNotification(this);">
-                                    <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
-                                    <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
-                                </div>
-                            <?php endforeach; ?>
+                        <?php foreach ($notifications as $notification): ?>
+                        <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                            data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                            onclick="openNotification(this);">
+                            <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
+                            <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
+                        </div>
+                        <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
 
@@ -439,29 +431,57 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('header.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        });
 
 
-    });
+});
 
-    function updateGraph() {
-        const filter = document.getElementById('filter').value;
-        const monthlyGraph = document.getElementById('monthly-graph');
-        const yearlyGraph = document.getElementById('yearly-graph');
+function updateGraph() {
+    const filter = document.getElementById('filter').value;
+    const monthlyGraph = document.getElementById('monthly-graph');
+    const yearlyGraph = document.getElementById('yearly-graph');
 
-        if (filter === 'monthly') {
-            monthlyGraph.style.display = 'block';
-            yearlyGraph.style.display = 'none';
-        } else if (filter === 'yearly') {
-            monthlyGraph.style.display = 'none';
-            yearlyGraph.style.display = 'block';
-        }
+    if (filter === 'monthly') {
+        monthlyGraph.style.display = 'block';
+        yearlyGraph.style.display = 'none';
+    } else if (filter === 'yearly') {
+        monthlyGraph.style.display = 'none';
+        yearlyGraph.style.display = 'block';
     }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Data for pie chart
+    const data = {
+        pending: <?php echo $pending_count; ?>,
+        delivered: <?php echo $delivered_count; ?>,
+        declined: <?php echo $declined_count; ?>
+    };
+
+    // Calculate total
+    const total = data.pending + data.delivered + data.declined;
+
+    // Calculate percentages
+    const pendingPercentage = (data.pending / total) * 100;
+    const deliveredPercentage = (data.delivered / total) * 100;
+    const declinedPercentage = (data.declined / total) * 100;
+
+    console.log(
+        `Pending: ${pendingPercentage}%, Delivered: ${deliveredPercentage}%, Declined: ${declinedPercentage}%`
+    );
+
+    // Apply conic gradient dynamically
+    document.querySelector('.chart').style.background = `conic-gradient(
+        green 0% pendingPercentage%,
+        orange pendingPercentage% calc(pendingPercentage + deliveredPercentage)%,
+        red calc(pendingPercentage + deliveredPercentage)% 100%
+    )`;
+});
 </script>
 
 </html>

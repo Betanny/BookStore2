@@ -89,12 +89,12 @@ try {
                 <a href="#"><i class="fa-regular fa-envelope"></i></a>
 
             </div> -->
-            <div class="icon">
-                <a href="#"><i class="fa-regular fa-bell"></i></a>
-                <?php if ($unread_count > 0): ?>
+            <!-- <div class="icon">
+                <a href="../Shared Components/notifications.php"><i class="fa-regular fa-bell"></i></a>
+                <php if ($unread_count > 0): ?>
                 <span class="notification-count"><?php echo $unread_count; ?></span>
-                <?php endif; ?>
-            </div>
+                <php endif; ?>
+            </div> -->
             <div class="profile">
                 <div class="user-image">
                     <img src="/Images/Illustrations/profile.svg" class="img-profile">

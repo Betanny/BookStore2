@@ -17,7 +17,6 @@ if (!isset($_SESSION['user_id'])) {
 // Get user ID and category from session
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
-var_dump($user_id);
 try {
     // Determine which table to query based on user category
     $table_name = '';
@@ -30,6 +29,9 @@ try {
             break;
         case 'Publisher':
             $table_name = 'publishers';
+            break;
+        case 'Author':
+            $table_name = 'authors';
             break;
         case 'Manufacturer':
             $table_name = 'manufacturers';
@@ -136,7 +138,9 @@ try {
                 <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
                     data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
                     onclick="openNotification(this);">
-                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
+                    <h4>
+                        <?php echo htmlspecialchars($notification['email']); ?>
+                    </h4>
                     <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
                 </div>
                 <?php endforeach; ?>
@@ -196,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function cancel() {
-    window.location.href = 'ViewProducts.php';
+    window.history.back();
 }
 var allnotification = document.getElementById('all-notifications');
 var openednotification = document.getElementById('opened-notification');

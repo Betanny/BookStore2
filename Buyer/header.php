@@ -109,7 +109,8 @@ VALUES (:sender_id, :recipient_id, :message)";
 
 </head>
 
-<>
+<body>
+
     <header>
         <div class="logo">
             <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
@@ -126,7 +127,7 @@ VALUES (:sender_id, :recipient_id, :message)";
         </nav>
         <div class="user-panel">
             <div class="icon">
-                <a onclick="showModal();"><i class="fa-regular fa-bell"></i></a>
+                <a href="../Shared Components/notifications.php"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
                 <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
@@ -163,9 +164,9 @@ VALUES (:sender_id, :recipient_id, :message)";
 
 
 
-    </body>
+</body>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 </html>

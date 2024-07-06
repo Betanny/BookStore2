@@ -73,6 +73,31 @@ try {
     // Fetch the results into an associative array
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    if (isset($_GET['export']) && $_GET['export'] === 'true') {
+        writeLog($db, "User has extracted a copy of the products ", "INFO", $user_id);
+
+        $filename = 'users_report.csv';
+
+        // Set headers for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        // Open output stream
+        $output = fopen('php://output', 'w');
+
+        // Write CSV headers
+        fputcsv($output, array_keys($users[0]));
+
+        // Write transaction data to CSV
+        foreach ($users as $user) {
+            fputcsv($output, $user);
+        }
+
+        // Close output stream
+        fclose($output);
+        exit();
+    }
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -101,12 +126,13 @@ try {
             <h4>All Users</h4>
 
             <div class="left-filter">
-
-                <button type="submit" class="add-button">Export <div class="icon-cell">
-                        <i class="fa-solid fa-file-arrow-down"></i>
-                    </div></button>
-
-
+                <button type="button" class="add-button" id="exportButton">Export
+                    <a href="#" class="icon-cell" style="color: white;">
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                        </div>
+                    </a>
+                </button>
             </div>
             <div class="right-filter">
 
@@ -417,6 +443,20 @@ function confirmDelete(tableName, primaryKey, pkName, link) {
 function cancelDelete() {
     document.getElementById('delete-modal').style.display = 'none';
 }
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var exportButton = document.getElementById('exportButton');
+    exportButton.addEventListener('click', function() {
+        // Update the href attribute of the export button with the desired URL
+        var currentHref = window.location.href;
+        var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
+            '?export=true';
+        exportButton.querySelector('a').setAttribute('href', exportUrl);
+    });
+});
 </script>
 
 </html>

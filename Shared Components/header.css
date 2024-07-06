@@ -128,6 +128,12 @@ nav ul li a:hover {
     padding: 10px;
     border-radius: 10px;
 }
+.user-panel .icon{
+    margin: 5px;
+    position: relative;
+    margin-top: 30px;
+
+}
 .icon{
     margin: 5px;
     position: relative;

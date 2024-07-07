@@ -137,88 +137,98 @@ global $best_selling;
     <div class="products-container">
         <div class="products-container">
             <div class="filters-container">
-                <h3>What specifically would you like?</h3>
+                <!-- <h3>Filter by Education Level
+                </h3> -->
 
                 <form id="filter-form" action="" method="GET">
                     <input type="hidden" name="query" value="<?php echo htmlspecialchars($query); ?>">
                     <div class="main-category">
-                        <p>Level of Education</p>
+                        <p>Filter by Education Level</p>
                         <div class="radio-buttons">
                             <ul>
-                                <li><input type="radio" id="all-levels" name="education_level" value="All" <?php if ($education_level == 'All')
+                                <li><input type="radio" id="all-levels" name="education_level" value="" <?php if ($education_level == '')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="all-levels">All</label>
                                 </li>
                             </ul>
+                            <h5>Pre-Primary</h5>
                             <ul>
-
-                                <li> <input type="radio" id="pp1" name="education_level" value="PP1" <?php if ($education_level == 'PP1')
+                                <li><input type="radio" id="pp1" name="education_level" value="pre_primary_1" <?php if ($education_level == 'pre_primary_1')
                                     echo 'checked'; ?> onchange="applyFilter()">
-
                                     <label for="pp1">Pre-primary 1 (PP1)</label>
                                 </li>
-                                <li><input type="radio" id="pp2" name="education_level" value="PP2" <?php if ($education_level == 'PP2')
+                                <li><input type="radio" id="pp2" name="education_level" value="pre_primary_2" <?php if ($education_level == 'pre_primary_2')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="pp2">Pre-primary 2 (PP2)</label>
                                 </li>
                             </ul>
+                            <h5>Lower Primary</h5>
                             <ul>
-                                <li><input type="radio" id="grade-1" name="education_level" value="Grade 1" <?php if ($education_level == 'Grade 1')
+                                <li><input type="radio" id="grade-1" name="education_level" value="grade_1" <?php if ($education_level == 'grade_1')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-1">Grade 1</label>
                                 </li>
-                                <li><input type="radio" id="grade-2" name="education_level" value="Grade 2" <?php if ($education_level == 'Grade 2')
+                                <li><input type="radio" id="grade-2" name="education_level" value="grade_2" <?php if ($education_level == 'grade_2')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-2">Grade 2</label>
                                 </li>
-                                <li><input type="radio" id="grade-3" name="education_level" value="Grade 3" <?php if ($education_level == 'Grade 3')
+                                <li><input type="radio" id="grade-3" name="education_level" value="grade_3" <?php if ($education_level == 'grade_3')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-3">Grade 3</label>
                                 </li>
-                                <li><input type="radio" id="grade-4" name="education_level" value="Grade 4" <?php if ($education_level == 'Grade 4')
+                            </ul>
+                            <h5>Upper Primary</h5>
+
+                            <ul>
+                                <li><input type="radio" id="grade-4" name="education_level" value="grade_4" <?php if ($education_level == 'grade_4')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-4">Grade 4</label>
                                 </li>
-                                <li><input type="radio" id="grade-5" name="education_level" value="Grade 5" <?php if ($education_level == 'Grade 5')
+                                <li><input type="radio" id="grade-5" name="education_level" value="grade_5" <?php if ($education_level == 'grade_5')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-5">Grade 5</label>
                                 </li>
-                                <li><input type="radio" id="grade-6" name="education_level" value="Grade 6" <?php if ($education_level == 'Grade 6')
+                                <li><input type="radio" id="grade-6" name="education_level" value="grade_6" <?php if ($education_level == 'grade_6')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-6">Grade 6</label>
                                 </li>
                             </ul>
+                            <h5>Junior School</h5>
+
                             <ul>
-                                <li> <input type="radio" id="grade-7" name="education_level" value="Grade 7" <?php if ($education_level == 'Grade 7')
+                                <li><input type="radio" id="grade-7" name="education_level" value="grade_7" <?php if ($education_level == 'grade_7')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-7">Grade 7</label>
                                 </li>
-
-                                <li> <input type="radio" id="grade-8" name="education_level" value="Grade 8" <?php if ($education_level == 'Grade 8')
+                                <li><input type="radio" id="grade-8" name="education_level" value="grade_8" <?php if ($education_level == 'grade_8')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-8">Grade 8</label>
                                 </li>
-                                <li> <input type="radio" id="grade-9" name="education_level" value="Grade 9" <?php if ($education_level == 'Grade 9')
+                                <li><input type="radio" id="grade-9" name="education_level" value="grade_9" <?php if ($education_level == 'grade_9')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-9">Grade 9</label>
                                 </li>
-                                <li> <input type="radio" id="grade-10" name="education_level" value="Grade 10" <?php if ($education_level == 'Grade 10')
+                            </ul>
+                            <h5>Senior School</h5>
+
+                            <ul>
+                                <li><input type="radio" id="grade-10" name="education_level" value="grade_10" <?php if ($education_level == 'grade_10')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-10">Grade 10</label>
                                 </li>
-                                <li> <input type="radio" id="grade-11" name="education_level" value="Grade 11" <?php if ($education_level == 'Grade 11')
+                                <li><input type="radio" id="grade-11" name="education_level" value="grade_11" <?php if ($education_level == 'grade_11')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-11">Grade 11</label>
                                 </li>
-                                <li> <input type="radio" id="grade-12" name="education_level" value="Grade 12" <?php if ($education_level == 'Grade 12')
+                                <li><input type="radio" id="grade-12" name="education_level" value="grade_12" <?php if ($education_level == 'grade_12')
                                     echo 'checked'; ?> onchange="applyFilter()">
                                     <label for="grade-12">Grade 12</label>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                </form>
 
+                </form>
 
 
 
@@ -289,7 +299,7 @@ global $best_selling;
 
                         <div class="all-books">
                             <?php if (!empty($books)): ?>
-                                <?php
+                            <?php
                                 foreach ($books as $book) {
                                     $front_image = str_replace('D:\xammp2\htdocs\BookStore2', '', $book['front_page_image']);
 
@@ -332,9 +342,9 @@ global $best_selling;
                                 }
                                 ?>
                             <?php else: ?>
-                                <!-- <div class="row"> -->
-                                <h2>No Products with that keyword.</h2>
-                            </div>
+                            <!-- <div class="row"> -->
+                            <h2>No Products with that keyword.</h2>
+                        </div>
                         <?php endif; ?>
 
 
@@ -371,29 +381,35 @@ global $best_selling;
 
 
 <script>
-    // Function to rotate the slides
-    function rotateSlides() {
-        const slideshow = document.querySelector('.slideshow-container');
-        const slides = slideshow.querySelectorAll('.slideshow-book');
+// Function to rotate the slides
+function rotateSlides() {
+    const slideshow = document.querySelector('.slideshow-container');
+    const slides = slideshow.querySelectorAll('.slideshow-book');
 
-        // Find the active slide
-        const activeSlide = slideshow.querySelector('.active');
+    // Find the active slide
+    const activeSlide = slideshow.querySelector('.active');
 
-        // Get the index of the active slide
-        const activeIndex = Array.from(slides).indexOf(activeSlide);
+    // Get the index of the active slide
+    const activeIndex = Array.from(slides).indexOf(activeSlide);
 
-        // Calculate the index of the next slide
-        const nextIndex = (activeIndex + 1) % slides.length;
+    // Calculate the index of the next slide
+    const nextIndex = (activeIndex + 1) % slides.length;
 
-        // Remove the active class from the current slide
-        activeSlide.classList.remove('active');
+    // Remove the active class from the current slide
+    activeSlide.classList.remove('active');
 
-        // Add the active class to the next slide
-        slides[nextIndex].classList.add('active');
-    }
+    // Add the active class to the next slide
+    slides[nextIndex].classList.add('active');
+}
 
-    // Rotate the slides every 3 seconds
-    setInterval(rotateSlides, 3000);
+// Rotate the slides every 3 seconds
+setInterval(rotateSlides, 3000);
+
+
+
+function applyFilter() {
+    document.getElementById('filter-form').submit();
+}
 </script>
 
 </html>

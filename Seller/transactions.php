@@ -217,7 +217,7 @@ try {
                             <?php echo $transaction['amount']; ?>
                         </div>
                         <div class="cell">
-                            <?php echo intval(($transaction['amount']) * 0.2); ?>
+                            <?php echo intval(($transaction['amount']) * 0.02); ?>
                         </div>
                         <div class="bigger-cell" style="text-align: center;">
                             <?php echo $transaction['transaction_date']; ?>

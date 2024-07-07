@@ -324,8 +324,10 @@ try {
                             foreach ($salesDataMonthly as $month => $totalSales): ?>
                         <div class="bar-container">
                             <div class="bar-label"><?php echo $months[$month]; ?>:</div>
-                            <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
-                            <div class="bar-value"><?php echo $totalSales; ?></div>
+                            <div class="bar-wrapper">
+                                <div class="bar" style="width: <?php echo $totalSales / 1000; ?>px;"></div>
+                                <div class="bar-value">ksh <?php echo $totalSales; ?></div>
+                            </div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -333,8 +335,13 @@ try {
                         <?php foreach ($salesDataYearly as $year => $totalSales): ?>
                         <div class="bar-container">
                             <div class="bar-label"><?php echo $year; ?>:</div>
-                            <div class="bar" style="width: <?php echo $totalSales * 2; ?>px;"></div>
-                            <div class="bar-value"><?php echo $totalSales; ?></div>
+                            <div class="bar-wrapper">
+                                <div class="bar" style="width: <?php echo $totalSales / 2000; ?>px;">
+                                </div>
+                                <div class="bar-value">ksh
+                                    <?php echo $totalSales; ?>
+                                </div>
+                            </div>
                         </div>
                         <?php endforeach; ?>
                         <?php endif; ?>

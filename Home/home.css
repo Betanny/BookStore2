@@ -886,3 +886,36 @@ height: 87vh;
         padding-right: 10px;
 
     }
+
+
+
+    .radio-buttons{
+        padding-left: 25px; 
+    }
+    
+
+    .radio-buttons ul{
+padding: 10px;    }
+
+.radio-buttons li{
+padding-left: 10px; }
+/* CSS for radio buttons */
+.radio-buttons input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--background-color); /* Example color */
+    width: 12px; /* Example width */
+    height: 12px; /* Example height */
+    border-radius: 50%; /* Make it round */
+    outline: none;
+    border: 1px solid #E28B7A; /* Matching border color */
+    cursor: pointer;
+    margin-right: 5px; /* Example margin */
+}
+
+/* Style for checked state */
+.radio-buttons input[type="radio"]:checked {
+    background-color: var(--primary-color); /* Example color for checked state */
+    border-color: #E28B7A; /* Matching border color for checked state */
+}

@@ -1,11 +1,9 @@
 <?php
-include '../Shared Components\logger.php';
+include '../Shared Components/logger.php';
 require_once '../Shared Components/dbconnection.php';
-
 
 session_start();
 try {
-
     // Defining error messages
     $emailError = $passwordError = '';
 
@@ -25,7 +23,7 @@ try {
 
         if (empty($emailError) && empty($passwordError)) {
             // Fetch the hashed password and user category from the database based on the provided email
-            $stmt = $db->prepare("SELECT password, user_id, category, role FROM users WHERE email = ?");
+            $stmt = $db->prepare("SELECT password, user_id, category, role, view_status FROM users WHERE email = ?");
             $stmt->execute([$email]);
             $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -34,52 +32,60 @@ try {
                 $role = $user_data['role'];
                 $category = $user_data['category'];
                 $user_id = $user_data['user_id'];
+                $view_status = $user_data['view_status'];
 
-                // Hash the provided password using SHA256 for comparison
-                $hashed_input_password = hash('sha256', $password);
-
-                // Compare the hashed input password with the hashed password from the database
-                if ($hashed_input_password === $dbpass) {
-                    // Credentials match, login successful
-// Store user_id in the session
-                    $_SESSION['user_id'] = $user_data['user_id'];
-                    $_SESSION['category'] = $category;
-                    $_SESSION['role'] = $role;
-                    writeLog($db, "User logged in", "INFO", $user_id);
-
-                    // Redirect based on user category
-                    switch ($role) {
-                        case 'Client':
-                            header("Location: ../Buyer/buyerdashboard.php");
-                            break;
-                        case 'Dealer':
-                            header("Location: ../Seller/sellerdashboard.php");
-                            break;
-                        case 'Admin':
-                            header("Location: ../Admin/admindashboard.php");
-                            break;
-                        default:
-                            header("Location: generic_dashboard.php");
-                            break;
-                    }
-                    exit();
+                // Check the view_status first
+                if ($view_status !== NULL) {
+                    writeLog($db, "User failed to log in because the account has been deleted by the admin", "ERROR", $user_id);
+                    $accountError = 'This account has been deleted by the admin. Please follow up with the admin in the contact us page';
+                    global $accountError;
                 } else {
-                    writeLog($db, "User failed to log in due to wrong credentials", "ERROR", $user_id);
+                    // Hash the provided password using SHA256 for comparison
+                    $hashed_input_password = hash('sha256', $password);
+                    $accountError = "";
+                    global $accountError;
 
-                    // Display error notification if credentials are incorrect
-                    $passwordError = 'Incorrect email or password. Please try again.';
+                    // Compare the hashed input password with the hashed password from the database
+                    if ($hashed_input_password === $dbpass) {
+                        // Credentials match, login successful
+                        // Store user_id in the session
+                        $_SESSION['user_id'] = $user_data['user_id'];
+                        $_SESSION['category'] = $category;
+                        $_SESSION['role'] = $role;
+                        writeLog($db, "User logged in", "INFO", $user_id);
 
+                        // Redirect based on user category
+                        switch ($role) {
+                            case 'Client':
+                                header("Location: ../Buyer/buyerdashboard.php");
+                                break;
+                            case 'Dealer':
+                                header("Location: ../Seller/sellerdashboard.php");
+                                break;
+                            case 'Admin':
+                                header("Location: ../Admin/admindashboard.php");
+                                break;
+                            default:
+                                header("Location: generic_dashboard.php");
+                                break;
+                        }
+                        exit();
+                    } else {
+                        writeLog($db, "User failed to log in due to wrong credentials", "ERROR", $user_id);
+                        // Display error notification if credentials are incorrect
+                        $passwordError = 'Incorrect email or password. Please try again.';
+                    }
                 }
             } else {
                 // Display error notification if user with the provided email does not exist
-                writeLog($db, "User failed to log in as user does not exist", "ERROR", $user_id);
+                writeLog($db, "User failed to log in as user does not exist", "ERROR", null);
                 $emailError = 'User with the provided email does not exist.';
             }
         }
     }
-} catch (PDOException $e) {
-    // Display error notification if connection fails
-    $connectionError = 'Connection failed: ' . $e->getMessage();
+} catch (Exception $e) {
+    writeLog($db, "Exception: " . $e->getMessage(), "ERROR", null);
+    echo 'An error occurred. Please try again later.';
 }
 ?>
 <!DOCTYPE html>
@@ -92,6 +98,12 @@ try {
     <link rel="stylesheet" href="/Shared Components/style.css">
     <link rel="stylesheet" href="Stylesheet.css">
     <title>Registration</title>
+
+    <style>
+    .error {
+        color: red;
+    }
+    </style>
 </head>
 
 <body>
@@ -106,6 +118,7 @@ try {
                 </div>
 
                 <form action="login.php" method="post" id="LoginForm" name="form" autocomplete="true">
+                    <div class="error"><?php echo $accountError; ?></div>
                     <div class="input-box">
                         <div class="inputcontrol">
                             <label for="Email">Email</label>

@@ -24,7 +24,8 @@ try {
                SUM(o.total_amount) AS total_values_generated
         FROM books b
         LEFT JOIN orders o ON b.bookid = o.product_id
-        WHERE b.seller_id = :seller_id";
+        WHERE b.seller_id = :seller_id AND b.view_status IS NULL"
+    ;
 
     // Initialize the $query variable
     $query = '';
@@ -151,16 +152,31 @@ try {
         }
     }
 
-    // Check if an action parameter is set (for hiding products)
-    if (isset($_GET['action']) && $_GET['action'] === 'hide' && isset($_GET['bookid'])) {
-        $bookId = $_GET['bookid'];
 
-        // Update viewStatus to 'hidden' for the specified bookid
-        $updateSql = "UPDATE books SET view_status = 'hidden' WHERE bookid = :bookid";
-        $updateStmt = $db->prepare($updateSql);
-        $updateStmt->bindValue(':bookid', $bookId, PDO::PARAM_INT);
-        writeLog($db, "Dealer has deleted a product", "INFO", $user_id);
 
+    if (isset($_GET['action']) && $_GET['action'] === 'hide_book' && isset($_GET['bookid'])) {
+        $bookid = $_GET['bookid'];
+        var_dump($bookid);
+
+        $deletebookid = $_GET['bookid'];
+
+        try {
+            // Prepare the SQL statement to update the view_status to "hidden"
+            $sql = "UPDATE books SET view_status = 'hidden' WHERE bookid = :bookid";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':bookid', $bookid, PDO::PARAM_INT);
+            writeLog($db, "Manager has deleted book ID: " . $bookid, "INFO", $user_id);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                echo "Book status updated to hidden successfully.";
+            } else {
+                echo "Failed to update book status.";
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        exit(); // End script execution after handling the hide action
     }
 
 
@@ -305,7 +321,10 @@ try {
                             <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
                         </div>
                         <div class="icon-cell">
-                            <i class="fa-solid fa-trash" onclick="hideProduct(<?php echo $product['bookid']; ?>)"></i>
+                            <a href="#" class="delete-link" data-table="books"
+                                data-pk="<?php echo $product['bookid']; ?>" data-pk-name="bookid">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -459,6 +478,19 @@ try {
     </form>
     </div>
 
+    <div class="modal" id="delete-modal" style="display:none;">
+
+        <div class="modal-content">
+            <h1>Are you sure you want to delete?</h1>
+
+            <div class="modal-buttons">
+                <button class="button" type="button" onclick="cancelDelete();">Cancel</button>
+                <button class="button" type="button" id="confirm-delete-button">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
 
 
 </body>
@@ -516,50 +548,64 @@ window.onclick = function(event) {
 }
 
 
-// function hideProduct(bookId) {
-//     // Send a POST request to update viewStatus to 'hidden' for the given bookId
-//     fetch('ViewProducts.php?action=hide&bookid=' + bookId, {
-//             method: 'GET',
-//         })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to hide product');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             console.log('Product hidden successfully:', data);
-//             location.reload(); // Example: Reloads the page to reflect changes
-//         })
-//         .catch(error => {
-//             console.error('Error hiding product:', error);
-//             // Handle error scenario
-//         });
+let tableName, primaryKey, pkName, deleteLink;
 
-// }
+document.addEventListener("DOMContentLoaded", function() {
+    // Get all elements with the class "delete-link"
+    var deleteLinks = document.querySelectorAll('.delete-link');
 
-function hideProduct(bookId) {
-    // Send a POST request to update viewStatus to 'hidden' for the given bookId
-    fetch('ViewProducts.php?action=hide&bookid=' + bookId, {
-            method: 'GET',
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to hide product');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Product hidden successfully:', data);
-            location.reload(); // Example: Reloads the page to reflect changes
-        })
-        .catch(error => {
-            console.error('Error hiding product:', error);
-            // Handle error scenario
+    // Loop through each delete link
+    deleteLinks.forEach(function(link) {
+        // Add click event listener to each delete link
+        link.addEventListener('click', function(event) {
+            // Prevent the default behavior (i.e., following the href)
+
+            // Get the table name, primary key column name, and primary key value from the data attributes
+            tableName = link.getAttribute('data-table');
+            primaryKey = link.getAttribute('data-pk');
+            pkName = link.getAttribute('data-pk-name');
+            deleteLink = link;
+            var row = link.closest('.row'); // Get the closest row element
+
+            event.preventDefault();
+            document.getElementById('delete-modal').style.display = 'block';
+
         });
+    });
+});
 
+document.getElementById('confirm-delete-button').addEventListener('click', function() {
+    confirmDelete(tableName, primaryKey, pkName, deleteLink);
+});
 
+function confirmDelete(tableName, primaryKey, pkName, link) {
+    console.log(pkName)
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', window.location.pathname + '?action=hide_book&bookid=' + primaryKey, true);
+    console.log(window.location.pathname)
 
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Handle successful update
+            link.parentElement.parentElement.remove();
+            console.log("Book status updated to hidden");
+        } else {
+            // Handle error
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        // Handle network errors
+        console.error('Request failed');
+    };
+    xhr.send();
+    // document.getElementById('delete-modal').style.display = 'none';
+    location.reload();
+
+}
+
+function cancelDelete() {
+    document.getElementById('delete-modal').style.display = 'none';
 }
 
 

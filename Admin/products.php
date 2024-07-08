@@ -31,10 +31,12 @@ try {
                     SUM(o.total_amount) AS total_values_generated
                     FROM books b
                     LEFT JOIN orders o ON b.bookid = o.product_id
-                    WHERE LOWER(b.title) LIKE LOWER(:query) 
+                    WHERE (LOWER(b.title) LIKE LOWER(:query) 
                        OR LOWER(b.grade) LIKE LOWER(:query) 
                        OR LOWER(b.author) LIKE LOWER(:query) 
-                       OR LOWER(b.publisher) LIKE LOWER(:query)
+                       OR LOWER(b.publisher) LIKE LOWER(:query))
+                                              AND b.view_status IS NULL
+
                     GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, b.grade
                 ) AS distinct_books";
         $params = ['query' => '%' . $query . '%'];
@@ -45,6 +47,7 @@ try {
                 SUM(o.total_amount) AS total_values_generated
                 FROM books b
                 LEFT JOIN orders o ON b.bookid = o.product_id
+                WHERE b.view_status IS NULL
                 GROUP BY b.bookid, b.title, b.isbn, b.subject, b.bookrating, b.grade";
         $params = [];
     }
@@ -112,6 +115,32 @@ try {
         // Close output stream
         fclose($output);
         exit();
+    }
+
+
+    if (isset($_GET['action']) && $_GET['action'] === 'hide_book' && isset($_GET['bookid'])) {
+        $bookid = $_GET['bookid'];
+        var_dump($bookid);
+
+        $deletebookid = $_GET['bookid'];
+
+        try {
+            // Prepare the SQL statement to update the view_status to "hidden"
+            $sql = "UPDATE books SET view_status = 'hidden' WHERE bookid = :bookid";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':bookid', $bookid, PDO::PARAM_INT);
+            writeLog($db, "Manager has deleted book ID: " . $bookid, "INFO", $user_id);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                echo "Book status updated to hidden successfully.";
+            } else {
+                echo "Failed to update book status.";
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        exit(); // End script execution after handling the hide action
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -202,7 +231,8 @@ try {
 
                     <?php foreach ($products as $product): ?>
                     <div class="row">
-                        <!-- <input type="checkbox" class="checkbox" name="product_id" value="?php $product['bookid']; ?>"> -->
+                        <!-- <input type="checkbox" class="checkbox" name="product_id" value="?php $product['bookid']; ?>">
+                    -->
                         <div class=" name-cell">
                             <?php echo $product['title']; ?>
                         </div>
@@ -227,12 +257,12 @@ try {
                             <i class="fa-solid fa-eye-slash toggle-icon"></i>
                         </div> -->
 
-                        <!-- <div class="icon-cell">
+                        <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="books"
-                                data-pk="<php echo $product['bookid']; ?>" data-pk-name="bookid">
+                                data-pk="<?php echo $product['bookid']; ?>" data-pk-name="bookid">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                        </div> -->
+                        </div>
                     </div>
                     <?php endforeach; ?>
                     <?php else: ?>
@@ -244,6 +274,17 @@ try {
         </div>
 
     </div>
+    </div>
+    <div class="modal" id="delete-modal" style="display:none;">
+
+        <div class="modal-content">
+            <h1>Are you sure you want to delete?</h1>
+
+            <div class="modal-buttons">
+                <button class="button" type="button" onclick="cancelDelete();">Cancel</button>
+                <button class="button" type="button" id="confirm-delete-button">Delete</button>
+            </div>
+        </div>
     </div>
 
 
@@ -271,6 +312,47 @@ console.log(<?php echo json_encode($product['bookid']); ?>);
 <?php endforeach; ?>
 
 
+// document.addEventListener("DOMContentLoaded", function() {
+//     // Get all elements with the class "delete-link"
+//     var deleteLinks = document.querySelectorAll('.delete-link');
+
+//     // Loop through each delete link
+//     deleteLinks.forEach(function(link) {
+//         // Add click event listener to each delete link
+//         link.addEventListener('click', function(event) {
+//             // Prevent the default behavior (i.e., following the href)
+//             event.preventDefault();
+
+//             // Get the table name, primary key column name, and primary key value from the data attributes
+//             var tableName = link.getAttribute('data-table');
+//             var primaryKey = link.getAttribute('data-pk');
+//             var pkName = link.getAttribute('data-pk-name');
+
+//             // Perform AJAX request to the delete script
+//             var xhr = new XMLHttpRequest();
+//             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+//                 primaryKey +
+//                 '&pk_name=' + pkName, true);
+//             xhr.onload = function() {
+//                 if (xhr.status === 200) {
+//                     // Handle successful deletion (if needed)
+//                     // For example, you can remove the deleted row from the DOM
+//                     link.parentElement.parentElement.remove();
+//                 } else {
+//                     // Handle error (if needed)
+//                     console.error('Error:', xhr.statusText);
+//                 }
+//             };
+//             xhr.onerror = function() {
+//                 // Handle network errors (if needed)
+//                 console.error('Request failed');
+//             };
+//             xhr.send();
+//         });
+//     });
+// });
+let tableName, primaryKey, pkName, deleteLink;
+
 document.addEventListener("DOMContentLoaded", function() {
     // Get all elements with the class "delete-link"
     var deleteLinks = document.querySelectorAll('.delete-link');
@@ -280,36 +362,55 @@ document.addEventListener("DOMContentLoaded", function() {
         // Add click event listener to each delete link
         link.addEventListener('click', function(event) {
             // Prevent the default behavior (i.e., following the href)
-            event.preventDefault();
 
             // Get the table name, primary key column name, and primary key value from the data attributes
-            var tableName = link.getAttribute('data-table');
-            var primaryKey = link.getAttribute('data-pk');
-            var pkName = link.getAttribute('data-pk-name');
+            tableName = link.getAttribute('data-table');
+            primaryKey = link.getAttribute('data-pk');
+            pkName = link.getAttribute('data-pk-name');
+            deleteLink = link;
+            var row = link.closest('.row'); // Get the closest row element
 
-            // Perform AJAX request to the delete script
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-                primaryKey +
-                '&pk_name=' + pkName, true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Handle successful deletion (if needed)
-                    // For example, you can remove the deleted row from the DOM
-                    link.parentElement.parentElement.remove();
-                } else {
-                    // Handle error (if needed)
-                    console.error('Error:', xhr.statusText);
-                }
-            };
-            xhr.onerror = function() {
-                // Handle network errors (if needed)
-                console.error('Request failed');
-            };
-            xhr.send();
+            event.preventDefault();
+            document.getElementById('delete-modal').style.display = 'block';
+
         });
     });
 });
+
+document.getElementById('confirm-delete-button').addEventListener('click', function() {
+    confirmDelete(tableName, primaryKey, pkName, deleteLink);
+});
+
+function confirmDelete(tableName, primaryKey, pkName, link) {
+    console.log(pkName)
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', window.location.pathname + '?action=hide_book&bookid=' + primaryKey, true);
+    console.log(window.location.pathname)
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Handle successful update
+            link.parentElement.parentElement.remove();
+            console.log("Book status updated to hidden");
+        } else {
+            // Handle error
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        // Handle network errors
+        console.error('Request failed');
+    };
+    xhr.send();
+    // document.getElementById('delete-modal').style.display = 'none';
+    location.reload();
+
+}
+
+function cancelDelete() {
+    document.getElementById('delete-modal').style.display = 'none';
+}
+
 
 //hide view button feature
 

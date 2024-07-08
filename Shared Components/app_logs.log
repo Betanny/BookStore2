@@ -74,3 +74,97 @@
 [2024-07-07 06:44:33] [INFO] [User ID: 433] User logged in
 [2024-07-07 07:20:15] [INFO] [User ID: 433] User has logged out of the system
 [2024-07-07 07:20:22] [INFO] [User ID: 437] User logged in
+[2024-07-07 17:13:36] [INFO] [User ID: 319] Manager has deleted user319
+[2024-07-07 17:14:22] [INFO] [User ID: 323] Manager has deleted user323
+[2024-07-07 17:15:24] [INFO] [User ID: 327] Manager has deleted user327
+[2024-07-07 17:15:43] [INFO] [User ID: 329] Manager has deleted user329
+[2024-07-07 21:34:28] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:35:19] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:36:04] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:41:40] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:41:59] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:42:07] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:42:43] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:43:09] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:45:15] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:46:29] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:46:32] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:58:34] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 21:59:06] [INFO] [User ID: 437] Manager has deleted book12
+[2024-07-07 22:03:50] [INFO] [User ID: 437] Manager has deleted book ID: 12
+[2024-07-07 22:04:22] [INFO] [User ID: 437] Manager has deleted book ID: 17
+[2024-07-07 22:05:21] [INFO] [User ID: 437] Manager has deleted book ID: 17
+[2024-07-07 22:21:43] [INFO] [User ID: 321] Manager has deleted user321
+[2024-07-08 04:02:21] [INFO] [User ID: 437] User logged in
+[2024-07-08 04:12:23] [INFO] [User ID: 437] Manager has deleted book ID: 25
+[2024-07-08 04:12:43] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-08 04:12:50] [INFO] [User ID: 435] User logged in
+[2024-07-08 04:19:58] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-08 04:20:57] [INFO] [User ID: 433] User logged in
+[2024-07-08 04:22:46] [INFO] [User ID: 433] Dealer has deleted a product
+[2024-07-08 04:22:46] [INFO] [User ID: 433] Dealer has deleted a product
+[2024-07-08 04:28:55] [INFO] [User ID: 433] Manager has deleted book ID: 25
+[2024-07-08 04:29:25] [INFO] [User ID: 433] Manager has deleted book ID: 25
+[2024-07-08 04:37:50] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-08 04:38:05] [ERROR] [User ID: 365] User failed to log in due to wrong credentials
+[2024-07-08 04:38:22] [ERROR] [User ID: 365] User failed to log in due to wrong credentials
+[2024-07-08 04:39:24] [INFO] [User ID: 433] User logged in
+[2024-07-08 04:39:28] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-08 04:39:54] [ERROR] [User ID: 365] User failed to log in due to wrong credentials
+[2024-07-08 04:40:30] [INFO] [User ID: 470] User logged in
+[2024-07-08 04:40:39] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-08 04:40:47] [INFO] [User ID: 437] User logged in
+[2024-07-08 04:40:56] [INFO] [User ID: 470] Manager has deleted user470
+[2024-07-08 04:41:07] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-08 04:41:13] [INFO] [User ID: 470] User logged in
+[2024-07-08 04:42:34] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-08 04:42:38] [INFO] [User ID: 470] User logged in
+[2024-07-08 04:42:50] [INFO] [User ID: 470] User logged in
+[2024-07-08 04:44:10] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-08 04:44:14] [INFO] [User ID: 470] User logged in
+[2024-07-08 04:51:17] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-08 04:51:20] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:51:21] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:51:29] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:52:09] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:52:53] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:53:59] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:55:40] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:56:08] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 04:58:08] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 05:21:19] [INFO] [User ID: 435] User logged in
+[2024-07-08 05:21:34] [INFO] [User ID: 435] User is accessing their profile
+[2024-07-08 05:28:16] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-08 05:30:04] [INFO] [User ID: 437] User logged in
+[2024-07-08 05:36:18] [INFO] [User ID: 437] User is accessing their profile
+[2024-07-08 05:47:21] [INFO] [User ID: N/A] User is accessing their profile
+[2024-07-08 05:51:05] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:51:18] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:51:39] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:53:20] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:53:23] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:53:55] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:55:15] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:55:35] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-08 05:55:41] [INFO] [User ID: 435] User logged in
+[2024-07-08 05:55:45] [INFO] [User ID: 435] User is accessing their profile
+[2024-07-08 05:55:56] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-08 05:56:02] [INFO] [User ID: 437] User logged in
+[2024-07-08 05:56:14] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:57:20] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:57:32] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 05:59:05] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-08 05:59:09] [INFO] [User ID: 433] User logged in
+[2024-07-08 05:59:55] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-08 06:00:08] [INFO] [User ID: 437] User logged in
+[2024-07-08 06:00:33] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 06:00:49] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 06:02:47] [INFO] [User ID: 325] User is accessing their profile
+[2024-07-08 06:03:01] [INFO] [User ID: 387] Manager has deleted user387
+[2024-07-08 08:12:43] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-08 08:12:51] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-08 08:12:58] [INFO] [User ID: 437] User logged in
+[2024-07-08 08:13:07] [INFO] [User ID: 325] Manager has deleted user325
+[2024-07-08 08:13:11] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-08 08:13:20] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-08 08:13:27] [INFO] [User ID: 435] User logged in

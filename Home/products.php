@@ -20,14 +20,16 @@ if ($query) {
     $sql = "SELECT * FROM (
                 SELECT DISTINCT ON (bookid) bookid, front_page_image, grade, title, price, bookrating, RANDOM() as rand 
                 FROM books 
-                WHERE LOWER(title) LIKE LOWER(:query) OR grade LIKE :query OR LOWER(author) LIKE LOWER(:query) OR LOWER(publisher) LIKE LOWER(:query) 
+                WHERE (LOWER(title) LIKE LOWER(:query) OR grade LIKE :query OR LOWER(author) LIKE LOWER(:query) OR LOWER(publisher) LIKE LOWER(:query)) AND view_status IS NULL
+ 
             ) AS distinct_books";
     $params = ['query' => '%' . $query . '%'];
 } else {
     // Getting books from the books table
     $sql = "SELECT * FROM (
                 SELECT DISTINCT ON (bookid) bookid, front_page_image, grade, title, price, bookrating, RANDOM() as rand 
-                FROM books
+                FROM books WHERE view_status IS NULL
+
             ) AS distinct_books";
     $params = [];
 }

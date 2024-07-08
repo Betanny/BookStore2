@@ -44,7 +44,13 @@ try {
             $queryCondition = "WHERE users.role = :role";
         }
     }
-
+    // Ensure hidden users are not displayed
+    if (!empty($queryCondition)) {
+        $queryCondition .= " AND users.view_status IS NULL";
+    } else {
+        $queryCondition = "WHERE users.view_status IS NULL";
+    }
+    var_dump($queryCondition);
     // Build the final SQL query
     $sql = "SELECT 
         user_id,
@@ -52,6 +58,7 @@ try {
         email,
         role,
         category,
+        view_status,
         DATE(createdat) AS date_joined
     FROM 
         users 
@@ -97,6 +104,30 @@ try {
         fclose($output);
         exit();
     }
+
+    if (isset($_GET['action']) && $_GET['action'] === 'hide_user' && isset($_GET['user_id'])) {
+        $user_id = $_GET['user_id'];
+        $deleteduserid = $_GET['user_id'];
+
+        try {
+            // Prepare the SQL statement to update the view_status to "hidden"
+            $sql = "UPDATE users SET view_status = 'hidden' WHERE user_id = :user_id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            writeLog($db, "Manager has deleted user" . $deleteduserid, "INFO", $user_id);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                echo "User status updated to hidden successfully.";
+            } else {
+                echo "Failed to update user status.";
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        exit(); // End script execution after handling the hide action
+    }
+
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -291,7 +322,9 @@ try {
                             <i class="fa-solid fa-eye-slash"></i>
                         </div>
                         <div class="icon-cell">
-                            <i class="fa-solid fa-pen"></i>
+                            <i class="fa-solid fa-pen" id="editIcon" style="cursor:pointer;"
+                                data-role="<?php echo $user['role']; ?>"
+                                data-userid="<?php echo $user['user_id']; ?>"></i>
                         </div>
                         <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="books"
@@ -411,31 +444,53 @@ document.getElementById('confirm-delete-button').addEventListener('click', funct
     confirmDelete(tableName, primaryKey, pkName, deleteLink);
 });
 // Perform AJAX request to the delete script
+// function confirmDelete(tableName, primaryKey, pkName, link) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+//         primaryKey +
+//         '&pk_name=' + pkName, true);
+//     xhr.onload = function() {
+//         if (xhr.status === 200) {
+//             // Handle successful deletion (if needed)
+//             // For example, you can remove the deleted row from the DOM
+//             link.parentElement.parentElement.remove();
+//             // console.log(pkName + " " + primaryKey);
+//             console.log(pkName + " " + primaryKey + " " + tableName + "   " + link);
+
+//             console.log("removing");
+//         } else {
+//             // Handle error (if needed)
+//             console.error('Error:', xhr.statusText);
+//         }
+//     };
+//     xhr.onerror = function() {
+//         // Handle network errors (if needed)
+//         console.error('Request failed');
+//     };
+//     console.log("Sending");
+//     xhr.send();
+
+// }
 function confirmDelete(tableName, primaryKey, pkName, link) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-        primaryKey +
-        '&pk_name=' + pkName, true);
+    xhr.open('GET', window.location.pathname + '?action=hide_user&user_id=' + primaryKey, true);
     xhr.onload = function() {
         if (xhr.status === 200) {
-            // Handle successful deletion (if needed)
-            // For example, you can remove the deleted row from the DOM
+            // Handle successful update
             link.parentElement.parentElement.remove();
-            // console.log(pkName + " " + primaryKey);
-            console.log(pkName + " " + primaryKey + " " + tableName + "   " + link);
-
-            console.log("removing");
+            console.log("User status updated to hidden");
         } else {
-            // Handle error (if needed)
+            // Handle error
             console.error('Error:', xhr.statusText);
         }
     };
     xhr.onerror = function() {
-        // Handle network errors (if needed)
+        // Handle network errors
         console.error('Request failed');
     };
-    console.log("Sending");
     xhr.send();
+    // document.getElementById('delete-modal').style.display = 'none';
+    location.reload();
 
 }
 
@@ -456,6 +511,32 @@ document.addEventListener("DOMContentLoaded", function() {
             '?export=true';
         exportButton.querySelector('a').setAttribute('href', exportUrl);
     });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const editIcon = document.getElementById('editIcon');
+    console.log('Edit icon element:', editIcon);
+
+    if (editIcon) {
+        editIcon.addEventListener('click', function() {
+            const role = this.getAttribute('data-role');
+            const userId = this.getAttribute('data-userid');
+            console.log('User role:', role);
+            console.log('User ID:', userId);
+
+            if (role === 'Client') {
+                window.location.href = '../Buyer/clientprofile.php?user_id=' + userId;
+            } else if (role === 'Dealer') {
+                window.location.href = '../Shared Components/profile.php?user_id=' + userId;
+            } else {
+                alert('Invalid role.');
+            }
+        });
+    } else {
+        console.error('Edit icon not found in the DOM.');
+    }
 });
 </script>
 

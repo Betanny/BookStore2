@@ -175,6 +175,8 @@ VALUES (:sender_id, :recipient_id, :message)";
                         <div class="dropdown-content">
                             <a href="/Shared Components\profile.php">Edit</a>
                             <a href="/Shared Components\logout.php">Logout</a>
+                            <a href="/Shared Components/deleteaccount.php">Delete Account</a>
+
                         </div>
                     </div>
                 </div>

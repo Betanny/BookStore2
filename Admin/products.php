@@ -142,6 +142,81 @@ try {
         }
         exit(); // End script execution after handling the hide action
     }
+
+
+    if (isset($_GET['bookid'])) {
+
+        $bookid = $_GET['bookid'];
+        $selected_book_sql = "SELECT * FROM books WHERE bookid = :bookid";
+        $selected_book_stmt = $db->prepare($selected_book_sql);
+        $selected_book_stmt->bindParam(':bookid', $bookid);
+        $selected_book_stmt->execute();
+        $selected_book = $selected_book_stmt->fetch(PDO::FETCH_ASSOC);
+        global $selected_book;
+        var_dump($bookid);
+
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Retrieve form data
+        $bookid = $_POST['bookid'];
+        $booktitle = $_POST['booktitle'];
+        $author = $_POST['author'];
+        $publisher = $_POST['publisher'];
+        $price = $_POST['Price'];
+        $minnum = $_POST['minnum'];
+        $priceinbulk = $_POST['Priceinbulk'];
+        $genre = $_POST['genre'];
+        $language = $_POST['Language'];
+        $grade = $_POST['grade'];
+        $edition = $_POST['Edition'];
+        $subject = $_POST['Subject'];
+        $pages = $_POST['Pages'];
+        $details = $_POST['details'];
+
+        // Update database
+        // Define your SQL query to update the book details
+        $sql = "UPDATE books 
+                    SET title = :title, 
+                        author = :author, 
+                        publisher = :publisher, 
+                        price = :price, 
+                        mininbulk = :minnum, 
+                        priceinbulk = :priceinbulk, 
+                        genre = :genre, 
+                        language = :language, 
+                        grade = :grade, 
+                        edition = :edition, 
+                        subject = :subject, 
+                        pages = :pages, 
+                        details = :details
+                        -- Add more fields here
+                    WHERE bookid = :bookid";
+
+        // Prepare and execute the query
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':title' => $booktitle,
+            ':author' => $author,
+            ':publisher' => $publisher,
+            ':price' => $price,
+            ':minnum' => $minnum,
+            ':priceinbulk' => $priceinbulk,
+            ':genre' => $genre,
+            ':language' => $language,
+            ':grade' => $grade,
+            ':edition' => $edition,
+            ':subject' => $subject,
+            ':pages' => $pages,
+            ':details' => $details,
+            ':bookid' => $bookid
+        ]);
+        writeLog($db, "Dealer has edited their product ", "INFO", $user_id);
+
+        // Redirect to a success page or reload the current page
+        header("Location: products.php");
+        exit();
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -157,6 +232,8 @@ try {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/Shared Components/style.css">
     <link rel="stylesheet" href="/Seller/seller.css">
+    <link rel="stylesheet" href="/Registration/Stylesheet.css">
+
 
 
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
@@ -219,9 +296,12 @@ try {
                     <div class="name-cell">Title</div>
                     <div class="bigger-cell">ISBN</div>
                     <div class="bigger-cell">Subject</div>
-                    <div class="bigger-cell">Rating</div>
+                    <div class="bigger-cell" style="text-align:left;">Rating</div>
                     <div class="bigger-cell">Copies Bought</div>
                     <div class="bigger-cell">Total Income</div>
+                    <div class="small-cell"></div>
+                    <div class="small-cell"></div>
+
 
 
                 </div>
@@ -252,6 +332,9 @@ try {
                             <?php echo $product['copies_bought'] == 0 ? '---' : $product['total_values_generated']; ?>
                         </div>
 
+                        <div class="icon-cell">
+                            <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
+                        </div>
                         <!-- Add the icon with a class to handle click events -->
                         <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash toggle-icon"></i>
@@ -259,7 +342,7 @@ try {
 
                         <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="books"
-                                data-pk="<?php echo $product['bookid']; ?>" data-pk-name="bookid">
+                                data-pk="<?php echo $product['bookid']; ?>" data-pk-name=" bookid">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </div>
@@ -286,7 +369,144 @@ try {
             </div>
         </div>
     </div>
+    <div class="modal" id="editproducts-modal" style="display:none;">
+        <form action="#" method="post">
+            <!-- ?php if (isset($selected_book)): ?> -->
 
+            <input type="hidden" name="bookid" value="<?php echo $selected_book['bookid']; ?>">
+
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Product</h2>
+                <div class="close">
+                    <i class="fa-solid fa-xmark" onclick="cancel();"></i>
+                </div>
+            </div>
+            <div class="modal-content">
+                <div class="input-box">
+                    <div class="inputcontrol">
+                        <label class="no-asterisk" for="BookTitle">Book Title</label class="no-asterisk">
+                        <input type="text" class="inputfield" name="booktitle"
+                            value="<?php echo $selected_book['title']; ?>" readonly />
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Author">Author</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="author"
+                                value="<?php echo $selected_book['author']; ?>" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Publisher">Publisher</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="publisher"
+                                value="<?php echo $selected_book['publisher']; ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="ISBN">ISBN</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="isbn"
+                                value="<?php echo $selected_book['isbn']; ?>" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Price">Price</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Price"
+                                value="<?php echo $selected_book['price']; ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="minnum">Minimum number in bulk</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="minnum"
+                                value="<?php echo $selected_book['mininbulk']; ?>" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Priceinbulk">Price in bulk</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Priceinbulk"
+                                value="<?php echo $selected_book['priceinbulk']; ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="genre">Genre</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="genre"
+                                value="<?php echo $selected_book['genre']; ?>" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Language">Language</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Language"
+                                value="<?php echo $selected_book['language']; ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="grade">Grade</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="grade"
+                                value="<?php echo str_replace('_', ' ', $selected_book['grade']); ?>" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Edition">Edition</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Edition"
+                                value="<?php echo $selected_book['edition']; ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="two-forms">
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Subject">Subject</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Subject"
+                                value="<?php echo $selected_book['subject']; ?>" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="inputcontrol">
+                            <label class="no-asterisk" for="Pages">Pages</label class="no-asterisk">
+                            <input type="text" class="inputfield" name="Pages"
+                                value="<?php echo $selected_book['pages']; ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <div class="inputcontrol">
+                        <label class="no-asterisk" for="details"> Book Description</label class="no-asterisk">
+                        <textarea class="inputfield" name="details" readonly
+                            style="height: 150px;"><?php echo $selected_book['details']; ?></textarea>
+
+                    </div>
+                </div>
+                <!-- ?php endif; ?> -->
+
+                <div class="modal-buttons">
+                    <button class="button" type="button" onclick="cancel();">Cancel</button>
+                    <button class="button" type="submit">Save Changes</button>
+
+                </div>
+            </div>
+
+
+
+        </form>
+    </div>
 
 
 </body>
@@ -306,7 +526,26 @@ document.addEventListener("DOMContentLoaded", function() {
             '?export=true';
         exportButton.querySelector('a').setAttribute('href', exportUrl);
     });
+    <?php if (isset($_GET['bookid'])): ?>
+    // If bookid is set, display the modal
+    document.getElementById("editproducts-modal").style.display = "block";
+    <?php endif; ?>
 });
+
+function editProduct(bookId) {
+    // Redirect to the edit page with the book ID as a query parameter
+    window.location.href = 'products.php?bookid=' + bookId;
+    console.log(bookId);
+
+    // Get the modal
+    var modal = document.getElementById("editproducts-modal");
+    modal.style.display = "block";
+
+}
+
+function cancel() {
+    window.location.href = 'products.php';
+}
 <?php foreach ($products as $product): ?>
 console.log(<?php echo json_encode($product['bookid']); ?>);
 <?php endforeach; ?>

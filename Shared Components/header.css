@@ -218,6 +218,8 @@ header .dropdown-content {
     right: 0%;
     color: var(--primary-color);
     padding: 10px;
+    font-size: 13px;
+    height:120px
     
 
   }
@@ -231,12 +233,22 @@ header .dropdown-content {
   }
  
   /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: var(--background-color);}
+  /* .dropdown-content a:hover {background-color: var(--background-color);}
   header .dropbtn:hover {
     background-color: var(--primary-color);
     color: white;
-}
+} */
 
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: var(--primary-color);
+    font-size: 15px;
+    font-weight: bolder;
+}
+  header .dropbtn:hover {
+    background-color: var(--primary-color);
+    color:white ;
+}
   
   /* Show the dropdown menu on hover */
   .dropdown:hover .dropdown-content {

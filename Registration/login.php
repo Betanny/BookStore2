@@ -5,7 +5,7 @@ require_once '../Shared Components/dbconnection.php';
 session_start();
 try {
     // Defining error messages
-    $emailError = $passwordError = '';
+    $emailError = $passwordError = $accountError = '';
 
     // Checking if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -35,15 +35,14 @@ try {
                 $view_status = $user_data['view_status'];
 
                 // Check the view_status first
-                if ($view_status !== NULL) {
+                if ($view_status != NULL) {
                     writeLog($db, "User failed to log in because the account has been deleted by the admin", "ERROR", $user_id);
-                    $accountError = 'This account has been deleted by the admin. Please follow up with the admin in the contact us page';
-                    global $accountError;
+                    $accountError = 'This account has been deleted. Please follow up with the admin in the contact us page on the top of the screen';
+                    // global $accountError;
                 } else {
                     // Hash the provided password using SHA256 for comparison
                     $hashed_input_password = hash('sha256', $password);
-                    $accountError = "";
-                    global $accountError;
+
 
                     // Compare the hashed input password with the hashed password from the database
                     if ($hashed_input_password === $dbpass) {

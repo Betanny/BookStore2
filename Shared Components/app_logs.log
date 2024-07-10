@@ -168,3 +168,181 @@
 [2024-07-08 08:13:11] [INFO] [User ID: 331] User is accessing their profile
 [2024-07-08 08:13:20] [INFO] [User ID: 437] User has logged out of the system
 [2024-07-08 08:13:27] [INFO] [User ID: 435] User logged in
+[2024-07-08 13:39:45] [INFO] [User ID: 435] User logged in
+[2024-07-08 14:44:23] [INFO] [User ID: 435] User is accessing their profile
+[2024-07-08 15:40:47] [INFO] [User ID: 470] User logged in
+[2024-07-08 15:41:23] [INFO] [User ID: 470] User has deletedtheir account
+[2024-07-08 15:43:01] [INFO] [User ID: 470] User logged in
+[2024-07-08 15:43:08] [INFO] [User ID: 470] User has deleted their account470
+[2024-07-08 15:44:29] [INFO] [User ID: 470] User logged in
+[2024-07-08 15:44:35] [INFO] [User ID: 470] User has deleted their account470
+[2024-07-08 15:44:52] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-09 03:22:44] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-09 03:22:48] [INFO] [User ID: 435] User logged in
+[2024-07-09 03:22:58] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-09 03:23:11] [INFO] [User ID: 433] User logged in
+[2024-07-09 03:23:32] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-09 03:24:59] [INFO] [User ID: 437] User logged in
+[2024-07-09 03:35:47] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-09 03:36:07] [INFO] [User ID: 433] User logged in
+[2024-07-09 03:36:34] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-09 03:36:43] [INFO] [User ID: 456] User logged in
+[2024-07-09 03:36:50] [INFO] [User ID: 456] User has deleted their account456
+[2024-07-09 03:36:53] [ERROR] [User ID: 456] User failed to log in because the account has been deleted by the admin
+[2024-07-09 03:37:41] [INFO] [User ID: 433] User logged in
+[2024-07-09 03:40:29] [INFO] [User ID: 433] User has deleted their account433
+[2024-07-09 03:40:51] [INFO] [User ID: 470] User logged in
+[2024-07-09 03:41:25] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-09 03:41:36] [INFO] [User ID: 456] User logged in
+[2024-07-09 03:48:49] [INFO] [User ID: 456] User has logged out of the system
+[2024-07-09 03:49:13] [INFO] [User ID: 437] User logged in
+[2024-07-09 04:02:08] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:03:02] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:11:35] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:12:04] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:51:07] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:51:47] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:52:52] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:53:18] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:53:57] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:54:02] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:56:01] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:56:35] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:56:50] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:56:57] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:58:01] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:58:18] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:58:30] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 04:58:37] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:00:01] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:00:14] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:01:23] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:01:40] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:02:01] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:02:27] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:02:35] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:03:54] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:05:33] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:05:41] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:07:25] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:08:06] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:09:02] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:10:33] [INFO] [User ID: 437] User logged in
+[2024-07-09 05:21:33] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:21:37] [INFO] [User ID: 341] User is accessing their profile
+[2024-07-09 05:21:48] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:21:53] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:23:41] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:23:43] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:23:43] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:23:46] [INFO] [User ID: 331] User is accessing their profile
+[2024-07-09 05:24:04] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:06] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:06] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:09] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:09] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:11] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:11] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:13] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:24:13] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:28:05] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:28:06] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:28:07] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:28:07] [INFO] [User ID: 333] User is accessing their profile
+[2024-07-09 05:28:11] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:28:14] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:28:20] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:28:23] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:28:54] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:28:56] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:29:13] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:29:20] [INFO] [User ID: 337] User is accessing their profile
+[2024-07-09 05:29:25] [INFO] [User ID: 363] User is accessing their profile
+[2024-07-09 05:29:28] [INFO] [User ID: 363] User is accessing their profile
+[2024-07-09 05:29:39] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-09 05:30:00] [INFO] [User ID: 435] User logged in
+[2024-07-09 05:30:04] [INFO] [User ID: 435] User is accessing their profile
+[2024-07-09 05:30:19] [INFO] [User ID: 435] User is accessing their profile
+[2024-07-09 05:57:14] [INFO] [User ID: 435] User is accessing their profile
+[2024-07-09 06:02:17] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-09 06:02:23] [INFO] [User ID: 437] User logged in
+[2024-07-09 20:24:29] [INFO] [User ID: 470] User logged in
+[2024-07-09 20:24:38] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-09 20:24:43] [INFO] [User ID: 470] User logged in
+[2024-07-09 20:24:50] [INFO] [User ID: 470] User has deleted their account470
+[2024-07-09 20:24:54] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-09 20:25:42] [INFO] [User ID: 437] User logged in
+[2024-07-09 20:39:48] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 379
+[2024-07-09 20:48:11] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 379
+[2024-07-10 04:02:06] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 379
+[2024-07-10 04:02:26] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 407
+[2024-07-10 04:39:53] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 407
+[2024-07-10 04:40:13] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 407
+[2024-07-10 04:40:47] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 407
+[2024-07-10 04:40:52] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 409
+[2024-07-10 04:41:38] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 409
+[2024-07-10 04:52:28] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 409
+[2024-07-10 04:54:27] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 405
+[2024-07-10 04:54:55] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 04:55:30] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 333
+[2024-07-10 04:55:41] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 333
+[2024-07-10 04:56:20] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 399
+[2024-07-10 05:09:41] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 391
+[2024-07-10 05:10:35] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 391
+[2024-07-10 05:10:54] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 393
+[2024-07-10 05:11:10] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 05:11:26] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 05:11:26] [INFO] [User ID: 403] User details updated successfully
+[2024-07-10 05:11:32] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 05:11:32] [INFO] [User ID: 403] User details updated successfully
+[2024-07-10 05:12:34] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 05:12:34] [INFO] [User ID: 403] User details updated successfully
+[2024-07-10 05:12:46] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 05:12:46] [INFO] [User ID: 403] User details updated successfully
+[2024-07-10 05:12:54] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 403
+[2024-07-10 05:13:03] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 417
+[2024-07-10 05:13:12] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 417
+[2024-07-10 05:14:09] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 417
+[2024-07-10 05:14:38] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 417
+[2024-07-10 05:15:47] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 417
+[2024-07-10 05:15:52] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 415
+[2024-07-10 05:16:02] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 415
+[2024-07-10 05:16:30] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 415
+[2024-07-10 05:16:34] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:16:38] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:17:06] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:17:08] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:17:08] [INFO] [User ID: 413] User details updated successfully
+[2024-07-10 05:17:11] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:17:17] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 427
+[2024-07-10 05:17:21] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 427
+[2024-07-10 05:17:21] [INFO] [User ID: 427] User details updated successfully
+[2024-07-10 05:18:31] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 427
+[2024-07-10 05:18:31] [INFO] [User ID: 437] Admin has edited a user's profile. User: 427
+[2024-07-10 05:18:38] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 427
+[2024-07-10 05:18:44] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 427
+[2024-07-10 05:18:44] [INFO] [User ID: 437] Admin has edited a user's profile. User: 427
+[2024-07-10 05:19:28] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:19:33] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 413
+[2024-07-10 05:19:33] [INFO] [User ID: 437] Admin has edited a user's profile. User: 413
+[2024-07-10 05:19:55] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 389
+[2024-07-10 05:20:03] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 389
+[2024-07-10 05:20:03] [INFO] [User ID: 437] Admin has edited a user's profile. User: 389
+[2024-07-10 05:37:07] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 460
+[2024-07-10 05:37:18] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 460
+[2024-07-10 05:37:18] [INFO] [User ID: 437] Admin has edited a user's profile. User: 460
+[2024-07-10 05:37:30] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 460
+[2024-07-10 05:37:47] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 460
+[2024-07-10 05:37:47] [INFO] [User ID: 437] Admin has edited a user's profile. User: 460
+[2024-07-10 05:38:06] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-10 05:38:12] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 05:38:16] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 05:38:50] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 05:38:55] [INFO] [User ID: 435] User logged in
+[2024-07-10 05:39:00] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-10 05:39:07] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 05:40:32] [INFO] [User ID: 435] User logged in
+[2024-07-10 05:40:38] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-10 05:40:42] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 05:40:48] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 05:41:34] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin

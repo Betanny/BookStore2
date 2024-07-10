@@ -129,13 +129,13 @@ VALUES (:sender_id, :recipient_id, :message)";
             <div class="icon">
                 <a href="../Shared Components/notifications.php"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
-                <span class="notification-count"><?php echo $unread_count; ?></span>
+                    <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="icon">
                 <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <?php if ($cart_count > 0): ?>
-                <span class="notification-count"><?php echo $cart_count; ?></span>
+                    <span class="notification-count"><?php echo $cart_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="profile">
@@ -149,6 +149,8 @@ VALUES (:sender_id, :recipient_id, :message)";
                         <div class="dropdown-content">
                             <a href="clientprofile.php">Edit</a>
                             <a href="/Shared Components/logout.php">Logout</a>
+                            <a href="/Shared Components/deleteaccount.php">Delete Account</a>
+
                         </div>
                     </div>
                 </div>

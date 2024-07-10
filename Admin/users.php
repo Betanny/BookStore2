@@ -318,9 +318,9 @@ try {
                         <!-- <div class="cell">
                             </div> -->
 
-                        <div class="icon-cell">
+                        <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
-                        </div>
+                        </div> -->
                         <div class="icon-cell">
                             <i class="fa-solid fa-pen" id="editIcon" style="cursor:pointer;"
                                 data-role="<?php echo $user['role']; ?>"
@@ -516,11 +516,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const editIcon = document.getElementById('editIcon');
-    console.log('Edit icon element:', editIcon);
+    // Select all edit icons with the class 'edit-icon'
+    const editIcons = document.querySelectorAll('.fa-pen');
 
-    if (editIcon) {
-        editIcon.addEventListener('click', function() {
+    // Loop through each edit icon and add the click event listener
+    editIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
             const role = this.getAttribute('data-role');
             const userId = this.getAttribute('data-userid');
             console.log('User role:', role);
@@ -534,9 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Invalid role.');
             }
         });
-    } else {
-        console.error('Edit icon not found in the DOM.');
-    }
+    });
 });
 </script>
 

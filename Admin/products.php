@@ -120,7 +120,6 @@ try {
 
     if (isset($_GET['action']) && $_GET['action'] === 'hide_book' && isset($_GET['bookid'])) {
         $bookid = $_GET['bookid'];
-        var_dump($bookid);
 
         $deletebookid = $_GET['bookid'];
 
@@ -153,7 +152,6 @@ try {
         $selected_book_stmt->execute();
         $selected_book = $selected_book_stmt->fetch(PDO::FETCH_ASSOC);
         global $selected_book;
-        var_dump($bookid);
 
     }
 
@@ -309,48 +307,48 @@ try {
                     <!-- Adding the product items -->
                     <?php if (!empty($products)): ?>
 
-                    <?php foreach ($products as $product): ?>
-                    <div class="row">
-                        <!-- <input type="checkbox" class="checkbox" name="product_id" value="?php $product['bookid']; ?>">
+                        <?php foreach ($products as $product): ?>
+                            <div class="row">
+                                <!-- <input type="checkbox" class="checkbox" name="product_id" value="?php $product['bookid']; ?>">
                     -->
-                        <div class=" name-cell">
-                            <?php echo $product['title']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['isbn']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['subject']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['bookrating']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['copies_bought']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $product['copies_bought'] == 0 ? '---' : $product['total_values_generated']; ?>
-                        </div>
+                                <div class=" name-cell">
+                                    <?php echo $product['title']; ?>
+                                </div>
+                                <div class="bigger-cell">
+                                    <?php echo $product['isbn']; ?>
+                                </div>
+                                <div class="bigger-cell">
+                                    <?php echo $product['subject']; ?>
+                                </div>
+                                <div class="bigger-cell">
+                                    <?php echo $product['bookrating']; ?>
+                                </div>
+                                <div class="bigger-cell">
+                                    <?php echo $product['copies_bought']; ?>
+                                </div>
+                                <div class="bigger-cell">
+                                    <?php echo $product['copies_bought'] == 0 ? '---' : $product['total_values_generated']; ?>
+                                </div>
 
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
-                        </div>
-                        <!-- Add the icon with a class to handle click events -->
-                        <!-- <div class="icon-cell">
+                                <div class="icon-cell">
+                                    <i class="fa-solid fa-pen" onclick="editProduct(<?php echo $product['bookid']; ?>)"></i>
+                                </div>
+                                <!-- Add the icon with a class to handle click events -->
+                                <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash toggle-icon"></i>
                         </div> -->
 
-                        <div class="icon-cell">
-                            <a href="#" class="delete-link" data-table="books"
-                                data-pk="<?php echo $product['bookid']; ?>" data-pk-name=" bookid">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
+                                <div class="icon-cell">
+                                    <a href="#" class="delete-link" data-table="books"
+                                        data-pk="<?php echo $product['bookid']; ?>" data-pk-name=" bookid">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     <?php else: ?>
-                    <h2>No Products with that keyword.</h2>
-                </div>
+                        <h2>No Products with that keyword.</h2>
+                    </div>
                 <?php endif; ?>
 
             </div>
@@ -511,156 +509,156 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
 
+            });
+        var exportButton = document.getElementById('exportButton');
+        exportButton.addEventListener('click', function () {
+            // Update the href attribute of the export button with the desired URL
+            var currentHref = window.location.href;
+            var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
+                '?export=true';
+            exportButton.querySelector('a').setAttribute('href', exportUrl);
         });
-    var exportButton = document.getElementById('exportButton');
-    exportButton.addEventListener('click', function() {
-        // Update the href attribute of the export button with the desired URL
-        var currentHref = window.location.href;
-        var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
-            '?export=true';
-        exportButton.querySelector('a').setAttribute('href', exportUrl);
+        <?php if (isset($_GET['bookid'])): ?>
+            // If bookid is set, display the modal
+            document.getElementById("editproducts-modal").style.display = "block";
+        <?php endif; ?>
     });
-    <?php if (isset($_GET['bookid'])): ?>
-    // If bookid is set, display the modal
-    document.getElementById("editproducts-modal").style.display = "block";
-    <?php endif; ?>
-});
 
-function editProduct(bookId) {
-    // Redirect to the edit page with the book ID as a query parameter
-    window.location.href = 'products.php?bookid=' + bookId;
-    console.log(bookId);
+    function editProduct(bookId) {
+        // Redirect to the edit page with the book ID as a query parameter
+        window.location.href = 'products.php?bookid=' + bookId;
+        console.log(bookId);
 
-    // Get the modal
-    var modal = document.getElementById("editproducts-modal");
-    modal.style.display = "block";
+        // Get the modal
+        var modal = document.getElementById("editproducts-modal");
+        modal.style.display = "block";
 
-}
+    }
 
-function cancel() {
-    window.location.href = 'products.php';
-}
-<?php foreach ($products as $product): ?>
-console.log(<?php echo json_encode($product['bookid']); ?>);
-<?php endforeach; ?>
+    function cancel() {
+        window.location.href = 'products.php';
+    }
+    <?php foreach ($products as $product): ?>
+        console.log(<?php echo json_encode($product['bookid']); ?>);
+    <?php endforeach; ?>
 
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Get all elements with the class "delete-link"
-//     var deleteLinks = document.querySelectorAll('.delete-link');
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     // Get all elements with the class "delete-link"
+    //     var deleteLinks = document.querySelectorAll('.delete-link');
 
-//     // Loop through each delete link
-//     deleteLinks.forEach(function(link) {
-//         // Add click event listener to each delete link
-//         link.addEventListener('click', function(event) {
-//             // Prevent the default behavior (i.e., following the href)
-//             event.preventDefault();
+    //     // Loop through each delete link
+    //     deleteLinks.forEach(function(link) {
+    //         // Add click event listener to each delete link
+    //         link.addEventListener('click', function(event) {
+    //             // Prevent the default behavior (i.e., following the href)
+    //             event.preventDefault();
 
-//             // Get the table name, primary key column name, and primary key value from the data attributes
-//             var tableName = link.getAttribute('data-table');
-//             var primaryKey = link.getAttribute('data-pk');
-//             var pkName = link.getAttribute('data-pk-name');
+    //             // Get the table name, primary key column name, and primary key value from the data attributes
+    //             var tableName = link.getAttribute('data-table');
+    //             var primaryKey = link.getAttribute('data-pk');
+    //             var pkName = link.getAttribute('data-pk-name');
 
-//             // Perform AJAX request to the delete script
-//             var xhr = new XMLHttpRequest();
-//             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-//                 primaryKey +
-//                 '&pk_name=' + pkName, true);
-//             xhr.onload = function() {
-//                 if (xhr.status === 200) {
-//                     // Handle successful deletion (if needed)
-//                     // For example, you can remove the deleted row from the DOM
-//                     link.parentElement.parentElement.remove();
-//                 } else {
-//                     // Handle error (if needed)
-//                     console.error('Error:', xhr.statusText);
-//                 }
-//             };
-//             xhr.onerror = function() {
-//                 // Handle network errors (if needed)
-//                 console.error('Request failed');
-//             };
-//             xhr.send();
-//         });
-//     });
-// });
-let tableName, primaryKey, pkName, deleteLink;
+    //             // Perform AJAX request to the delete script
+    //             var xhr = new XMLHttpRequest();
+    //             xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+    //                 primaryKey +
+    //                 '&pk_name=' + pkName, true);
+    //             xhr.onload = function() {
+    //                 if (xhr.status === 200) {
+    //                     // Handle successful deletion (if needed)
+    //                     // For example, you can remove the deleted row from the DOM
+    //                     link.parentElement.parentElement.remove();
+    //                 } else {
+    //                     // Handle error (if needed)
+    //                     console.error('Error:', xhr.statusText);
+    //                 }
+    //             };
+    //             xhr.onerror = function() {
+    //                 // Handle network errors (if needed)
+    //                 console.error('Request failed');
+    //             };
+    //             xhr.send();
+    //         });
+    //     });
+    // });
+    let tableName, primaryKey, pkName, deleteLink;
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Get all elements with the class "delete-link"
-    var deleteLinks = document.querySelectorAll('.delete-link');
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements with the class "delete-link"
+        var deleteLinks = document.querySelectorAll('.delete-link');
 
-    // Loop through each delete link
-    deleteLinks.forEach(function(link) {
-        // Add click event listener to each delete link
-        link.addEventListener('click', function(event) {
-            // Prevent the default behavior (i.e., following the href)
+        // Loop through each delete link
+        deleteLinks.forEach(function (link) {
+            // Add click event listener to each delete link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (i.e., following the href)
 
-            // Get the table name, primary key column name, and primary key value from the data attributes
-            tableName = link.getAttribute('data-table');
-            primaryKey = link.getAttribute('data-pk');
-            pkName = link.getAttribute('data-pk-name');
-            deleteLink = link;
-            var row = link.closest('.row'); // Get the closest row element
+                // Get the table name, primary key column name, and primary key value from the data attributes
+                tableName = link.getAttribute('data-table');
+                primaryKey = link.getAttribute('data-pk');
+                pkName = link.getAttribute('data-pk-name');
+                deleteLink = link;
+                var row = link.closest('.row'); // Get the closest row element
 
-            event.preventDefault();
-            document.getElementById('delete-modal').style.display = 'block';
+                event.preventDefault();
+                document.getElementById('delete-modal').style.display = 'block';
 
+            });
         });
     });
-});
 
-document.getElementById('confirm-delete-button').addEventListener('click', function() {
-    confirmDelete(tableName, primaryKey, pkName, deleteLink);
-});
+    document.getElementById('confirm-delete-button').addEventListener('click', function () {
+        confirmDelete(tableName, primaryKey, pkName, deleteLink);
+    });
 
-function confirmDelete(tableName, primaryKey, pkName, link) {
-    console.log(pkName)
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', window.location.pathname + '?action=hide_book&bookid=' + primaryKey, true);
-    console.log(window.location.pathname)
+    function confirmDelete(tableName, primaryKey, pkName, link) {
+        console.log(pkName)
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', window.location.pathname + '?action=hide_book&bookid=' + primaryKey, true);
+        console.log(window.location.pathname)
 
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            // Handle successful update
-            link.parentElement.parentElement.remove();
-            console.log("Book status updated to hidden");
-        } else {
-            // Handle error
-            console.error('Error:', xhr.statusText);
-        }
-    };
-    xhr.onerror = function() {
-        // Handle network errors
-        console.error('Request failed');
-    };
-    xhr.send();
-    // document.getElementById('delete-modal').style.display = 'none';
-    location.reload();
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Handle successful update
+                link.parentElement.parentElement.remove();
+                console.log("Book status updated to hidden");
+            } else {
+                // Handle error
+                console.error('Error:', xhr.statusText);
+            }
+        };
+        xhr.onerror = function () {
+            // Handle network errors
+            console.error('Request failed');
+        };
+        xhr.send();
+        // document.getElementById('delete-modal').style.display = 'none';
+        location.reload();
 
-}
+    }
 
-function cancelDelete() {
-    document.getElementById('delete-modal').style.display = 'none';
-}
+    function cancelDelete() {
+        document.getElementById('delete-modal').style.display = 'none';
+    }
 
 
-//hide view button feature
+    //hide view button feature
 
-// Get the icon element
-const hideviewicon = document.querySelector('.toggle-icon');
+    // Get the icon element
+    const hideviewicon = document.querySelector('.toggle-icon');
 
-// Add a click event listener
-icon.addEventListener('click', () => {
-    // Toggle visibility (hide/show)
-    hideviewicon.classList.toggle('hidden');
-});
+    // Add a click event listener
+    icon.addEventListener('click', () => {
+        // Toggle visibility (hide/show)
+        hideviewicon.classList.toggle('hidden');
+    });
 </script>
 
 </html>

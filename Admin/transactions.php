@@ -49,11 +49,11 @@ try {
     JOIN 
         clients ON clients.client_id = transactions.client_id
         WHERE 
-                    LOWER(CONCAT(clients.first_name, ' ', clients.last_name)) LIKE LOWER(:query)
+                    (LOWER(CONCAT(clients.first_name, ' ', clients.last_name)) LIKE LOWER(:query)
                     OR LOWER(clients.organization_name) LIKE LOWER(:query)
                     OR LOWER(transactions.transaction_type) LIKE LOWER(:query)
                     OR LOWER(transactions.payment_method) LIKE LOWER(:query)
-                    OR (transactions.payment_number) LIKE (:query)";
+                    OR (transactions.payment_number) LIKE (:query)) AND view_status IS NULL";
 
 
         // Prepare and execute the query
@@ -76,7 +76,8 @@ try {
     FROM 
         transactions
     JOIN 
-        clients ON clients.client_id = transactions.client_id";
+        clients ON clients.client_id = transactions.client_id
+        WHERE view_status IS NULL";
 
         $stmt = $db->prepare($sql);
 

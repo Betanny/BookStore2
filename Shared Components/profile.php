@@ -20,23 +20,25 @@ $role = $_SESSION['role'];
 if ($role == "Admin") {
     $user_id = $_GET['user_id'];
 
-    $sql = "SELECT category, password FROM users WHERE user_id = :user_id";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $category = $result['category'];
-    $password = $result['password'];
+
 
 
     writeLog($db, "Admin is accessing a user's profile. User: $user_id", "INFO", $_SESSION['user_id']);
 
 
 } else {
+    $user_id = $_SESSION['user_id'];
 
     writeLog($db, "User is accessing their profile", "INFO", $user_id);
 
 }
+$sql = "SELECT category, password FROM users WHERE user_id = :user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+$category = $result['category'];
+$password = $result['password'];
 $CurrentpasswordError = $passwordError = '';
 
 
@@ -187,7 +189,7 @@ try {
                 header("Location: ../Admin/users.php");
             } else {
                 writeLog($db, "User has edited their profile", "INFO", $user_id);
-                header("Location: sellerdashboard.php");
+                header("Location: ../Seller/sellerdashboard.php");
 
             }
         } catch (PDOException $e) {

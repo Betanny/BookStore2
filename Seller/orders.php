@@ -126,7 +126,6 @@ try {
         if (isset($_POST['confirm_delivery'])) {
             // Confirm Delivery form submission 
             $orderId = $_POST['order_id'];
-            var_dump($orderId);
             $comments = $_POST['comments'];
             $current_date = date("Y-m-d");
 

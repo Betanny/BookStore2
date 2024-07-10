@@ -346,3 +346,24 @@
 [2024-07-10 05:40:42] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
 [2024-07-10 05:40:48] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
 [2024-07-10 05:41:34] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 14:13:29] [ERROR] [User ID: 433] User failed to log in because the account has been deleted by the admin
+[2024-07-10 14:13:43] [ERROR] [User ID: 435] User failed to log in due to wrong credentials
+[2024-07-10 14:13:46] [INFO] [User ID: 435] User logged in
+[2024-07-10 14:13:51] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-10 14:14:05] [INFO] [User ID: 437] User logged in
+[2024-07-10 14:25:45] [INFO] [User ID: 437] User has logged out of the system
+[2024-07-10 14:25:49] [ERROR] [User ID: 433] User failed to log in due to wrong credentials
+[2024-07-10 14:25:59] [INFO] [User ID: 433] User logged in
+[2024-07-10 14:27:00] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:27:25] [INFO] [User ID: 437] User logged in
+[2024-07-10 14:27:42] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 433
+[2024-07-10 14:29:15] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:30:58] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:31:18] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:31:18] [INFO] [User ID: 433] User has edited their profile
+[2024-07-10 14:31:53] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:32:03] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:32:18] [INFO] [User ID: 433] User is accessing their profile
+[2024-07-10 14:32:18] [INFO] [User ID: 433] User has edited their profile
+[2024-07-10 14:36:37] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-10 14:56:35] [INFO] [User ID: 435] User logged in

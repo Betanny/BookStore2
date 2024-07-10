@@ -415,7 +415,8 @@ try {
                     <div class="task">
 
                         <?php foreach ($notifications as $notification): ?>
-                        <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                        <div class="admin-notification"
+                            data-email="<?php echo htmlspecialchars($notification['email']); ?>"
                             data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
                             onclick="openNotification(this);">
                             <h5><?php echo htmlspecialchars($notification['email']); ?></h5>

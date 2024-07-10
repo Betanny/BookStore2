@@ -50,7 +50,6 @@ try {
                 ':quantity' => $item['quantity'],
                 ':seller_id' => $item['seller_id']
             );
-            var_dump($orderstmt);
             $result = $orderstmt->execute($params);
 
             if (!$result) {

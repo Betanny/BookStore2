@@ -21,13 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $client_id = $client_id_result['client_id'];
 
 
-    var_dump($client_id);
     // Assign form data to variables
     $status = "Pending"; // status is always pending
     $payment_method = $_POST['paymentMethod'];
     $payment_number = $_POST['paymentNumber'];
     $delivery_option = $_POST['deliveryType'];
-    var_dump($payment_number);
     $shipping_address = $_POST['shipping_address'];
     $product_type = "book"; // product_type is always book
     $transactiontype = "Purchase";
@@ -48,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $cart_id = $cartItem['cart_id'];
         $seller_id = $cartItem['seller_id'];
 
-        var_dump($cart_id);
 
 
         // Assuming you have a way to determine seller_id for each product_id, otherwise adjust this accordingly

@@ -53,7 +53,7 @@ try {
         JOIN 
             orders ON orders.order_id = transactions.order_id
         WHERE 
-            orders.seller_id = :user_id";
+            orders.seller_id = :user_id AND view_status IS NULL";
 
     // Append the search condition if provided
     $sql .= $queryCondition;

@@ -248,3 +248,53 @@ padding: 10px;
 }
 
 
+
+.admin-notification{
+    /* background-color:var(--accent-color2); */
+    height: 60px;
+    border-radius: 10px;
+    /* display: flex;
+    flex-direction: row; */
+    justify-content: space-between;
+    margin-top: 5px;
+    padding: 12px;
+    border: 0.5px dotted var(--primary-color);
+
+
+}
+.admin-notification h4{
+    font-weight: bold;
+    font-size: 14px;
+
+}
+.admin-notification h5{
+    font-weight: normal;
+    font-size: 12px;
+
+}
+.admin-notification p{
+    font-weight: lighter;
+    font-size: 8px;
+
+}
+
+.admin-notification-header{
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-notification-header .inputfield{
+    background: var(--accent-color2);
+    font-size: 15px;
+    color: black;
+    min-height: 25px;
+    border:1px solid #80808050;
+    width: 500px;
+    padding:0 10px 0 10px;
+    border-radius: 5px;
+    outline: none;
+    transition: .2s ease;
+    margin-bottom: 5px;
+
+
+}

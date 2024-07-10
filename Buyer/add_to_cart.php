@@ -38,7 +38,6 @@ try {
 
             // Execute the query
             $bookstmt->execute();
-            var_dump($book_data['mininbulk']);
 
             // Fetch the book data
             $book_data = $bookstmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +49,6 @@ try {
             $stmt = $db->prepare("UPDATE cart SET quantity = :quantity, discount = :discount WHERE cart_id = :cart_id");
             $stmt->bindParam(':quantity', $newQuantity);
             $stmt->bindParam(':discount', $discount);
-            var_dump($discount);
             $stmt->bindParam(':cart_id', $cart_id);
             $stmt->execute();
         }

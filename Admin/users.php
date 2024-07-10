@@ -50,7 +50,6 @@ try {
     } else {
         $queryCondition = "WHERE users.view_status IS NULL";
     }
-    var_dump($queryCondition);
     // Build the final SQL query
     $sql = "SELECT 
         user_id,
@@ -280,8 +279,7 @@ try {
                                         $name = 'Unknown Category';
                                         break;
                                 }
-                                // var_dump($namesql);
-                            
+
 
                                 // Only execute if $namesql is not empty
                                 $namestmt = $db->prepare($namesql);

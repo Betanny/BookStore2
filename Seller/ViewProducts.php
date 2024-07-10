@@ -83,7 +83,6 @@ try {
         $selected_book_stmt->execute();
         $selected_book = $selected_book_stmt->fetch(PDO::FETCH_ASSOC);
         global $selected_book;
-        var_dump($bookid);
 
     }
 
@@ -156,7 +155,6 @@ try {
 
     if (isset($_GET['action']) && $_GET['action'] === 'hide_book' && isset($_GET['bookid'])) {
         $bookid = $_GET['bookid'];
-        var_dump($bookid);
 
         $deletebookid = $_GET['bookid'];
 

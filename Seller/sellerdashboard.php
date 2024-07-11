@@ -302,21 +302,30 @@ try {
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
     <style>
-    .chart {
-        width: 200px;
-        height: 200px;
-        margin: 10px auto;
-        border-radius: 50%;
-        background: conic-gradient(green 0% <?php echo $delivered_percentage . "%"; ?>,
-                orange <?php echo $delivered_percentage . "%"; ?> <?php echo $pending_percentage + $delivered_percentage . "%"; ?>,
-                red <?php echo $pending_percentage + $delivered_percentage . "%"?> 100%);
-    }
+        .chart {
+            width: 200px;
+            height: 200px;
+            margin: 10px auto;
+            border-radius: 50%;
+            background: conic-gradient(green 0%
+                    <?php echo $delivered_percentage . "%"; ?>
+                    ,
+                    orange
+                    <?php echo $delivered_percentage . "%"; ?>
+                    <?php echo $pending_percentage + $delivered_percentage . "%"; ?>
+                    ,
+                    red
+                    <?php echo $pending_percentage + $delivered_percentage . "%" ?>
+                    100%);
+        }
     </style>
 </head>
 
 <body>
-    <div id="header-container"></div>
-
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class=" dashboard-container">
         <div class="reports-container">
             <div class="welcome-container">
@@ -392,9 +401,9 @@ try {
 
                     <div id="monthly-graph" style="display: block;">
                         <?php if (empty($salesDataMonthly || $salesDataYearly)): ?>
-                        <h2>Nothing to display yet</h2>
+                            <h2>Nothing to display yet</h2>
                         <?php else: ?>
-                        <?php
+                            <?php
                             $months = [
                                 1 => 'January',
                                 2 => 'February',
@@ -410,28 +419,28 @@ try {
                                 12 => 'December'
                             ];
                             foreach ($salesDataMonthly as $month => $totalSales): ?>
-                        <div class="bar-container">
-                            <div class="bar-label"><?php echo $months[$month]; ?>:</div>
-                            <div class="bar-wrapper">
-                                <div class="bar" style="width: <?php echo $totalSales / 800; ?>px;"></div>
-                                <div class="bar-value">ksh <?php echo $totalSales; ?></div>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <div id="yearly-graph" style="display: none;">
-                        <?php foreach ($salesDataYearly as $year => $totalSales): ?>
-                        <div class="bar-container">
-                            <div class="bar-label"><?php echo $year; ?>:</div>
-                            <div class="bar-wrapper">
-                                <div class="bar" style="width: <?php echo $totalSales / 1000; ?>px;">
+                                <div class="bar-container">
+                                    <div class="bar-label"><?php echo $months[$month]; ?>:</div>
+                                    <div class="bar-wrapper">
+                                        <div class="bar" style="width: <?php echo $totalSales / 800; ?>px;"></div>
+                                        <div class="bar-value">ksh <?php echo $totalSales; ?></div>
+                                    </div>
                                 </div>
-                                <div class="bar-value">ksh
-                                    <?php echo $totalSales; ?>
-                                </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
-                        <?php endforeach; ?>
+                        <div id="yearly-graph" style="display: none;">
+                            <?php foreach ($salesDataYearly as $year => $totalSales): ?>
+                                <div class="bar-container">
+                                    <div class="bar-label"><?php echo $year; ?>:</div>
+                                    <div class="bar-wrapper">
+                                        <div class="bar" style="width: <?php echo $totalSales / 1000; ?>px;">
+                                        </div>
+                                        <div class="bar-value">ksh
+                                            <?php echo $totalSales; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         <?php endif; ?>
 
                     </div>
@@ -442,30 +451,30 @@ try {
                 <h4>Product Report</h4>
                 <div class="products">
                     <?php if (empty($best_rated_title) || empty($best_selling_title) || empty($most_popular_title)): ?>
-                    <h2>Nothing to display yet</h2>
-                    <p>Please upload a book</p>
+                        <h2>Nothing to display yet</h2>
+                        <p>Please upload a book</p>
                     <?php else: ?>
-                    <div class="product">
-                        <h4>
-                            <?php echo $best_rated_title; ?>
-                        </h4>
-                        <h5>Highest rated</h5>
+                        <div class="product">
+                            <h4>
+                                <?php echo $best_rated_title; ?>
+                            </h4>
+                            <h5>Highest rated</h5>
 
-                    </div>
-                    <div class="product">
-                        <h4>
-                            <?php echo $best_selling_title; ?>
-                        </h4>
-                        <h5>Best Selling</h5>
+                        </div>
+                        <div class="product">
+                            <h4>
+                                <?php echo $best_selling_title; ?>
+                            </h4>
+                            <h5>Best Selling</h5>
 
-                    </div>
-                    <div class="product">
-                        <h4>
-                            <?php echo $most_popular_title; ?>
-                        </h4>
-                        <h5>Most Popular</h5>
+                        </div>
+                        <div class="product">
+                            <h4>
+                                <?php echo $most_popular_title; ?>
+                            </h4>
+                            <h5>Most Popular</h5>
 
-                    </div>
+                        </div>
                     <?php endif; ?>
 
                 </div>
@@ -513,20 +522,20 @@ try {
                 <h4>Pending Tasks</h4>
                 <div class="tasks-container">
                     <?php if (empty($pending_orders)): ?>
-                    <h2>Nothing to display yet</h2>
+                        <h2>Nothing to display yet</h2>
                     <?php else: ?>
-                    <?php foreach ($pending_orders as $order): ?>
-                    <div class=" task">
-                        <a href="orders.php?status=Pending">
+                        <?php foreach ($pending_orders as $order): ?>
+                            <div class=" task">
+                                <a href="orders.php?status=Pending">
 
-                            <h4>
-                                <?php echo $order['book_title']; ?>
-                            </h4>
-                            <h5>Order Date:
-                                <?php echo $order['order_date']; ?>
-                            </h5>
-                    </div>
-                    <?php endforeach; ?>
+                                    <h4>
+                                        <?php echo $order['book_title']; ?>
+                                    </h4>
+                                    <h5>Order Date:
+                                        <?php echo $order['order_date']; ?>
+                                    </h5>
+                            </div>
+                        <?php endforeach; ?>
                     <?php endif; ?>
 
                 </div>
@@ -540,56 +549,48 @@ try {
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php').then(response => response.text()).then(data => {
-        document.getElementById('header-container').innerHTML = data;
-
-    });
 
 
-});
+    function updateGraph() {
+        const filter = document.getElementById('filter').value;
+        const monthlyGraph = document.getElementById('monthly-graph');
+        const yearlyGraph = document.getElementById('yearly-graph');
 
-
-function updateGraph() {
-    const filter = document.getElementById('filter').value;
-    const monthlyGraph = document.getElementById('monthly-graph');
-    const yearlyGraph = document.getElementById('yearly-graph');
-
-    if (filter === 'monthly') {
-        monthlyGraph.style.display = 'block';
-        yearlyGraph.style.display = 'none';
-    } else if (filter === 'yearly') {
-        monthlyGraph.style.display = 'none';
-        yearlyGraph.style.display = 'block';
+        if (filter === 'monthly') {
+            monthlyGraph.style.display = 'block';
+            yearlyGraph.style.display = 'none';
+        } else if (filter === 'yearly') {
+            monthlyGraph.style.display = 'none';
+            yearlyGraph.style.display = 'block';
+        }
     }
-}
-document.addEventListener("DOMContentLoaded", function() {
-    // Data for pie chart
-    const data = {
-        pending: <?php echo $pending_count; ?>,
-        delivered: <?php echo $delivered_count; ?>,
-        declined: <?php echo $declined_count; ?>
-    };
+    document.addEventListener("DOMContentLoaded", function () {
+        // Data for pie chart
+        const data = {
+            pending: <?php echo $pending_count; ?>,
+            delivered: <?php echo $delivered_count; ?>,
+            declined: <?php echo $declined_count; ?>
+        };
 
-    // Calculate total
-    const total = data.pending + data.delivered + data.declined;
+        // Calculate total
+        const total = data.pending + data.delivered + data.declined;
 
-    // Calculate percentages
-    const pendingPercentage = (data.pending / total) * 100;
-    const deliveredPercentage = (data.delivered / total) * 100;
-    const declinedPercentage = (data.declined / total) * 100;
+        // Calculate percentages
+        const pendingPercentage = (data.pending / total) * 100;
+        const deliveredPercentage = (data.delivered / total) * 100;
+        const declinedPercentage = (data.declined / total) * 100;
 
-    console.log(
-        `Pending: ${pendingPercentage}%, Delivered: ${deliveredPercentage}%, Declined: ${declinedPercentage}%`
-    );
+        console.log(
+            `Pending: ${pendingPercentage}%, Delivered: ${deliveredPercentage}%, Declined: ${declinedPercentage}%`
+        );
 
-    // Apply conic gradient dynamically
-    document.querySelector('.chart').style.background = `conic-gradient(
+        // Apply conic gradient dynamically
+        document.querySelector('.chart').style.background = `conic-gradient(
         green 0% pendingPercentage%,
         orange pendingPercentage% calc(pendingPercentage + deliveredPercentage)%,
         red calc(pendingPercentage + deliveredPercentage)% 100%
     )`;
-});
+    });
 </script>
 
 </html>

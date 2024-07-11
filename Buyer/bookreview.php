@@ -104,7 +104,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="file-path"></div>
 
     <div class="product-container">
@@ -231,14 +234,6 @@ try {
 
     </div>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    });
-
     function returnToBooks() {
         window.location.href = "/Buyer/bookselect.php";
     }

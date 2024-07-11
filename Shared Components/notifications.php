@@ -124,6 +124,10 @@ try {
 </head>
 
 <body>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components/headerdispatcher.php"
+        ?>
     <div class="modal">
         <div class="modal-header">
             <div class="left-section">
@@ -143,14 +147,15 @@ try {
             <div class="all-notifications" id="all-notifications">
                 <?php foreach ($notifications as $notification): ?>
 
-                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                    data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
-                    data-reply-id="<?php echo htmlspecialchars($notification['notification_id']); ?>"
-                    onclick=" openNotification(this);">
-                    <h4>
-                        <?php echo htmlspecialchars($notification['email']); ?></h4>
-                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                </div>
+                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                        data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
+                        data-reply-id="<?php echo htmlspecialchars($notification['notification_id']); ?>"
+                        onclick=" openNotification(this);">
+                        <h4>
+                            <?php echo htmlspecialchars($notification['email']); ?>
+                        </h4>
+                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                    </div>
                 <?php endforeach; ?>
 
 
@@ -199,79 +204,77 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php').then(response => response.text()).then(data => {
-        document.getElementById('header-container').innerHTML = data;
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.getElementsByClassName('modal').style.display = 'none';
+
+
     });
-    document.getElementsByClassName('modal').style.display = 'none';
 
-
-});
-
-function cancel() {
-    window.history.back();
-}
-var allnotification = document.getElementById('all-notifications');
-var openednotification = document.getElementById('opened-notification');
-var newnotification = document.getElementById('new-notification');
-var addButton = document.querySelector('.add-button');
-
-
-// function openNotification() {
-//     allnotification.style.display = 'none';
-//     newnotification.style.display = 'none';
-//     openednotification.style.display = 'block';
-
-// }
-function openNotification(element) {
-    const email = element.getAttribute('data-email');
-    const message = element.getAttribute('data-message');
-    const replyId = element.getAttribute('data-reply-id');
-    console.log(replyId);
-    console.log(message);
-
-    document.getElementById('sender-email').innerText = 'Sender: ' + email;
-    document.getElementById('notification-message').innerText = 'Message: ' + message;
-    document.getElementById('reply-id').value = replyId;
-
-    document.getElementById('all-notifications').style.display = 'none';
-    document.getElementById('new-notification').style.display = 'none';
-    document.getElementById('opened-notification').style.display = 'block';
-}
-
-function newNotification() {
-    allnotification.style.display = 'none';
-    newnotification.style.display = 'block';
-    openednotification.style.display = 'none';
-    addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-
-}
-
-function allNotification() {
-    allnotification.style.display = 'block';
-    newnotification.style.display = 'none';
-    openednotification.style.display = 'none';
-    addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-
-}
-addButton.addEventListener('click', function() {
-    if (this.innerHTML.includes('Back')) {
-        allNotification();
-    } else {
-        newNotification();
+    function cancel() {
+        window.history.back();
     }
-});
+    var allnotification = document.getElementById('all-notifications');
+    var openednotification = document.getElementById('opened-notification');
+    var newnotification = document.getElementById('new-notification');
+    var addButton = document.querySelector('.add-button');
 
-function replyToNotification() {
-    const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
-    document.querySelector('input[name="recipient"]').value = recipient;
-    const replyId = document.getElementById('reply-id').value;
 
-    document.getElementById('all-notifications').style.display = 'none';
-    document.getElementById('new-notification').style.display = 'block';
-    document.getElementById('opened-notification').style.display = 'none';
-    addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-}
+    // function openNotification() {
+    //     allnotification.style.display = 'none';
+    //     newnotification.style.display = 'none';
+    //     openednotification.style.display = 'block';
+
+    // }
+    function openNotification(element) {
+        const email = element.getAttribute('data-email');
+        const message = element.getAttribute('data-message');
+        const replyId = element.getAttribute('data-reply-id');
+        console.log(replyId);
+        console.log(message);
+
+        document.getElementById('sender-email').innerText = 'Sender: ' + email;
+        document.getElementById('notification-message').innerText = 'Message: ' + message;
+        document.getElementById('reply-id').value = replyId;
+
+        document.getElementById('all-notifications').style.display = 'none';
+        document.getElementById('new-notification').style.display = 'none';
+        document.getElementById('opened-notification').style.display = 'block';
+    }
+
+    function newNotification() {
+        allnotification.style.display = 'none';
+        newnotification.style.display = 'block';
+        openednotification.style.display = 'none';
+        addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+
+    }
+
+    function allNotification() {
+        allnotification.style.display = 'block';
+        newnotification.style.display = 'none';
+        openednotification.style.display = 'none';
+        addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
+
+    }
+    addButton.addEventListener('click', function () {
+        if (this.innerHTML.includes('Back')) {
+            allNotification();
+        } else {
+            newNotification();
+        }
+    });
+
+    function replyToNotification() {
+        const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
+        document.querySelector('input[name="recipient"]').value = recipient;
+        const replyId = document.getElementById('reply-id').value;
+
+        document.getElementById('all-notifications').style.display = 'none';
+        document.getElementById('new-notification').style.display = 'block';
+        document.getElementById('opened-notification').style.display = 'none';
+        addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+    }
 </script>
 
 

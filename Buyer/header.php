@@ -4,7 +4,7 @@
 require_once '../Shared Components/dbconnection.php';
 
 // Start session
-session_start();
+// session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
@@ -118,24 +118,26 @@ VALUES (:sender_id, :recipient_id, :message)";
         <input type="checkbox" id="nav_check" hidden>
         <nav>
             <ul id="nav-menu">
-                <li><a href="/Buyer/buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="/Home/products.php" class="link light-text">Products</a></li>
-                <li><a href="/Buyer/myorders.php" class="link light-text">My orders</a></li>
-                <li><a href="/Shared Components/feedback.php" class="link light-text">Feedback</a></li>
-                <li><a href="/Buyer/bookselect.php" class="link light-text">Review a book</a></li>
+                <li><a href="/Buyer/buyerdashboard.php" id="dashboard-link"
+                        class="link light-text active-link">Dashboard</a></li>
+                <li><a href="/Home/products.php" id="products-link" class="link light-text">Products</a></li>
+                <li><a href="/Buyer/myorders.php" id="orders-link" class="link light-text">My orders</a></li>
+                <li><a href="/Shared Components/feedback.php" id="feedback-link" class="link light-text">Feedback</a>
+                </li>
+                <li><a href="/Buyer/bookselect.php" id="review-link" class="link light-text">Review a book</a></li>
             </ul>
         </nav>
         <div class="user-panel">
             <div class="icon">
                 <a href="../Shared Components/notifications.php"><i class="fa-regular fa-bell"></i></a>
                 <?php if ($unread_count > 0): ?>
-                    <span class="notification-count"><?php echo $unread_count; ?></span>
+                <span class="notification-count"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="icon">
                 <a href="../Buyer/CheckOut.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <?php if ($cart_count > 0): ?>
-                    <span class="notification-count"><?php echo $cart_count; ?></span>
+                <span class="notification-count"><?php echo $cart_count; ?></span>
                 <?php endif; ?>
             </div>
             <div class="profile">
@@ -169,6 +171,33 @@ VALUES (:sender_id, :recipient_id, :message)";
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const links = document.querySelectorAll('#nav-menu a');
+
+    // Function to deactivate all links
+    function deactivateAllLinks() {
+        links.forEach(link => {
+            console.log(links);
+            link.classList.remove('active-link');
+        });
+    }
+
+    // Function to activate the correct link based on the current URL
+    function activateLink() {
+        const currentPath = window.location.pathname;
+        console.log(currentPath);
+        links.forEach(link => {
+            if (currentPath.endsWith(link.getAttribute('href'))) {
+                link.classList.add('active-link');
+            }
+        });
+    }
+
+    deactivateAllLinks();
+    activateLink();
+});
+</script>
 
 
 </html>

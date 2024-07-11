@@ -228,8 +228,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
-
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="dashboard-container">
         <div class="reports-container">
             <div class="welcome-container">
@@ -440,16 +442,6 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-
-
-});
-
 function updateGraph() {
     const filter = document.getElementById('filter').value;
     const monthlyGraph = document.getElementById('monthly-graph');

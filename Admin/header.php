@@ -3,7 +3,7 @@
 require_once '../Shared Components/dbconnection.php';
 
 // Start session
-session_start();
+// session_start();
 //
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -72,15 +72,14 @@ try {
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
-
             <ul>
-                <li><a href="admindashboard.php" class="link light-text active-link">Dashboard</a></li>
-                <li><a href="products.php" class="link light-text">Products</a></li>
-                <li><a href="users.php" class="link light-text">Users</a></li>
-                <li><a href="orders.php" class="link light-text">Orders</a></li>
-                <li><a href="transactions.php" class="link light-text">Transactions</a></li>
+                <li><a href="admindashboard.php" id="dashboard-link" class="link light-text active-link">Dashboard</a>
+                </li>
+                <li><a href="products.php" id="products-link" class="link light-text">Products</a></li>
+                <li><a href="users.php" id="users-link" class="link light-text">Users</a></li>
+                <li><a href="orders.php" id="orders-link" class="link light-text">Orders</a></li>
+                <li><a href="transactions.php" id="transactions-link" class="link light-text">Transactions</a></li>
                 <!-- <li><a href="/Shared Components\logout.php" class="link-active">logout</a></li> -->
-
             </ul>
 
         </nav>
@@ -127,5 +126,30 @@ try {
 
     </header>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const links = document.querySelectorAll('nav ul li a');
+
+    // Function to deactivate all links
+    function deactivateAllLinks() {
+        links.forEach(link => {
+            link.classList.remove('active-link');
+        });
+    }
+
+    // Function to activate the correct link based on the current URL
+    function activateLink() {
+        const currentPath = window.location.pathname;
+        links.forEach(link => {
+            if (currentPath.endsWith(link.getAttribute('href'))) {
+                link.classList.add('active-link');
+            }
+        });
+    }
+
+    deactivateAllLinks();
+    activateLink();
+});
+</script>
 
 </html>

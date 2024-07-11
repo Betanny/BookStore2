@@ -9,12 +9,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
+    <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
 </head>
 
 <body>
-    <div id="header-container"></div>
+
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div id="logout-container" style="display: none;"></div>
 
     <div class="homepage-container">
@@ -134,7 +138,8 @@
             <div class="review-subcontainer">
                 <div class="wholereview">
                     <div class="review">
-                        <p>"I'm incredibly impressed with the diverse range of educational materials available on smartCBC As a teacher, I've found everything I need to enhance my curriculum and
+                        <p>"I'm incredibly impressed with the diverse range of educational materials available on
+                            smartCBC As a teacher, I've found everything I need to enhance my curriculum and
                             engage my students. The platform's user-friendly interface makes browsing and purchasing a
                             breeze!"</p>
                     </div>
@@ -181,20 +186,20 @@
 
 </body>
 <script>
- document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     fetch('/Shared Components/header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
-        fetch('/Shared Components/footer.html')
+    fetch('/Shared Components/footer.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('footer-container').innerHTML = data;
         });
-        document.getElementById('home-link').classList.add('active-link');
+    document.getElementById('home-link').classList.add('active-link');
 
-        
+
 });
 // document.addEventListener("DOMContentLoaded", function() {
 //     fetch('/Shared Components/logout.php').then(response => response.text()).then(data => {

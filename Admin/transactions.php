@@ -134,7 +134,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="viewproducts-container">
         <div class="viewproducts-header">
             <!-- <h4>Orders</h4> -->
@@ -248,16 +251,6 @@ try {
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-
-
-});
-
 document.addEventListener("DOMContentLoaded", function() {
     var exportButton = document.getElementById('exportButton');
     exportButton.addEventListener('click', function() {

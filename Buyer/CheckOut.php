@@ -71,7 +71,10 @@ try {
 </head>
 
 <b>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <form id="order-form" action="place_order.php" method="post">
         <input type="hidden" name="cart_items" value='<?php echo json_encode($cartItems); ?>'>
 
@@ -427,15 +430,6 @@ try {
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            fetch('header.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
-
-
-
-
             function updateSubtotalAndTotal() {
                 var total = 0;
                 var totalElements = document.querySelectorAll('.reg-cell[data-type="total-price"]');

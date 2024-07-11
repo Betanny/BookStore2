@@ -217,7 +217,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components/headerdispatcher.php"
+        ?>
     <div class="modal" id="editprofile-modal">
         <form action="#" method="post">
 
@@ -371,31 +374,31 @@ function goBack() {
 
 }
 
-<?php if ($role == 'Client'): ?>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('../Buyer/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-});
-<?php elseif ($role == 'Dealer'): ?>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('../Seller/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-});
-<?php else: ?>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Admin/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-});
-<?php endif; ?>
+// <php if ($role == 'Client'): ?>
+// document.addEventListener("DOMContentLoaded", function() {
+//     fetch('../Buyer/header.php')
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('header-container').innerHTML = data;
+//         });
+// });
+// <php elseif ($role == 'Dealer'): ?>
+// document.addEventListener("DOMContentLoaded", function() {
+//     fetch('../Seller/header.php')
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('header-container').innerHTML = data;
+//         });
+// });
+// <php else: ?>
+// document.addEventListener("DOMContentLoaded", function() {
+//     fetch('/Admin/header.php')
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('header-container').innerHTML = data;
+//         });
+// });
+// <php endif; ?>
 
 function togglePasswordVisibility(icon) {
     var passwordField = icon.previousElementSibling; // Get the input field before the icon

@@ -150,7 +150,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="viewproducts-container">
         <div class="viewproducts-header">
             <h4>All Users</h4>
@@ -358,60 +361,6 @@ try {
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-
-
-});
-// document.addEventListener("DOMContentLoaded", function() {
-//     document.querySelectorAll('.delete-link').forEach(link => {
-//         link.addEventListener('click', function(event) {
-//             event.preventDefault();
-//             showDeleteModal(link);
-//         });
-//     });
-// });
-
-// let tableName, primaryKey, pkName, deleteLink;
-
-// function showDeleteModal(link) {
-//     document.getElementById('delete-modal').style.display = 'block';
-//     tableName = link.getAttribute('data-table');
-//     primaryKey = link.getAttribute('data-pk');
-//     pkName = link.getAttribute('data-pk-name');
-//     deleteLink = link;
-// }
-
-// function cancelDelete() {
-//     document.getElementById('delete-modal').style.display = 'none';
-// }
-
-// document.getElementById('confirm-delete-button').addEventListener('click', function() {
-//     confirmDelete();
-// });
-
-// function confirmDelete() {
-//     var xhr = new XMLHttpRequest();
-//     xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' + primaryKey + '&pk_name=' + pkName,
-//         true);
-//     xhr.onload = function() {
-//         if (xhr.status === 200) {
-//             // Handle successful deletion
-//             deleteLink.closest('.row').remove();
-//             cancelDelete();
-//         } else {
-//             console.error('Error:', xhr.statusText);
-//         }
-//     };
-//     xhr.onerror = function() {
-//         console.error('Request failed');
-//     };
-//     xhr.send();
-// }
 let tableName, primaryKey, pkName, deleteLink;
 
 document.addEventListener("DOMContentLoaded", function() {

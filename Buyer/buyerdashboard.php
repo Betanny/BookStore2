@@ -129,15 +129,18 @@ try {
 
 
     <style>
-    .task {
-        height: 100%;
-        /* Set the height of the calendar container to 100% */
-    }
+        .task {
+            height: 100%;
+            /* Set the height of the calendar container to 100% */
+        }
     </style>
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="dashboard-container">
         <div class="reports-container">
             <div class="welcome-container">
@@ -190,20 +193,20 @@ try {
                         <div class="rows">
                             <!-- Adding the order items -->
                             <?php foreach ($orders as $order): ?>
-                            <div class="row">
-                                <div class="name-cell">
-                                    <?php echo $order['book_title']; ?>
+                                <div class="row">
+                                    <div class="name-cell">
+                                        <?php echo $order['book_title']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['unit_price']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['status']; ?>
+                                    </div>
+                                    <div class="cell">
+                                        <?php echo $order['delivery_date']; ?>
+                                    </div>
                                 </div>
-                                <div class="cell">
-                                    <?php echo $order['unit_price']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $order['status']; ?>
-                                </div>
-                                <div class="cell">
-                                    <?php echo $order['delivery_date']; ?>
-                                </div>
-                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -305,18 +308,18 @@ try {
                 <div class="notifications-container">
                     <h4> Notifications</h4>
                     <?php if (empty($notifications)): ?>
-                    <p>You have no notifications</p>
+                        <p>You have no notifications</p>
                     <?php else: ?>
-                    <div class="rows">
-                        <?php foreach ($notifications as $notification): ?>
-                        <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                            data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                            onclick="openNotification(this);">
-                            <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
-                            <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
+                        <div class="rows">
+                            <?php foreach ($notifications as $notification): ?>
+                                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                                    onclick="openNotification(this);">
+                                    <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
+                                    <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                        <?php endforeach; ?>
-                    </div>
                     <?php endif; ?>
 
                 </div>
@@ -328,23 +331,6 @@ try {
 
 
 </body>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
 
-
-});
-// document.addEventListener("DOMContentLoaded", function() {
-//     fetch('/Shared Components/notifications.php').then(response => response.text()).then(data => {
-//         document.getElementById('notifications-container').innerHTML = data;
-//     });
-
-
-// });
-</script>
 
 </html>

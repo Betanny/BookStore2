@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="/Shared Components/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
 </head>
-<body>
-    <div id="header-container"></div>
 
+<body>
+
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="contactus-container">
 
         <div class="upper-container">
@@ -24,29 +31,29 @@
                 <div class="contact-info">
                     <div class="contact">
                         <div class="icon">
-                        <i class="fa-solid fa-envelope-open-text"></i>
-                    </div>
-                    <div class="info">
-                        <h5>Email Address</h5>
-                        <p>info@smartCBC.ac.ke</p>
-                    </div>
-                </div>
-                    <div class="contact">
-                        <div class="icon">
-                        <i class="fa-solid fa-mobile"></i>
+                            <i class="fa-solid fa-envelope-open-text"></i>
                         </div>
                         <div class="info">
-                        <h5>Phone Number</h5>
-                        <p>+254765895467</p>
+                            <h5>Email Address</h5>
+                            <p>info@smartCBC.ac.ke</p>
                         </div>
                     </div>
                     <div class="contact">
                         <div class="icon">
-                        <i class="fa-solid fa-envelope-open-text"></i>
+                            <i class="fa-solid fa-mobile"></i>
                         </div>
                         <div class="info">
-                        <h5>Email Address</h5>
-                        <p>info@smartCBC.ac.ke</p>
+                            <h5>Phone Number</h5>
+                            <p>+254765895467</p>
+                        </div>
+                    </div>
+                    <div class="contact">
+                        <div class="icon">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <div class="info">
+                            <h5>Email Address</h5>
+                            <p>info@smartCBC.ac.ke</p>
                         </div>
                     </div>
 
@@ -77,33 +84,44 @@
 
             </div>
 
-<div class="faqs-container">
-    <h2>Frequently Asked Questions (FAQs)</h2>
-    <div class="faq">
-        <div class="question" onclick="toggleAnswer(1)"><i class="fa-solid fa-plus"></i>How can authors, publishers, and manufacturers post their products on your platform?</div>
-        <div class="answer" id="answer1">Authors, publishers, and manufacturers can post their products by [provide steps or instructions here].</div>
-    </div>
-    
-    <div class="faq">
-        <div class="question" onclick="toggleAnswer(2)"><i class="fa-solid fa-plus"></i>What are the benefits of utilizing the direct selling feature for authors, publishers, and manufacturers?</div>
-        <div class="answer" id="answer2">The direct selling feature offers benefits such as [list benefits here].</div>
-    </div>
-    
-    <div class="faq">
-        <div class="question" onclick="toggleAnswer(3)"><i class="fa-solid fa-plus"></i>How does the bulk ordering process work, and what are the advantages for clients who order in bulk?</div>
-        <div class="answer" id="answer3">The bulk ordering process involves [explain the process]. Clients who order in bulk enjoy advantages such as [list advantages here].</div>
-    </div>
-    
-    <div class="faq">
-        <div class="question" onclick="toggleAnswer(4)"><i class="fa-solid fa-plus"></i>Can clients order single items, and how does the pricing compare to bulk orders?</div>
-        <div class="answer" id="answer4">Yes, clients can order single items. The pricing for single items may differ from bulk orders and is typically [explain pricing difference here].</div>
-    </div>
-     
-    <div class="faq">
-        <div class="question" onclick="toggleAnswer(5)"><i class="fa-solid fa-plus"></i>Are there any specific requirements or criteria for products to be listed on your platform?</div>
-        <div class="answer" id="answer5">Yes, products listed on our platform must meet certain requirements or criteria, including [list requirements or criteria here].</div>
-    </div>
-  <!--  
+            <div class="faqs-container">
+                <h2>Frequently Asked Questions (FAQs)</h2>
+                <div class="faq">
+                    <div class="question" onclick="toggleAnswer(1)"><i class="fa-solid fa-plus"></i>How can authors,
+                        publishers, and manufacturers post their products on your platform?</div>
+                    <div class="answer" id="answer1">Authors, publishers, and manufacturers can post their products by
+                        [provide steps or instructions here].</div>
+                </div>
+
+                <div class="faq">
+                    <div class="question" onclick="toggleAnswer(2)"><i class="fa-solid fa-plus"></i>What are the
+                        benefits of utilizing the direct selling feature for authors, publishers, and manufacturers?
+                    </div>
+                    <div class="answer" id="answer2">The direct selling feature offers benefits such as [list benefits
+                        here].</div>
+                </div>
+
+                <div class="faq">
+                    <div class="question" onclick="toggleAnswer(3)"><i class="fa-solid fa-plus"></i>How does the bulk
+                        ordering process work, and what are the advantages for clients who order in bulk?</div>
+                    <div class="answer" id="answer3">The bulk ordering process involves [explain the process]. Clients
+                        who order in bulk enjoy advantages such as [list advantages here].</div>
+                </div>
+
+                <div class="faq">
+                    <div class="question" onclick="toggleAnswer(4)"><i class="fa-solid fa-plus"></i>Can clients order
+                        single items, and how does the pricing compare to bulk orders?</div>
+                    <div class="answer" id="answer4">Yes, clients can order single items. The pricing for single items
+                        may differ from bulk orders and is typically [explain pricing difference here].</div>
+                </div>
+
+                <div class="faq">
+                    <div class="question" onclick="toggleAnswer(5)"><i class="fa-solid fa-plus"></i>Are there any
+                        specific requirements or criteria for products to be listed on your platform?</div>
+                    <div class="answer" id="answer5">Yes, products listed on our platform must meet certain requirements
+                        or criteria, including [list requirements or criteria here].</div>
+                </div>
+                <!--  
     <div class="faq">
         <div class="question" onclick="toggleAnswer(6)">6. What measures are in place to ensure the quality and authenticity of products listed on your platform?</div>
         <div class="answer" id="answer6">We have stringent measures in place to ensure the quality and authenticity of products, such as [describe quality control measures here].</div>
@@ -154,7 +172,7 @@
         <div class="answer" id="answer15">Yes, clients can provide feedback or reviews on products purchased through our platform. This feedback is utilized to [describe how feedback is utilized, such as improving services or product selection].</div>
     </div> -->
 
-</div>
+            </div>
 
         </div>
 
@@ -169,7 +187,7 @@
     </div>
 
 
-    
+
 
 
 
@@ -185,32 +203,34 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     fetch('/Shared Components/header.php')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
         });
-        fetch('/Shared Components/footer.html')
+    fetch('/Shared Components/footer.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('footer-container').innerHTML = data;
         });
-        
+
 });
+
 function toggleAnswer(id) {
-        var answer = document.getElementById("answer" + id);
-        if (answer.style.display === "none") {
-            answer.style.display = "block";
-        } else {
-            answer.style.display = "none";
-        }
+    var answer = document.getElementById("answer" + id);
+    if (answer.style.display === "none") {
+        answer.style.display = "block";
+    } else {
+        answer.style.display = "none";
     }
-    window.onload = function() {
-        var answers = document.querySelectorAll('.answer');
-        answers.forEach(function(answer) {
-            answer.style.display = "none";
-        });
-    };
+}
+window.onload = function() {
+    var answers = document.querySelectorAll('.answer');
+    answers.forEach(function(answer) {
+        answer.style.display = "none";
+    });
+};
 </script>
+
 </html>

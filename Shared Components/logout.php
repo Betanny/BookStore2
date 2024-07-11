@@ -10,7 +10,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 
@@ -28,7 +28,7 @@ if (isset($_POST['logout'])) {
     writeLog($db, "User has logged out of the system", "INFO", $user_id);
 
     // Redirect to the home page
-    header("Location: ../Home/homepage.html");
+    header("Location: ../Home/homepage.php");
     exit();
 }
 ?>
@@ -39,7 +39,7 @@ if (isset($_POST['logout'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="home.css">
+    <!-- <link rel="stylesheet" href="home.css"> -->
     <link rel="stylesheet" href="/Shared Components/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +51,10 @@ if (isset($_POST['logout'])) {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components/headerdispatcher.php"
+        ?>
     <div class="logout-container">
         <div class="logout-popup">
             <div class="logout-content">
@@ -70,12 +73,6 @@ if (isset($_POST['logout'])) {
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php').then(response => response.text()).then(data => {
-        document.getElementById('header-container').innerHTML = data;
-    });
-});
-
 function reloadPage() {
     location.reload(); // Reload the current page
 }

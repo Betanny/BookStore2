@@ -224,7 +224,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components/headerdispatcher.php"
+        ?>
     <div class="viewproducts-container">
         <div class="viewproducts-header">
             <h4>My products</h4>
@@ -265,7 +268,7 @@ try {
 
                 </div> -->
                 <div class="addproductsbutton">
-                    <a href="addproducts.html" class="add-button">
+                    <a href="addproductdetails.php" class="add-button">
                         Add
                         <div class="icon-cell">
                             <i class="fa-solid fa-plus"></i>
@@ -513,12 +516,6 @@ function cancel() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-
-        });
     <?php if (isset($_GET['bookid'])): ?>
     // If bookid is set, display the modal
     document.getElementById("editproducts-modal").style.display = "block";

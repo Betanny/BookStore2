@@ -119,7 +119,10 @@ try {
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <?php
+    // Include the header dispatcher file to handle inclusion of the appropriate header
+    include "../Shared Components\headerdispatcher.php"
+        ?>
     <div class="viewproducts-container">
         <div class="viewproducts-header">
             <h4>Orders</h4>
@@ -273,13 +276,6 @@ try {
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Fetch and insert header
-    fetch('header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-
 
     // Get all elements with the class "delete-link"
     var deleteLinks = document.querySelectorAll('.delete-link');

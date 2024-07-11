@@ -36,7 +36,8 @@ try {
         case 'Manufacturer':
             $table_name = 'manufacturers';
             break;
-        // Add more cases as needed
+        case 'Admin':
+            $table_name = 'users';
     }
 
     // Query the appropriate table to fetch user's name
@@ -58,7 +59,9 @@ try {
         case 'Manufacturer':
             $full_name = $data['manufacturer_name'];
             break;
-        // Add more cases as needed
+        case 'Admin':
+            $full_name = "Manager";
+            break;
     }
 
     // Query to fetch notifications for the user
@@ -74,6 +77,9 @@ try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $recipient_email = $_POST['recipient'];
         $message = $_POST['message'];
+        $reply_id = isset($_POST['reply_id']) ? intval($_POST['reply_id']) : null;
+        var_dump($reply_id);
+
         $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
         $stmt->execute(['email' => $recipient_email]);
         $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,16 +87,18 @@ try {
         $recipient_id = $recipient['user_id'];
 
         // Insert new notification
-        $sql = "INSERT INTO notifications (sender_id, recipient_id, notification_message) 
-                    VALUES (:sender_id, :recipient_id, :message)";
+        $sql = "INSERT INTO notifications (sender_id, recipient_id, notification_message, reply_id) 
+                    VALUES (:sender_id, :recipient_id, :message, :reply_id)";
         $stmt = $db->prepare($sql);
         $stmt->execute([
             'sender_id' => $user_id,
             'recipient_id' => $recipient_id,
-            'message' => $message
+            'message' => $message,
+            'reply_id' => $reply_id
         ]);
 
     }
+
 
 
 } catch (PDOException $e) {
@@ -137,10 +145,10 @@ try {
 
                 <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
                     data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
-                    onclick="openNotification(this);">
+                    data-reply-id="<?php echo htmlspecialchars($notification['notification_id']); ?>"
+                    onclick=" openNotification(this);">
                     <h4>
-                        <?php echo htmlspecialchars($notification['email']); ?>
-                    </h4>
+                        <?php echo htmlspecialchars($notification['email']); ?></h4>
                     <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
                 </div>
                 <?php endforeach; ?>
@@ -151,12 +159,12 @@ try {
                 <h4 id="sender-email">Sender : </h4>
                 <p id="notification-message"> Message : </p>
 
-
-                <button class="button">Reply</button>
-
+                <button class="button" onclick="replyToNotification()">Reply</button>
             </div>
+
             <div class="new-notification" id="new-notification" style="display:none;">
                 <form action="#" method="post" id="new-notification-form">
+                    <input type="hidden" name="reply_id" id="reply-id" />
 
                     <div class="notification-header">
                         <h4>To: </h4>
@@ -177,6 +185,7 @@ try {
                         </div>
 
                     </div>
+
                     <button type="submit" class="button">Send</button>
                 </form>
 
@@ -217,9 +226,13 @@ var addButton = document.querySelector('.add-button');
 function openNotification(element) {
     const email = element.getAttribute('data-email');
     const message = element.getAttribute('data-message');
+    const replyId = element.getAttribute('data-reply-id');
+    console.log(replyId);
+    console.log(message);
 
     document.getElementById('sender-email').innerText = 'Sender: ' + email;
     document.getElementById('notification-message').innerText = 'Message: ' + message;
+    document.getElementById('reply-id').value = replyId;
 
     document.getElementById('all-notifications').style.display = 'none';
     document.getElementById('new-notification').style.display = 'none';
@@ -248,6 +261,17 @@ addButton.addEventListener('click', function() {
         newNotification();
     }
 });
+
+function replyToNotification() {
+    const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
+    document.querySelector('input[name="recipient"]').value = recipient;
+    const replyId = document.getElementById('reply-id').value;
+
+    document.getElementById('all-notifications').style.display = 'none';
+    document.getElementById('new-notification').style.display = 'block';
+    document.getElementById('opened-notification').style.display = 'none';
+    addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+}
 </script>
 
 

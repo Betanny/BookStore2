@@ -125,12 +125,14 @@ canvas {
     padding: 10px;
 } */
 .sales-report{
-    width:70%;
+    width: 95.5%;
     background-color: var(--accent-color2);
     padding: 10px;
     margin: 0;
     border-radius: 10px;
     height:250px;
+    margin-left:15px;
+
 
 
 
@@ -170,11 +172,11 @@ canvas {
 
 .products-report-container{
 margin: 0;
-width: 80%;
+width: 95%;
 background-color: var(--accent-color2);
 height: 180px;
 margin-top: 10px;
-margin-left: 5px;
+margin-left: 15px;
 padding: 10px;
 }
 .products{
@@ -192,7 +194,7 @@ padding: 10px;
     
 }
 .tasks-container{
-    justify-content: space-around;
+    justify-content: space-between;
     height: 90%;
     padding: 5px;
     display: flex;

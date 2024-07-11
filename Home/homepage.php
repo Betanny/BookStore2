@@ -192,6 +192,8 @@
         .then(data => {
             document.getElementById('footer-container').innerHTML = data;
         });
+        document.getElementById('home-link').classList.add('active-link');
+
         
 });
 // document.addEventListener("DOMContentLoaded", function() {

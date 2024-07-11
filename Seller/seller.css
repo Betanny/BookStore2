@@ -420,12 +420,13 @@ body {
         padding: 10px;
     } */
     .sales-report{
-        width:70%;
+        width:95%;
         background-color: var(--accent-color2);
         padding: 10px;
         margin: 0;
         border-radius: 10px;
         height:250px;
+        margin-left: 15px;
 
 
 
@@ -465,11 +466,11 @@ body {
 
 .products-report-container{
     margin: 0;
-    width: 80%;
+    width: 95%;
     background-color: var(--accent-color2);
     height: 180px;
     margin-top: 10px;
-    margin-left: 5px;
+    margin-left: 15px;
     padding: 10px;
 }
     .products{

@@ -1124,3 +1124,7 @@ input#rate-5:checked~label {
     background-color: var(--background-color);
 }
 
+.icon i{
+    width: auto !important;
+    height: 50px !important;
+}

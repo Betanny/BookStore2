@@ -186,13 +186,14 @@ try {
 
 
     // Query to fetch notifications for the user
-    $sql_notifications = "SELECT notifications.*, users.email 
+    $sql_notifications = "SELECT notifications.*, users.email
  FROM public.notifications 
  JOIN users ON notifications.sender_id = users.user_id 
  WHERE notifications.recipient_id = :user_id";
     $stmt_notifications = $db->prepare($sql_notifications);
     $stmt_notifications->execute(['user_id' => $user_id]);
     $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 } catch (PDOException $e) {
@@ -325,7 +326,7 @@ try {
                         <div class="bar-container">
                             <div class="bar-label"><?php echo $months[$month]; ?>:</div>
                             <div class="bar-wrapper">
-                                <div class="bar" style="width: <?php echo $totalSales / 1000; ?>px;"></div>
+                                <div class="bar" style="width: <?php echo $totalSales / 800; ?>px;"></div>
                                 <div class="bar-value">ksh <?php echo $totalSales; ?></div>
                             </div>
                         </div>
@@ -336,7 +337,7 @@ try {
                         <div class="bar-container">
                             <div class="bar-label"><?php echo $year; ?>:</div>
                             <div class="bar-wrapper">
-                                <div class="bar" style="width: <?php echo $totalSales / 2000; ?>px;">
+                                <div class="bar" style="width: <?php echo $totalSales / 1000; ?>px;">
                                 </div>
                                 <div class="bar-value">ksh
                                     <?php echo $totalSales; ?>

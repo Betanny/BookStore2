@@ -43,8 +43,13 @@ try {
         $total = $subtotal - $discount;
     }
 
-
-
+    if (isset($_GET['error']) && $_GET['error'] == 'failed') {
+        $_SESSION['payment_error'] = "Sorry, there was a problem with the transaction. Please try again.";
+    } else if (isset($_GET['error']) && $_GET['error'] == 'timedout') {
+        $_SESSION['payment_error'] = "Sorry, the transaction timed out. Please try again.";
+    } else {
+        unset($_SESSION['payment_error']);
+    }
 
 } catch (PDOException $e) {
     error_log("Error: " . $e->getMessage());
@@ -67,7 +72,20 @@ try {
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
-
+    <style>
+    .error-message {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ffcccc;
+        color: #ff0000;
+        padding: 10px 20px;
+        border: 1px solid #ff0000;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+    </style>
 </head>
 
 <b>
@@ -77,6 +95,7 @@ try {
         ?>
     <form id="order-form" action="place_order.php" method="post">
         <input type="hidden" name="cart_items" value='<?php echo json_encode($cartItems); ?>'>
+        <input type="hidden" name="amount" id='amount'> <!-- Pass total amount -->
 
 
         <div class="checkout-container">
@@ -94,51 +113,51 @@ try {
                     <div class="cart-details">
 
                         <?php foreach ($cartItems as $item): ?>
-                            <input type="hidden" id="product_id" name="product_id"
-                                value="<?php echo $item['product_id']; ?>">
-                            <input type="hidden" id="seller_id" name="seller_id" value="<?php echo $item['seller_id']; ?>">
+                        <input type="hidden" id="product_id" name="product_id"
+                            value="<?php echo $item['product_id']; ?>">
+                        <input type="hidden" id="seller_id" name="seller_id" value="<?php echo $item['seller_id']; ?>">
 
 
-                            <div class=" cart-row">
-                                <div class="Product-cell">
-                                    <div class="product_image">
-                                        <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $item['front_page_image']); ?>"
-                                            alt=" Product Image">
-                                    </div>
-                                    <div class="product-name">
-                                        <?php echo $item['title']; ?>
-                                    </div>
+                        <div class=" cart-row">
+                            <div class="Product-cell">
+                                <div class="product_image">
+                                    <img src="<?php echo str_replace('D:\xammp2\htdocs\BookStore2', '', $item['front_page_image']); ?>"
+                                        alt=" Product Image">
                                 </div>
-
-                                <div class="quantity reg-cell">
-                                    <!-- Pass the cart ID to JavaScript -->
-                                    <input type="number" id="quantity_<?php echo $item['cart_id']; ?>" class="input" min="1"
-                                        placeholder="<?php echo $item['quantity']; ?>"
-                                        onchange="updateQuantity(<?php echo $item['cart_id']; ?>)">
+                                <div class="product-name">
+                                    <?php echo $item['title']; ?>
                                 </div>
+                            </div>
+
+                            <div class="quantity reg-cell">
+                                <!-- Pass the cart ID to JavaScript -->
+                                <input type="number" id="quantity_<?php echo $item['cart_id']; ?>" class="input" min="1"
+                                    placeholder="<?php echo $item['quantity']; ?>"
+                                    onchange="updateQuantity(<?php echo $item['cart_id']; ?>)">
+                            </div>
 
 
-                                <div class="reg-cell">
-                                    <?php if ($item['quantity'] < $item['mininbulk']): ?>Retail<?php else: ?>Bulk<?php endif; ?>
-
-                                </div>
-                                <div class="reg-cell">
-                                    <?php echo $item['price']; ?>
-                                </div>
-                                <div class="reg-cell">
-                                    <?php echo $item['quantity'] * $item['price']; ?>
-                                </div>
-                                <!-- <i class="fa-solid fa-trash-can"
-                                    onclick="deleteCartItem(<?php echo $item['cart_id']; ?>)"></i> -->
-                                <div class="icon-cell">
-                                    <a href="#" class="delete-link" data-table="cart"
-                                        data-pk="<?php echo $item['cart_id']; ?>" data-pk-name=" cart_id">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </a>
-                                </div>
-
+                            <div class="reg-cell">
+                                <?php if ($item['quantity'] < $item['mininbulk']): ?>Retail<?php else: ?>Bulk<?php endif; ?>
 
                             </div>
+                            <div class="reg-cell">
+                                <?php echo $item['price']; ?>
+                            </div>
+                            <div class="reg-cell">
+                                <?php echo $item['quantity'] * $item['price']; ?>
+                            </div>
+                            <!-- <i class="fa-solid fa-trash-can"
+                                    onclick="deleteCartItem(<?php echo $item['cart_id']; ?>)"></i> -->
+                            <div class="icon-cell">
+                                <a href="#" class="delete-link" data-table="cart"
+                                    data-pk="<?php echo $item['cart_id']; ?>" data-pk-name=" cart_id">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+
+
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -197,11 +216,11 @@ try {
                             <input type="text" class="inputfield" id="mpesaNumber" name="mpesaNumber">
                         </div>
 
-                        <div class="inputcontrol">
+                        <!-- <div class="inputcontrol">
                             <div class="error"></div>
                             <label for="mpesaName">Mpesa Name</label>
                             <input type="text" class="inputfield" id="mpesaName" name="mpesaName">
-                        </div>
+                        </div> -->
                         <!--             
                     <div class="inputcontrol">
                         <label for="tillNumber">Till Number</label>
@@ -217,11 +236,11 @@ try {
                             <input type="text" class="inputfield" id="airtelNumber" name="airtelNumber">
                         </div>
 
-                        <div class="inputcontrol">
+                        <!-- <div class="inputcontrol">
                             <div class="error"></div>
                             <label for="airtelName">Airtel Money Name</label>
                             <input type="text" class="inputfield" id="airtelName" name="airtelName">
-                        </div>
+                        </div> -->
 
                         <!-- <div class="inputcontrol">
                         <label for="tillNumberAirtel">Till Number</label>
@@ -356,6 +375,7 @@ try {
                     <input type="hidden" id="deliveryprice">
                     <br>
                     <h4>
+
                         Total price:
                         <span id="totalPrice"></span> KSh
                     </h4>
@@ -371,290 +391,339 @@ try {
     </form>
 
     <script>
-        function updatePaymentNumber(paymentMethod) {
-            console.log("update paymentMethod");
-            console.log(paymentMethod);
+    function updatePaymentNumber(paymentMethod) {
+        console.log("update paymentMethod");
+        console.log(paymentMethod);
 
-            if (paymentMethod === 'mpesa') {
-                document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value;
-                let num = document.getElementById('mpesaNumber').value
-                console.log(num);
-            } else if (paymentMethod === 'airtelmoney') {
-                document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
-            } else if (paymentMethod === 'card') {
-                document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
-            }
+        if (paymentMethod === 'mpesa') {
+            document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value;
+            let num = document.getElementById('mpesaNumber').value
+            console.log(num);
+        } else if (paymentMethod === 'airtelmoney') {
+            document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
+        } else if (paymentMethod === 'card') {
+            document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
         }
+    }
 
 
 
-        // Define a function to toggle payment fields
-        function togglePaymentFields(paymentMethod) {
-            console.log("Function called with payment method:", paymentMethod);
-            document.getElementById('paymentMethod').value = paymentMethod;
-            console.log(paymentMethod);
+    // Define a function to toggle payment fields
+    function togglePaymentFields(paymentMethod) {
+        console.log("Function called with payment method:", paymentMethod);
+        document.getElementById('paymentMethod').value = paymentMethod;
+        console.log(paymentMethod);
 
 
 
-            var mpesaFields = document.getElementById("mpesaFields");
-            var airtelmoneyFields = document.getElementById("airtelmoneyFields");
-            var cardFields = document.getElementById("cardFields");
+        var mpesaFields = document.getElementById("mpesaFields");
+        var airtelmoneyFields = document.getElementById("airtelmoneyFields");
+        var cardFields = document.getElementById("cardFields");
 
-            mpesaFields.style.display = "none";
-            airtelmoneyFields.style.display = "none";
-            cardFields.style.display = "none";
+        mpesaFields.style.display = "none";
+        airtelmoneyFields.style.display = "none";
+        cardFields.style.display = "none";
 
-            if (paymentMethod === "mpesa") {
-                mpesaFields.style.display = "block";
-                document.getElementById('paymentMethod').value = 'mpesa';
-                // document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value;
-                console.log("mpesa");
+        if (paymentMethod === "mpesa") {
+            mpesaFields.style.display = "block";
+            document.getElementById('paymentMethod').value = 'mpesa';
+            // document.getElementById('paymentNumber').value = document.getElementById('mpesaNumber').value;
+            console.log("mpesa");
 
-            } else if (paymentMethod === "airtelmoney") {
-                airtelmoneyFields.style.display = "block";
-                document.getElementById('paymentMethod').value = 'airtelmoney';
-                // document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
-
-
-            } else if (paymentMethod === "card") {
-                cardFields.style.display = "block";
-                document.getElementById('paymentMethod').value = 'card';
-                // document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
+        } else if (paymentMethod === "airtelmoney") {
+            airtelmoneyFields.style.display = "block";
+            document.getElementById('paymentMethod').value = 'airtelmoney';
+            // document.getElementById('paymentNumber').value = document.getElementById('airtelNumber').value;
 
 
-            }
-            // document.getElementById('paymentMethod').value = paymentMethod;
-
+        } else if (paymentMethod === "card") {
+            cardFields.style.display = "block";
+            document.getElementById('paymentMethod').value = 'card';
+            // document.getElementById('paymentNumber').value = document.getElementById('cardNumber').value;
 
 
         }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            function updateSubtotalAndTotal() {
-                var total = 0;
-                var totalElements = document.querySelectorAll('.reg-cell[data-type="total-price"]');
-                totalElements.forEach(function (element) {
-                    total += parseFloat(element.innerText);
-                });
-                document.getElementById('subtotal').innerText = total.toFixed(2);
-                document.getElementById('total').innerText = total.toFixed(2);
-            }
+        // document.getElementById('paymentMethod').value = paymentMethod;
 
 
-        });
 
-        function updateQuantity(cartId) {
-            // Get the input field value
-            var quantity = document.getElementById('quantity_' + cartId).value;
+    }
 
-            // Make an AJAX request to update the quantity in the database
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'add_to_cart.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    // Quantity updated successfully
-                    console.log('Quantity updated successfully');
-                    // You can optionally reload the page after successful update
-                    window.location.reload();
-                } else {
-                    // Error updating quantity
-                    console.error('Error updating quantity:', xhr.statusText);
-                }
-            };
-            xhr.onerror = function () {
-                // Handle network errors
-                console.error('Request failed');
-            };
-            // Send the cart ID and new quantity to the server
-            xhr.send('cart_id=' + cartId + '&quantity=' + quantity);
+    document.addEventListener("DOMContentLoaded", function() {
+        function updateSubtotalAndTotal() {
+            var total = 0;
+            var totalElements = document.querySelectorAll('.reg-cell[data-type="total-price"]');
+            totalElements.forEach(function(element) {
+                total += parseFloat(element.innerText);
+            });
+            document.getElementById('subtotal').innerText = total.toFixed(2);
+            document.getElementById('total').innerText = total.toFixed(2);
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Get all elements with the class "delete-link"
-            var deleteLinks = document.querySelectorAll('.delete-link');
 
-            // Loop through each delete link
-            deleteLinks.forEach(function (link) {
-                // Add click event listener to each delete link
-                link.addEventListener('click', function (event) {
-                    // Prevent the default behavior (i.e., following the href)
-                    event.preventDefault();
+    });
 
-                    // Get the table name, primary key column name, and primary key value from the data attributes
-                    var tableName = link.getAttribute('data-table');
-                    var primaryKey = link.getAttribute('data-pk');
-                    var pkName = link.getAttribute('data-pk-name');
+    function updateQuantity(cartId) {
+        // Get the input field value
+        var quantity = document.getElementById('quantity_' + cartId).value;
 
-                    // Perform AJAX request to the delete script
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('GET', '/Shared Components/delete.php?table=' + tableName +
-                        '&pk=' +
-                        primaryKey +
-                        '&pk_name=' + pkName, true);
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            // Handle successful deletion (if needed)
-                            // For example, you can remove the deleted row from the DOM
-                            link.parentElement.parentElement.remove();
-                        } else {
-                            // Handle error (if needed)
-                            console.error('Error:', xhr.statusText);
-                        }
-                    };
-                    xhr.onerror = function () {
-                        // Handle network errors (if needed)
-                        console.error('Request failed');
-                    };
-                    xhr.send();
-                });
+        // Make an AJAX request to update the quantity in the database
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'add_to_cart.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Quantity updated successfully
+                console.log('Quantity updated successfully');
+                // You can optionally reload the page after successful update
+                window.location.reload();
+            } else {
+                // Error updating quantity
+                console.error('Error updating quantity:', xhr.statusText);
+            }
+        };
+        xhr.onerror = function() {
+            // Handle network errors
+            console.error('Request failed');
+        };
+        // Send the cart ID and new quantity to the server
+        xhr.send('cart_id=' + cartId + '&quantity=' + quantity);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get all elements with the class "delete-link"
+        var deleteLinks = document.querySelectorAll('.delete-link');
+
+        // Loop through each delete link
+        deleteLinks.forEach(function(link) {
+            // Add click event listener to each delete link
+            link.addEventListener('click', function(event) {
+                // Prevent the default behavior (i.e., following the href)
+                event.preventDefault();
+
+                // Get the table name, primary key column name, and primary key value from the data attributes
+                var tableName = link.getAttribute('data-table');
+                var primaryKey = link.getAttribute('data-pk');
+                var pkName = link.getAttribute('data-pk-name');
+
+                // Perform AJAX request to the delete script
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Shared Components/delete.php?table=' + tableName +
+                    '&pk=' +
+                    primaryKey +
+                    '&pk_name=' + pkName, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Handle successful deletion (if needed)
+                        // For example, you can remove the deleted row from the DOM
+                        link.parentElement.parentElement.remove();
+                    } else {
+                        // Handle error (if needed)
+                        console.error('Error:', xhr.statusText);
+                    }
+                };
+                xhr.onerror = function() {
+                    // Handle network errors (if needed)
+                    console.error('Request failed');
+                };
+                xhr.send();
             });
         });
+    });
 
-        document.getElementById("order-form").addEventListener('submit', function (e) {
-            e.preventDefault();
-            if (validateForm()) {
-                console.log("Form is valid, submitting...");
-                this.submit();
-            } else {
-                console.log("Form is invalid, not submitting.");
-            }
-        });
+    document.getElementById("order-form").addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (validateForm()) {
+            console.log("Form is valid, submitting...");
+            this.submit();
 
-        var isValid = false;
+        } else {
+            console.log("Form is invalid, not submitting.");
+        }
+    });
 
-        function validateField(fieldName, errorMessage) {
-            var inputField = document.getElementsByName(fieldName)[0];
-            var inputControl = inputField.parentElement;
-            var errorDisplay = inputControl.querySelector('.error');
-            var fieldValue = inputField.value.trim();
-            if (fieldValue === '') {
-                inputControl.classList.add('error');
-                inputControl.classList.remove('success');
-                errorDisplay.textContent = errorMessage;
-                return false;
-            } else {
-                errorDisplay.textContent = "";
-                return true;
-            }
+    var isValid = false;
+
+    function validateField(fieldName, errorMessage) {
+        var inputField = document.getElementsByName(fieldName)[0];
+        var inputControl = inputField.parentElement;
+        var errorDisplay = inputControl.querySelector('.error');
+        var fieldValue = inputField.value.trim();
+        if (fieldValue === '') {
+            inputControl.classList.add('error');
+            inputControl.classList.remove('success');
+            errorDisplay.textContent = errorMessage;
+            return false;
+        } else {
+            errorDisplay.textContent = "";
+            return true;
+        }
+    }
+
+    // Function to validate phone number
+    function validatePhoneNumber(fieldName) {
+        var inputField = document.getElementsByName(fieldName)[0];
+        var inputControl = inputField.parentElement;
+        var errorDisplay = inputControl.querySelector('.error');
+        var phoneNumber = inputField.value.trim();
+        var phoneNumberPattern = /^\d+$/; // Regular expression to match only digits
+
+        // Check if the phone number contains only digits
+        if (!phoneNumberPattern.test(phoneNumber)) {
+            var errorMessage = "Phone number should only contain digits";
+            inputControl.classList.add('error');
+            inputControl.classList.remove('success');
+            errorDisplay.textContent = errorMessage;
+            return false;
         }
 
-        function validatePhoneNumber(fieldName) {
-            var inputField = document.getElementsByName(fieldName)[0];
-            var inputControl = inputField.parentElement;
-            var errorDisplay = inputControl.querySelector('.error');
-            var phoneNumber = inputField.value.trim();
-            var phoneNumberPattern = /^\d+$/; // Regular expression to match only digits
-
-            // Check if the phone number contains only digits
-            if (!phoneNumberPattern.test(phoneNumber)) {
-                var errorMessage = "Phone number should only contain digits";
-                inputControl.classList.add('error');
-                inputControl.classList.remove('success');
-                errorDisplay.textContent = errorMessage;
-                return false;
-            } else {
-                errorDisplay.textContent = "";
-                return true;
-            }
+        // Check if the phone number is exactly 10 digits long
+        if (phoneNumber.length !== 10) {
+            var errorMessage = "Phone number must be exactly 10 digits long";
+            inputControl.classList.add('error');
+            inputControl.classList.remove('success');
+            errorDisplay.textContent = errorMessage;
+            return false;
         }
 
-        // Individual form functions
-        function validateForm() {
-            var isValid = true;
-            // Validate fields for Individual form
-            isValid = validateField('RecipientName', 'Recipient Name is required') && isValid;
-            isValid = validatePhoneNumber('ContactNumber') && isValid; // Validate phone number field
-            isValid = validateField('ContactNumber', 'Phone is required') && isValid;
-            isValid = validateField('shipping_address', 'Address is required') && isValid;
+        errorDisplay.textContent = "";
+        inputControl.classList.add('success');
+        inputControl.classList.remove('error');
+        return true;
+    }
+
+    // Individual form functions
+    function validateForm() {
+        var isValid = true;
+        // Validate fields for Individual form
+        isValid = validateField('RecipientName', 'Recipient Name is required') && isValid;
+        isValid = validatePhoneNumber('ContactNumber') && isValid; // Validate phone number field
+        isValid = validateField('ContactNumber', 'Phone is required') && isValid;
+        isValid = validateField('shipping_address', 'Address is required') && isValid;
+        console.log("Logging payment");
+        console.log(paymentMethod.value);
+        if (paymentMethod.value === 'mpesa') {
+            isValid = validateField('mpesaNumber', 'Mpesa Number is required') && isValid;
+            isValid = validatePhoneNumber('mpesaNumber') && isValid; // Validate phone number field
 
 
-            return isValid;
-        }
+        } else if (paymentMethod.value === 'airtelmoney') {
+            isValid = validateField('airtelNumber', 'Airtel money number is required') && isValid;
+            isValid = validatePhoneNumber('airtelNumber') && isValid; // Validate phone number field
 
-        if (isValid) {
-            document.getElementById("order-form").submit();
-        }
-
-        const prices = {
-            'Mombasa (bus)': 900,
-            'Mombasa (train economy)': 13500,
-            'Kwale': 1065,
-            'Kilifi': 1065,
-            'Tana River': 1065,
-            'Lamu': 1410,
-            'Taita-Taveta': 705,
-            'Garissa': 1065,
-            'Wajir': 1410,
-            'Mandera': 1770,
-            'Marsabit': 1065,
-            'Isiolo': 540,
-            'Meru': 540,
-            'Tharaka-Nithi': 540,
-            'Embu': 225,
-            'Kitui': 540,
-            'Machakos': 105,
-            'Makueni': 360,
-            'Nyandarua': 270,
-            'Nyeri': 300,
-            'Kirinyaga': 180,
-            'Murang\'a': 165,
-            'Kiambu': 60,
-            'Turkana': 1410,
-            'West Pokot': 705,
-            'Samburu': 705,
-            'Trans-Nzoia': 705,
-            'Uasin Gishu': 630,
-            'Elgeyo-Marakwet': 630,
-            'Nandi': 630,
-            'Baringo': 450,
-            'Laikipia': 360,
-            'Nakuru': 285,
-            'Narok': 450,
-            'Kajiado': 180,
-            'Kericho': 540,
-            'Bomet': 540,
-            'Kakamega': 705,
-            'Vihiga': 705,
-            'Bungoma': 705,
-            'Busia': 705,
-            'Siaya': 630,
-            'Kisumu': 630,
-            'Homa Bay': 705,
-            'Migori': 900,
-            'Kisii': 540,
-            'Nyamira': 540,
-            'Nairobi': 100
-        };
-
-        function showCountyDropdown() {
-            const type = document.getElementById('deliveryType').value;
-            if (type === 'company') {
-                document.getElementById('companySection').style.display = 'block';
-            } else {
-                document.getElementById('companySection').style.display = 'none';
-            }
-        }
-
-        function showPrice() {
-            const county = document.getElementById('county').value;
-            const price = prices[county] || 'N/A';
-            document.getElementById('deliveryprice').value = price;
-            document.getElementById('price').innerText = price + ' KSh';
-            updateTotalPrice();
+        } else if (paymentMethod.value === 'card') {
+            isValid = validateField('cardNumber', 'Card number is required') && isValid;
+            isValid = validatePhoneNumber('cardNumber') && isValid; // Validate phone number field
 
         }
 
-        function backToProducts() {
-            window.location.href = "/Home/products.php";
-        }
 
-        function updateTotalPrice() {
-            const deliveryPrice = parseInt(document.getElementById('deliveryprice').value) || 0;
-            const basePrice = <?php echo $total; ?>;
-            const totalPrice = basePrice + deliveryPrice;
-            document.getElementById('totalPrice').innerText = totalPrice;
+        return isValid;
+    }
+
+    if (isValid) {
+        document.getElementById("order-form").submit();
+    }
+
+    const prices = {
+        'Mombasa (bus)': 900,
+        'Mombasa (train economy)': 13500,
+        'Kwale': 1065,
+        'Kilifi': 1065,
+        'Tana River': 1065,
+        'Lamu': 1410,
+        'Taita-Taveta': 705,
+        'Garissa': 1065,
+        'Wajir': 1410,
+        'Mandera': 1770,
+        'Marsabit': 1065,
+        'Isiolo': 540,
+        'Meru': 540,
+        'Tharaka-Nithi': 540,
+        'Embu': 225,
+        'Kitui': 540,
+        'Machakos': 105,
+        'Makueni': 360,
+        'Nyandarua': 270,
+        'Nyeri': 300,
+        'Kirinyaga': 180,
+        'Murang\'a': 165,
+        'Kiambu': 60,
+        'Turkana': 1410,
+        'West Pokot': 705,
+        'Samburu': 705,
+        'Trans-Nzoia': 705,
+        'Uasin Gishu': 630,
+        'Elgeyo-Marakwet': 630,
+        'Nandi': 630,
+        'Baringo': 450,
+        'Laikipia': 360,
+        'Nakuru': 285,
+        'Narok': 450,
+        'Kajiado': 180,
+        'Kericho': 540,
+        'Bomet': 540,
+        'Kakamega': 705,
+        'Vihiga': 705,
+        'Bungoma': 705,
+        'Busia': 705,
+        'Siaya': 630,
+        'Kisumu': 630,
+        'Homa Bay': 705,
+        'Migori': 900,
+        'Kisii': 540,
+        'Nyamira': 540,
+        'Nairobi': 100
+    };
+
+    function showCountyDropdown() {
+        const type = document.getElementById('deliveryType').value;
+        if (type === 'company') {
+            document.getElementById('companySection').style.display = 'block';
+        } else {
+            document.getElementById('companySection').style.display = 'none';
         }
+    }
+
+    function showPrice() {
+        const county = document.getElementById('county').value;
+        const price = prices[county] || 'N/A';
+        document.getElementById('deliveryprice').value = price;
+        document.getElementById('price').innerText = price + ' KSh';
+        updateTotalPrice();
+
+    }
+
+    function backToProducts() {
+        window.location.href = "/Home/products.php";
+    }
+
+    function updateTotalPrice() {
+        const deliveryPrice = parseInt(document.getElementById('deliveryprice').value) || 0;
+        const basePrice = <?php echo $total; ?>;
+        const totalPrice = basePrice + deliveryPrice;
+        document.getElementById('totalPrice').innerText = totalPrice;
+        document.getElementById('amount').value = totalPrice;
+
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var paymentError = "<?php echo isset($_SESSION['payment_error']) ? $_SESSION['payment_error'] : '' ?>";
+        if (paymentError !== '') {
+            // Display error message
+            var errorMessage = document.createElement('div');
+            errorMessage.classList.add('error-message');
+            errorMessage.textContent = paymentError;
+            document.body.appendChild(errorMessage);
+
+            // Hide after 10 seconds and refresh page
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+                window.location.href = "CheckOut.php";
+            }, 10000); // 10000 milliseconds = 10 seconds
+        }
+    });
     </script>
 
 

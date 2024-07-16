@@ -441,3 +441,63 @@
 [2024-07-11 15:10:36] [INFO] [User ID: 437] User logged in
 [2024-07-11 15:11:02] [INFO] [User ID: 437] User has logged out of the system
 [2024-07-11 15:11:07] [INFO] [User ID: 435] User logged in
+[2024-07-11 18:58:19] [INFO] [User ID: 435] User logged in
+[2024-07-11 19:01:25] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-11 19:01:39] [INFO] [User ID: 435] User logged in
+[2024-07-11 19:01:58] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-11 19:02:37] [INFO] [User ID: 435] User logged in
+[2024-07-11 19:05:12] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-12 10:57:50] [INFO] [User ID: 435] User logged in
+[2024-07-12 11:00:58] [INFO] [User ID: 435] User has added a book with id 10 to the cart
+[2024-07-12 11:01:07] [INFO] [User ID: 435] User has added a book with id 20 to the cart
+[2024-07-12 11:01:28] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-12 11:01:34] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-12 11:01:40] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-12 11:04:06] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-12 11:04:12] [INFO] [User ID: 433] User logged in
+[2024-07-13 08:01:25] [INFO] [User ID: 433] User logged in
+[2024-07-13 13:07:45] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-13 13:07:51] [INFO] [User ID: 435] User logged in
+[2024-07-13 13:09:59] [INFO] [User ID: 435] User has reviewed a book with id 4
+[2024-07-13 13:10:51] [INFO] [User ID: 435] User has reviewed a book with id 4
+[2024-07-13 13:11:16] [INFO] [User ID: 435] User has reviewed a book with id 5
+[2024-07-13 13:11:42] [INFO] [User ID: 435] User has reviewed a book with id 5
+[2024-07-13 13:16:42] [INFO] [User ID: 435] User has reviewed a book with id 7
+[2024-07-13 13:16:58] [INFO] [User ID: 435] User has reviewed a book with id 7
+[2024-07-13 13:17:44] [INFO] [User ID: 435] User has reviewed a book with id 10
+[2024-07-13 13:18:02] [INFO] [User ID: 435] User has reviewed a book with id 10
+[2024-07-13 13:18:57] [INFO] [User ID: 435] User has reviewed a book with id 15
+[2024-07-13 13:19:11] [INFO] [User ID: 435] User has reviewed a book with id 15
+[2024-07-13 13:20:41] [INFO] [User ID: 435] User has reviewed a book with id 10
+[2024-07-13 13:21:46] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-13 13:21:51] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-13 13:21:55] [ERROR] [User ID: 470] User failed to log in because the account has been deleted by the admin
+[2024-07-13 13:22:29] [INFO] [User ID: 470] User logged in
+[2024-07-13 13:22:56] [INFO] [User ID: 470] User has logged out of the system
+[2024-07-13 13:23:08] [INFO] [User ID: 440] User logged in
+[2024-07-13 13:23:15] [INFO] [User ID: 440] User has logged out of the system
+[2024-07-13 13:23:21] [INFO] [User ID: 448] User logged in
+[2024-07-13 13:23:31] [INFO] [User ID: 448] User has logged out of the system
+[2024-07-13 13:23:36] [INFO] [User ID: 444] User logged in
+[2024-07-13 13:24:16] [INFO] [User ID: 444] User has logged out of the system
+[2024-07-13 14:52:25] [INFO] [User ID: 435] User logged in
+[2024-07-13 14:58:33] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-13 14:58:42] [INFO] [User ID: 433] User logged in
+[2024-07-15 09:09:23] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-15 09:09:29] [INFO] [User ID: 435] User logged in
+[2024-07-15 10:34:07] [INFO] [User ID: 435] User logged in
+[2024-07-15 10:35:36] [INFO] [User ID: 435] User has ordered a book with the id 11
+[2024-07-15 10:35:36] [INFO] [User ID: 435] User has made a transaction of 23408 for the order a book with the id 11
+[2024-07-15 10:35:36] [INFO] [User ID: 435] User has ordered a book with the id 10
+[2024-07-15 10:35:36] [INFO] [User ID: 435] User has made a transaction of 894 for the order a book with the id 10
+[2024-07-15 10:35:36] [INFO] [User ID: 435] User has ordered a book with the id 20
+[2024-07-15 10:35:36] [INFO] [User ID: 435] User has made a transaction of 39000 for the order a book with the id 20
+[2024-07-15 10:36:21] [INFO] [User ID: 435] User has added a book with id 4 to the cart
+[2024-07-15 10:36:27] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-15 12:28:04] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 04:29:37] [INFO] [User ID: 435] User placed an order for product ID 4
+[2024-07-16 04:37:55] [INFO] [User ID: 435] User has added a book with id 18 to the cart
+[2024-07-16 04:38:02] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 04:38:53] [INFO] [User ID: 435] User placed an order for product ID 18
+[2024-07-16 04:39:27] [INFO] [User ID: 435] User has added a book with id 4 to the cart
+[2024-07-16 04:39:33] [INFO] [User ID: 435] User has added a book with id  to the cart

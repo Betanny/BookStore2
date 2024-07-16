@@ -333,15 +333,18 @@ try {
                                 </div>
 
                                 <div class="cell">
-                                    <?php echo $order['dealer_delivery_date']; ?>
+                                    <?php if (strtolower($order['dealer_status']) === 'declined'): ?>
+                                        ---
+                                    <?php else: ?>
+                                        <?php echo $order['dealer_delivery_date']; ?>
+                                    <?php endif; ?>
 
                                     <?php if (strtolower($order['dealer_status']) === 'pending'): ?>
                                         <button type="submit" id="update-btn-<?php echo $order['order_id']; ?>"
-                                            class=" update-button" data-order-id="<?php echo $order['order_id']; ?>">Update</button>
-
-                                        <!-- <button class="update-button">Update</button> -->
+                                            class="update-button" data-order-id="<?php echo $order['order_id']; ?>">Update</button>
                                     <?php endif; ?>
                                 </div>
+
 
 
 

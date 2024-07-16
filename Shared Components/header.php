@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Home/style.css"> <!-- Make sure this path is correct -->
+    <link rel="stylesheet" href="/Home/style.css">
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
     <title>SmartCBC</title>
 </head>
@@ -19,8 +19,8 @@
             <ul id="nav-menu">
                 <li><a href="/Home/homepage.php" id="home-link" class="link light-text">Home</a></li>
                 <li><a href="/Home/products.php" id="products-link" class="link light-text">Products</a></li>
-                <li><a href="/Home/Aboutus.html" id="Aboutus-link" class="link light-text">About us</a></li>
-                <li><a href="/Home/contactus.html" id="contactus-link" class="link light-text">Contact us</a></li>
+                <li><a href="/Home/Aboutus.php" id="Aboutus-link" class="link light-text">About us</a></li>
+                <li><a href="/Home/contactus.php" id="contactus-link" class="link light-text">Contact us</a></li>
                 <li><a href="/Registration/login.php" class="link-active">Login</a></li>
             </ul>
         </nav>

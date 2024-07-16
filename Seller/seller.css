@@ -88,7 +88,26 @@ body {
     }    
    
    
+    .wholereview{
+        width: 90%;
+        background-color: var(--accent-color2);
+        padding: 20px;
+        border-radius: 20px;
+        margin-bottom: 10px;
 
+    
+     }
+     .review{
+        background-color: #063547;
+        color: #ffffff;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 10px;
+     }
+     .reviews-section{
+        width:90%;
+        margin: auto;
+     }
     .form {
         /* Adjust the form width and margin as needed */
         width: 85%;

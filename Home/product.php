@@ -74,6 +74,16 @@ function isKICDApproved($title, $grade, $appbooks)
     return false;
 }
 
+// Getting reviews for the specific book
+$reviewsQuery = "SELECT r.review_text
+                 FROM reviews r
+                 JOIN users u ON r.user_id = u.user_id
+                 WHERE r.product_id = :bookid";
+$reviewsStmt = $db->prepare($reviewsQuery);
+$reviewsStmt->bindParam(':bookid', $bookid);
+$reviewsStmt->execute();
+$reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -182,18 +192,22 @@ function isKICDApproved($title, $grade, $appbooks)
 
             </div>
             <div class="product-review">
-                What do others say about it:
+                What do others say about it?
                 <div class="wholereview">
-
+                    <?php if (empty($reviews)) { ?>
+                    <div class="no-reviews">
+                        <p style="font-size:12px;">Sorry, this book has not yet been reviewed.</p>
+                    </div>
+                    <?php } else { ?>
+                    <?php foreach ($reviews as $review) { ?>
                     <div class="review">
-                        <p>"I'm incredibly impressed with the diverse range of educational materials available on [Your
-                            Company
-                            Name].</p>
+                        <p><?php echo htmlspecialchars($review['review_text']); ?></p>
                         <div class="profile">
-                            <p>By John Doe</p>
-
+                            <p style="font-size:10px;">By:anonymous client</p>
                         </div>
                     </div>
+                    <?php } ?>
+                    <?php } ?>
 
                 </div>
 
@@ -264,61 +278,61 @@ function isKICDApproved($title, $grade, $appbooks)
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // fetch('/Shared Components/header.php')
-        //     .then(response => response.text())
-        //     .then(data => {
-        //         document.getElementById('header-container').innerHTML = data;
-        //     });
-        fetch('/Shared Components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            });
-        const bookImage = document.getElementById('bookImage');
-        const prevButton = document.getElementById('prevButton');
-        const nextButton = document.getElementById('nextButton');
-        const imageCounter = document.getElementById('imageCounter');
+document.addEventListener("DOMContentLoaded", function() {
+    // fetch('/Shared Components/header.php')
+    //     .then(response => response.text())
+    //     .then(data => {
+    //         document.getElementById('header-container').innerHTML = data;
+    //     });
+    fetch('/Shared Components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-container').innerHTML = data;
+        });
+    const bookImage = document.getElementById('bookImage');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const imageCounter = document.getElementById('imageCounter');
 
-        const imageURLs = <?php echo json_encode($imageURLs); ?>;
-        let currentIndex = 0;
+    const imageURLs = <?php echo json_encode($imageURLs); ?>;
+    let currentIndex = 0;
 
-        function showImage(index) {
-            if (index >= 0 && index < imageURLs.length) {
-                bookImage.src = imageURLs[index];
-                imageCounter.innerText = index + 1;
-                currentIndex = index;
-            }
+    function showImage(index) {
+        if (index >= 0 && index < imageURLs.length) {
+            bookImage.src = imageURLs[index];
+            imageCounter.innerText = index + 1;
+            currentIndex = index;
         }
-
-        prevButton.addEventListener('click', function () {
-            showImage(currentIndex - 1);
-        });
-
-        nextButton.addEventListener('click', function () {
-            showImage(currentIndex + 1);
-        });
-    });
-    const categoryToggles = document.querySelectorAll('.category-toggle');
-
-    categoryToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const subCategories = toggle.nextElementSibling;
-            subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
-        });
-    });
-
-    function addToCart(bookId) {
-        console.log(bookId);
-        console.log("No book id")
-        document.getElementById("addToCartForm").submit();
-
     }
 
+    prevButton.addEventListener('click', function() {
+        showImage(currentIndex - 1);
+    });
 
-    function returnToProducts() {
-        window.location.href = "/Home/products.php";
-    }
+    nextButton.addEventListener('click', function() {
+        showImage(currentIndex + 1);
+    });
+});
+const categoryToggles = document.querySelectorAll('.category-toggle');
+
+categoryToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const subCategories = toggle.nextElementSibling;
+        subCategories.style.display = subCategories.style.display === 'block' ? 'none' : 'block';
+    });
+});
+
+function addToCart(bookId) {
+    console.log(bookId);
+    console.log("No book id")
+    document.getElementById("addToCartForm").submit();
+
+}
+
+
+function returnToProducts() {
+    window.location.href = "/Home/products.php";
+}
 </script>
 
 </html>

@@ -84,7 +84,16 @@ try {
         $selected_book = $selected_book_stmt->fetch(PDO::FETCH_ASSOC);
         global $selected_book;
 
+        $reviewsQuery = "SELECT r.review_text, r.rating
+        FROM reviews r
+        WHERE r.product_id = :bookid";
+        $reviewsStmt = $db->prepare($reviewsQuery);
+        $reviewsStmt->bindParam(':bookid', $bookid);
+        $reviewsStmt->execute();
+        $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve form data
@@ -463,6 +472,29 @@ try {
                             style="height: 150px;"><?php echo $selected_book['details']; ?></textarea>
 
                     </div>
+                </div>
+                <div class="reviews-section">
+                    <h4>Reviews</h4>
+                    <?php if (!empty($reviews)): ?>
+                    <ul>
+                        <?php foreach ($reviews as $review): ?>
+                        <div class="wholereview">
+                            <p style="font-size:10px; padding-bottom:10px;">By:anonymous client</p>
+
+
+                            <li>
+                                <p>rated :
+                                    <?php echo htmlspecialchars($review['rating']); ?>/5
+                                </p>
+                                <p><?php echo htmlspecialchars($review['review_text']); ?></p>
+                            </li>
+
+                        </div>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php else: ?>
+                    <p>No reviews available for this book.</p>
+                    <?php endif; ?>
                 </div>
                 <!-- ?php endif; ?> -->
 

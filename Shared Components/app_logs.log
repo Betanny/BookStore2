@@ -501,3 +501,46 @@
 [2024-07-16 04:38:53] [INFO] [User ID: 435] User placed an order for product ID 18
 [2024-07-16 04:39:27] [INFO] [User ID: 435] User has added a book with id 4 to the cart
 [2024-07-16 04:39:33] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 05:39:42] [INFO] [User ID: 435] User logged in
+[2024-07-16 05:40:09] [INFO] [User ID: 435] User has added a book with id 4 to the cart
+[2024-07-16 05:40:18] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 05:42:48] [INFO] [User ID: 435] User placed an order for product ID 4
+[2024-07-16 05:42:48] [INFO] [User ID: 435] User placed an order for product ID 4
+[2024-07-16 06:01:28] [INFO] [User ID: 435] User has added a book with id 10 to the cart
+[2024-07-16 06:07:13] [INFO] [User ID: 435] User logged in
+[2024-07-16 06:09:55] [INFO] [User ID: 435] User logged in
+[2024-07-16 06:12:09] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 06:52:26] [INFO] [User ID: 435] User placed an order for product ID 10
+[2024-07-16 06:52:52] [INFO] [User ID: 435] User has added a book with id 5 to the cart
+[2024-07-16 06:53:02] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 06:54:52] [INFO] [User ID: 435] User placed an order for product ID 5
+[2024-07-16 06:56:19] [INFO] [User ID: 435] User has added a book with id 4 to the cart
+[2024-07-16 06:56:40] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-16 11:22:13] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-16 11:22:29] [INFO] [User ID: 435] User logged in
+[2024-07-16 12:21:11] [INFO] [User ID: 435] User logged in
+[2024-07-16 12:22:37] [INFO] [User ID: 435] User placed an order for product ID 4
+[2024-07-16 12:22:56] [INFO] [User ID: 435] User has added a book with id 6 to the cart
+[2024-07-16 12:23:05] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-17 12:20:57] [INFO] [User ID: 435] User logged in
+[2024-07-17 12:26:39] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:28:27] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0754672654 for the amount 
+[2024-07-17 12:30:05] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:30:20] [INFO] [User ID: 435] payment has failed via mpesa
+[2024-07-17 12:31:25] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:31:40] [INFO] [User ID: 435] payment has failed via mpesa
+[2024-07-17 12:32:17] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:32:33] [INFO] [User ID: 435] User has succesfully made payment via mpesa 
+[2024-07-17 12:33:01] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:33:16] [INFO] [User ID: 435] payment has failed via mpesa
+[2024-07-17 12:33:42] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-17 12:33:53] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:34:07] [INFO] [User ID: 435] User has succesfully made payment via mpesa 
+[2024-07-17 12:35:23] [INFO] [User ID: 435] User has initiated payment via mpesa and is paying with the mpesa number 0769191341 for the amount 
+[2024-07-17 12:45:06] [INFO] [User ID: 435] User has added a book with id 10 to the cart
+[2024-07-17 12:45:12] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-17 12:51:58] [INFO] [User ID: 435] User placed an order for product ID 10
+[2024-07-17 12:52:18] [INFO] [User ID: 435] User has added a book with id 18 to the cart
+[2024-07-17 12:54:36] [INFO] [User ID: 435] User has added a book with id  to the cart
+[2024-07-17 12:58:21] [INFO] [User ID: 435] Payment has been initiated
+[2024-07-17 12:59:01] [ERROR] [User ID: 435] Payment has failed, the transaction timed out

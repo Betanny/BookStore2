@@ -9,6 +9,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 $user_id = $_SESSION['user_id'];
+unset($_SESSION['payment_error']);
+
 try {
     // Fetch cart data with product details from the database 
     $cartdatastmt = $db->prepare("
@@ -45,8 +47,11 @@ try {
 
     if (isset($_GET['error']) && $_GET['error'] == 'failed') {
         $_SESSION['payment_error'] = "Sorry, there was a problem with the transaction. Please try again.";
+        writeLog($db, "Payment has failed, there was a problem with the transaction", "ERROR", $user_id);
+
     } else if (isset($_GET['error']) && $_GET['error'] == 'timedout') {
         $_SESSION['payment_error'] = "Sorry, the transaction timed out. Please try again.";
+        writeLog($db, "Payment has failed, the transaction timed out", "ERROR", $user_id);
     } else {
         unset($_SESSION['payment_error']);
     }
@@ -131,8 +136,8 @@ try {
 
                             <div class="quantity reg-cell">
                                 <!-- Pass the cart ID to JavaScript -->
-                                <input type="number" id="quantity_<?php echo $item['cart_id']; ?>" class="input" min="1"
-                                    placeholder="<?php echo $item['quantity']; ?>"
+                                <input type="number" id="quantity_<?php echo $item['cart_id']; ?>" class=" input"
+                                    min="1" placeholder="<?php echo $item['quantity']; ?>"
                                     onchange="updateQuantity(<?php echo $item['cart_id']; ?>)">
                             </div>
 
@@ -197,11 +202,11 @@ try {
                         </button>
                         <button type="button" class="payment-button" id="airtelmoneyButton"
                             onclick="togglePaymentFields('airtelmoney')">
-                            <img src="airtelmoney_icon.png" alt="Airtel Money">
+                            <img src="/Images/Dummy/airtel_money.jpg" alt="Airtel Money">
                         </button>
                         <button type="button" class="payment-button" id="cardButton"
                             onclick="togglePaymentFields('card')">
-                            <img src="card_icon.png" alt="Card">
+                            <img src="/Images/Dummy/world-debit-card.png" alt="Card">
                         </button>
                     </div>
                     <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
@@ -707,10 +712,10 @@ try {
 
     }
 
-
     document.addEventListener('DOMContentLoaded', function() {
         var paymentError = "<?php echo isset($_SESSION['payment_error']) ? $_SESSION['payment_error'] : '' ?>";
         if (paymentError !== '') {
+            console.log(paymentError);
             // Display error message
             var errorMessage = document.createElement('div');
             errorMessage.classList.add('error-message');
@@ -718,10 +723,13 @@ try {
             document.body.appendChild(errorMessage);
 
             // Hide after 10 seconds and refresh page
-            setTimeout(function() {
+            var timeoutId = setTimeout(function() {
                 errorMessage.style.display = 'none';
+                errorMessage.remove(); // Remove the error message element
                 window.location.href = "CheckOut.php";
+                sessionStorage.removeItem('payment_error');
             }, 10000); // 10000 milliseconds = 10 seconds
+
         }
     });
     </script>

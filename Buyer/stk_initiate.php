@@ -1,8 +1,12 @@
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contactNumber = $_POST['paymentNumber'];
-    var_dump($contactNumber);
     $amount = $_POST['amount'];
+
+    // writeLog($db, "User has initiated payment via mpesa and is paying with the mpesa number " . $contactNumber . " for the amount " . $amount, "INFO", $user_id);
+
+    var_dump($contactNumber);
 
     // $contactNumber = (int) $contactNumber;
     $formattedNumber = (int) 254 * pow(10, strlen($contactNumber) - 1) + $contactNumber;

@@ -413,7 +413,6 @@ try {
 
 </body>
 <script>
-
     document.addEventListener("DOMContentLoaded",
         function () {
             var updateButton = document.getElementById('update-btn');

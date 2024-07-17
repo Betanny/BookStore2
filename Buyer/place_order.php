@@ -1,6 +1,7 @@
 <?php
-include '../Shared Components/logger.php';
 require_once '../Shared Components/dbconnection.php';
+include '../Shared Components\logger.php';
+
 session_start();
 
 // Check if user is logged in
@@ -19,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['deliveryType'] = $_POST['deliveryType'];
     $_SESSION['shipping_address'] = $_POST['shipping_address'];
     $_SESSION['cart_items'] = $_POST['cart_items']; // Assuming this is a serialized array or JSON data
+    writeLog($db, "Payment has been initiated", "INFO", $user_id);
 
     include 'stk_initiate.php'; // Adjust path as needed
 

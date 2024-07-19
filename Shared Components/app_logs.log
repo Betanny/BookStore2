@@ -544,3 +544,15 @@
 [2024-07-17 12:54:36] [INFO] [User ID: 435] User has added a book with id  to the cart
 [2024-07-17 12:58:21] [INFO] [User ID: 435] Payment has been initiated
 [2024-07-17 12:59:01] [ERROR] [User ID: 435] Payment has failed, the transaction timed out
+[2024-07-18 18:23:34] [INFO] [User ID: 435] User logged in
+[2024-07-18 18:35:55] [INFO] [User ID: 435] User logged in
+[2024-07-19 04:16:57] [INFO] [User ID: 433] User logged in
+[2024-07-19 04:38:19] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-19 04:38:28] [INFO] [User ID: 435] User logged in
+[2024-07-19 04:40:41] [INFO] [User ID: 435] User has logged out of the system
+[2024-07-19 04:40:47] [INFO] [User ID: 433] User logged in
+[2024-07-19 04:40:54] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-19 04:41:01] [INFO] [User ID: 435] User logged in
+[2024-07-19 05:08:51] [INFO] [User ID: 433] User logged in
+[2024-07-19 05:09:03] [INFO] [User ID: 433] User has logged out of the system
+[2024-07-19 05:09:14] [INFO] [User ID: 435] User logged in

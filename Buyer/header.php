@@ -142,7 +142,11 @@ VALUES (:sender_id, :recipient_id, :message)";
             </div>
             <div class="profile">
                 <div class="user-image">
-                    <img src="/Images/Illustrations/profile.svg" class="img-profile">
+                    <?php if ($category == 'Organization'): ?>
+                    <img src="/Images/Illustrations/teamprofile.svg" class="img-profile">
+                    <?php else: ?>
+                    <img src="/Images/Illustrations/femaleprofile.svg" class="img-profile">
+                    <?php endif; ?>
                 </div>
                 <div class="user-name">
                     <h4><?php echo htmlspecialchars($full_name); ?></h4>

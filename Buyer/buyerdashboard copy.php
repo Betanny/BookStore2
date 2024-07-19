@@ -283,7 +283,11 @@ try {
             <div class="profile-container">
                 <div class="user-details">
                     <div class="user">
-                        <img src="/Images/Illustrations/profile.svg" alt="">
+                        <?php if ($category == 'Organization'): ?>
+                        <img src="/Images/Illustrations/teamprofile.svg" class="img-profile">
+                        <?php else: ?>
+                        <img src="/Images/Illustrations/femaleprofile.svg" class="img-profile">
+                        <?php endif; ?>
                         <h4>
                             <?php echo $full_name; ?>
                         </h4>

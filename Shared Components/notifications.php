@@ -1,5 +1,5 @@
 <?php
-include '../Shared Components\logger.php';
+include '../Shared Components/logger.php';
 
 // Include database connection file
 require_once '../Shared Components/dbconnection.php';
@@ -10,20 +10,19 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: ../Registration/login.html");
+    header("Location: ../Registration/login.php");
     exit();
 }
 
 // Get user ID and category from session
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
+
 try {
     // Determine which table to query based on user category
     $table_name = '';
     switch ($category) {
         case 'Individual':
-            $table_name = 'clients';
-            break;
         case 'Organization':
             $table_name = 'clients';
             break;
@@ -38,6 +37,9 @@ try {
             break;
         case 'Admin':
             $table_name = 'users';
+            break;
+        default:
+            throw new Exception("Unknown category: $category");
     }
 
     // Query the appropriate table to fetch user's name
@@ -49,9 +51,7 @@ try {
     // Get user's full name based on category
     switch ($category) {
         case 'Author':
-            $first_name = $data['first_name'];
-            $last_name = $data['last_name'];
-            $full_name = $first_name . ' ' . $last_name;
+            $full_name = $data['first_name'] . ' ' . $data['last_name'];
             break;
         case 'Publisher':
             $full_name = $data['publisher_name'];
@@ -61,6 +61,9 @@ try {
             break;
         case 'Admin':
             $full_name = "Manager";
+            break;
+        default:
+            $full_name = ""; // Default case if category doesn't match
             break;
     }
 
@@ -73,36 +76,62 @@ try {
     $stmt_notifications->execute(['user_id' => $user_id]);
     $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
 
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $recipient_email = $_POST['recipient'];
-        $message = $_POST['message'];
-        $reply_id = isset($_POST['reply_id']) ? intval($_POST['reply_id']) : null;
-        var_dump($reply_id);
+        if (isset($_POST['notification_id'])) {
+            // Handle notification status update (if needed)
+            $notification_id = intval($_POST['notification_id']);
 
-        $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
-        $stmt->execute(['email' => $recipient_email]);
-        $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+            // Update notification status to 'read'
+            $sql_update_status = "UPDATE notifications SET status = true WHERE notification_id = :notification_id";
+            $stmt_update_status = $db->prepare($sql_update_status);
+            $stmt_update_status->execute(['notification_id' => $notification_id]);
+        } else {
+            $recipient_email = $_POST['recipient'];
+            $message = $_POST['message'];
+            $reply_id = isset($_POST['reply_id']) && is_numeric($_POST['reply_id']) ? intval($_POST['reply_id']) : null;
 
-        $recipient_id = $recipient['user_id'];
+            // Log received data
+            error_log("Recipient Email: $recipient_email");
+            error_log("Message: $message");
+            error_log("Reply ID: " . ($reply_id !== null ? $reply_id : 'NULL'));
 
-        // Insert new notification
-        $sql = "INSERT INTO notifications (sender_id, recipient_id, notification_message, reply_id) 
+            // Fetch recipient user_id
+            $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
+            $stmt->execute(['email' => $recipient_email]);
+            $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($recipient) {
+                $recipient_id = $recipient['user_id'];
+
+                // Update existing notification status to 'read' if reply_id is provided
+                if ($reply_id !== null) {
+                    $sql_update_status = "UPDATE notifications SET status = true WHERE notification_id = :reply_id";
+                    $stmt_update_status = $db->prepare($sql_update_status);
+                    $stmt_update_status->execute(['reply_id' => $reply_id]);
+                }
+
+                // Insert new notification with proper handling of reply_id
+                $sql_insert_notification = "INSERT INTO notifications (sender_id, recipient_id, notification_message, reply_id) 
                     VALUES (:sender_id, :recipient_id, :message, :reply_id)";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([
-            'sender_id' => $user_id,
-            'recipient_id' => $recipient_id,
-            'message' => $message,
-            'reply_id' => $reply_id
-        ]);
+                $stmt_insert_notification = $db->prepare($sql_insert_notification);
 
+                // Log the insert query and parameters
+                error_log("Executing Insert Query: $sql_insert_notification");
+                error_log("Parameters: sender_id=$user_id, recipient_id=$recipient_id, message=$message, reply_id=" . ($reply_id !== null ? $reply_id : 'NULL'));
+
+                $stmt_insert_notification->execute([
+                    'sender_id' => $user_id,
+                    'recipient_id' => $recipient_id,
+                    'message' => $message,
+                    'reply_id' => $reply_id
+                ]);
+            }
+        }
     }
-
-
-
 } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    error_log("PDO Error: " . $e->getMessage());
+} catch (Exception $e) {
+    error_log("General Error: " . $e->getMessage());
 }
 ?>
 
@@ -147,15 +176,15 @@ try {
             <div class="all-notifications" id="all-notifications">
                 <?php foreach ($notifications as $notification): ?>
 
-                    <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                        data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
-                        data-reply-id="<?php echo htmlspecialchars($notification['notification_id']); ?>"
-                        onclick=" openNotification(this);">
-                        <h4>
-                            <?php echo htmlspecialchars($notification['email']); ?>
-                        </h4>
-                        <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
-                    </div>
+                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                    data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
+                    data-reply-id="<?php echo htmlspecialchars($notification['notification_id']); ?>"
+                    onclick=" openNotification(this);">
+                    <h4>
+                        <?php echo htmlspecialchars($notification['email']); ?>
+                    </h4>
+                    <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
+                </div>
                 <?php endforeach; ?>
 
 
@@ -204,77 +233,95 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
 
-        document.getElementsByClassName('modal').style.display = 'none';
+    document.getElementsByClassName('modal').style.display = 'none';
 
 
-    });
+});
 
-    function cancel() {
-        window.history.back();
+function cancel() {
+    window.history.back();
+}
+var allnotification = document.getElementById('all-notifications');
+var openednotification = document.getElementById('opened-notification');
+var newnotification = document.getElementById('new-notification');
+var addButton = document.querySelector('.add-button');
+
+
+// function openNotification() {
+//     allnotification.style.display = 'none';
+//     newnotification.style.display = 'none';
+//     openednotification.style.display = 'block';
+
+// }
+function openNotification(element) {
+    const email = element.getAttribute('data-email');
+    const message = element.getAttribute('data-message');
+    const replyId = element.getAttribute('data-reply-id');
+
+    document.getElementById('sender-email').innerText = 'Sender: ' + email;
+    document.getElementById('notification-message').innerText = 'Message: ' + message;
+    document.getElementById('reply-id').value = replyId;
+
+    document.getElementById('all-notifications').style.display = 'none';
+    document.getElementById('new-notification').style.display = 'none';
+    document.getElementById('opened-notification').style.display = 'block';
+}
+
+
+
+function newNotification() {
+    allnotification.style.display = 'none';
+    newnotification.style.display = 'block';
+    openednotification.style.display = 'none';
+    addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+
+}
+
+function allNotification() {
+    allnotification.style.display = 'block';
+    newnotification.style.display = 'none';
+    openednotification.style.display = 'none';
+    addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
+
+}
+addButton.addEventListener('click', function() {
+    if (this.innerHTML.includes('Back')) {
+        allNotification();
+    } else {
+        newNotification();
     }
-    var allnotification = document.getElementById('all-notifications');
-    var openednotification = document.getElementById('opened-notification');
-    var newnotification = document.getElementById('new-notification');
-    var addButton = document.querySelector('.add-button');
+});
 
+// function replyToNotification() {
+//     const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
+//     document.querySelector('input[name="recipient"]').value = recipient;
+//     const replyId = document.getElementById('reply-id').value;
 
-    // function openNotification() {
-    //     allnotification.style.display = 'none';
-    //     newnotification.style.display = 'none';
-    //     openednotification.style.display = 'block';
+//     document.getElementById('all-notifications').style.display = 'none';
+//     document.getElementById('new-notification').style.display = 'block';
+//     document.getElementById('opened-notification').style.display = 'none';
+//     addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+// }
+function replyToNotification() {
+    const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
+    document.querySelector('input[name="recipient"]').value = recipient;
+    const replyId = document.getElementById('reply-id').value;
 
-    // }
-    function openNotification(element) {
-        const email = element.getAttribute('data-email');
-        const message = element.getAttribute('data-message');
-        const replyId = element.getAttribute('data-reply-id');
-        console.log(replyId);
-        console.log(message);
-
-        document.getElementById('sender-email').innerText = 'Sender: ' + email;
-        document.getElementById('notification-message').innerText = 'Message: ' + message;
-        document.getElementById('reply-id').value = replyId;
-
-        document.getElementById('all-notifications').style.display = 'none';
-        document.getElementById('new-notification').style.display = 'none';
-        document.getElementById('opened-notification').style.display = 'block';
+    // Ensure replyId is set correctly
+    if (replyId.trim() !== '') {
+        document.getElementById('reply-id').value = replyId; // Set the reply_id field
+    } else {
+        document.getElementById('reply-id').value = ''; // Reset reply_id if necessary
     }
 
-    function newNotification() {
-        allnotification.style.display = 'none';
-        newnotification.style.display = 'block';
-        openednotification.style.display = 'none';
-        addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-
-    }
-
-    function allNotification() {
-        allnotification.style.display = 'block';
-        newnotification.style.display = 'none';
-        openednotification.style.display = 'none';
-        addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-
-    }
-    addButton.addEventListener('click', function () {
-        if (this.innerHTML.includes('Back')) {
-            allNotification();
-        } else {
-            newNotification();
-        }
-    });
-
-    function replyToNotification() {
-        const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
-        document.querySelector('input[name="recipient"]').value = recipient;
-        const replyId = document.getElementById('reply-id').value;
-
-        document.getElementById('all-notifications').style.display = 'none';
-        document.getElementById('new-notification').style.display = 'block';
-        document.getElementById('opened-notification').style.display = 'none';
-        addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-    }
+    // Adjust display of sections as needed
+    document.getElementById('all-notifications').style.display = 'none';
+    document.getElementById('new-notification').style.display = 'block';
+    document.getElementById('opened-notification').style.display = 'none';
+    addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
+}
 </script>
 
 

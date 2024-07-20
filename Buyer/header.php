@@ -145,7 +145,7 @@ VALUES (:sender_id, :recipient_id, :message)";
                     <?php if ($category == 'Organization'): ?>
                     <img src="/Images/Illustrations/teamprofile.svg" class="img-profile">
                     <?php else: ?>
-                    <img src="/Images/Illustrations/femaleprofile.svg" class="img-profile">
+                    <img src="/Images/Illustrations/Maleprofile.svg" class="img-profile">
                     <?php endif; ?>
                 </div>
                 <div class="user-name">

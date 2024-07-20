@@ -129,10 +129,10 @@ try {
 
 
     <style>
-        .task {
-            height: 100%;
-            /* Set the height of the calendar container to 100% */
-        }
+    .task {
+        height: 100%;
+        /* Set the height of the calendar container to 100% */
+    }
     </style>
 </head>
 
@@ -193,20 +193,20 @@ try {
                         <div class="rows">
                             <!-- Adding the order items -->
                             <?php foreach ($orders as $order): ?>
-                                <div class="row">
-                                    <div class="name-cell">
-                                        <?php echo $order['book_title']; ?>
-                                    </div>
-                                    <div class="cell">
-                                        <?php echo $order['unit_price']; ?>
-                                    </div>
-                                    <div class="cell">
-                                        <?php echo $order['status']; ?>
-                                    </div>
-                                    <div class="cell">
-                                        <?php echo $order['delivery_date']; ?>
-                                    </div>
+                            <div class="row">
+                                <div class="name-cell">
+                                    <?php echo $order['book_title']; ?>
                                 </div>
+                                <div class="cell">
+                                    <?php echo $order['unit_price']; ?>
+                                </div>
+                                <div class="cell">
+                                    <?php echo $order['status']; ?>
+                                </div>
+                                <div class="cell">
+                                    <?php echo $order['delivery_date']; ?>
+                                </div>
+                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -266,7 +266,11 @@ try {
             <div class="profile-container">
                 <div class="user-details">
                     <div class="user">
-                        <img src="/Images/Illustrations/profile.svg" alt="">
+                        <?php if ($category == 'Organization'): ?>
+                        <img src="/Images/Illustrations/teamprofile.svg" class="img-profile">
+                        <?php else: ?>
+                        <img src="/Images/Illustrations/Maleprofile.svg" class="img-profile">
+                        <?php endif; ?>
                         <h4>
                             <?php echo $full_name; ?>
                         </h4>
@@ -308,18 +312,18 @@ try {
                 <div class="notifications-container">
                     <h4> Notifications</h4>
                     <?php if (empty($notifications)): ?>
-                        <p>You have no notifications</p>
+                    <p>You have no notifications</p>
                     <?php else: ?>
-                        <div class="rows">
-                            <?php foreach ($notifications as $notification): ?>
-                                <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
-                                    data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
-                                    onclick="openNotification(this);">
-                                    <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
-                                    <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
-                                </div>
-                            <?php endforeach; ?>
+                    <div class="rows">
+                        <?php foreach ($notifications as $notification): ?>
+                        <div class="notification" data-email="<?php echo htmlspecialchars($notification['email']); ?>"
+                            data-message="<?php echo htmlspecialchars($notification['notification_message']); ?>"
+                            onclick="openNotification(this);">
+                            <h5><?php echo htmlspecialchars($notification['email']); ?></h5>
+                            <p><?php echo htmlspecialchars($notification['notification_message']); ?></p>
                         </div>
+                        <?php endforeach; ?>
+                    </div>
                     <?php endif; ?>
 
                 </div>

@@ -3,82 +3,107 @@ include '../Shared Components/logger.php';
 require_once '../Shared Components/dbconnection.php';
 
 session_start();
+
 try {
     // Defining error messages
     $emailError = $passwordError = $accountError = '';
-
-    // Checking if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Retrieve form data
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+        if (isset($_GET['token']) && !empty($_GET['token'])) {
+            // Handle password reset
+            $token = $_GET['token'];
+            $new_password = $_POST['newPassword'];
+            try {
+                // Check if the token is valid
+                $stmt = $db->prepare("SELECT user_id, reset_token_expiry FROM users WHERE reset_token = ?");
+                $stmt->execute([$token]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Validating form data (basic validation for demonstration)
-        if (empty($email)) {
-            $emailError = 'Email is required';
-        }
-        if (empty($password)) {
-            $passwordError = 'Password is required';
-        }
+                if ($user && strtotime($user['reset_token_expiry']) > time()) {
+                    // Hash the new password
+                    $hashed_password = hash('sha256', $new_password);
 
-        if (empty($emailError) && empty($passwordError)) {
-            // Fetch the hashed password and user category from the database based on the provided email
-            $stmt = $db->prepare("SELECT password, user_id, category, role, view_status FROM users WHERE email = ?");
-            $stmt->execute([$email]);
-            $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($user_data) {
-                $dbpass = $user_data['password'];
-                $role = $user_data['role'];
-                $category = $user_data['category'];
-                $user_id = $user_data['user_id'];
-                $view_status = $user_data['view_status'];
-
-                // Check the view_status first
-                if ($view_status != NULL) {
-                    writeLog($db, "User failed to log in because the account has been deleted by the admin", "ERROR", $user_id);
-                    $accountError = 'This account has been deleted. Please follow up with the admin in the contact us page on the top of the screen';
-                    // global $accountError;
+                    // Update the user's password in the database
+                    $stmt = $db->prepare("UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE reset_token = ?");
+                    $stmt->execute([$hashed_password, $token]);
+                    header("Location: login.php");
+                    writeLog($db, "Password reset for user ID " . $user['user_id'], "INFO", $user['user_id']);
+                    echo "Password has been reset.";
                 } else {
-                    // Hash the provided password using SHA256 for comparison
-                    $hashed_input_password = hash('sha256', $password);
-
-
-                    // Compare the hashed input password with the hashed password from the database
-                    if ($hashed_input_password === $dbpass) {
-                        // Credentials match, login successful
-                        // Store user_id in the session
-                        $_SESSION['user_id'] = $user_data['user_id'];
-                        $_SESSION['category'] = $category;
-                        $_SESSION['role'] = $role;
-                        writeLog($db, "User logged in", "INFO", $user_id);
-
-                        // Redirect based on user category
-                        switch ($role) {
-                            case 'Client':
-                                header("Location: ../Buyer/buyerdashboard.php");
-                                break;
-                            case 'Dealer':
-                                header("Location: ../Seller/sellerdashboard.php");
-                                break;
-                            case 'Admin':
-                                header("Location: ../Admin/admindashboard.php");
-                                break;
-                            default:
-                                header("Location: generic_dashboard.php");
-                                break;
-                        }
-                        exit();
-                    } else {
-                        writeLog($db, "User failed to log in due to wrong credentials", "ERROR", $user_id);
-                        // Display error notification if credentials are incorrect
-                        $passwordError = 'Incorrect email or password. Please try again.';
-                    }
+                    echo "Invalid or expired token.";
                 }
-            } else {
-                // Display error notification if user with the provided email does not exist
-                writeLog($db, "User failed to log in as user does not exist", "ERROR", null);
-                $emailError = 'User with the provided email does not exist.';
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+        } else if (!isset($_GET['token']) && empty($_GET['token'])) {
+            // Handle login
+            $email = $_POST["email"];
+            $password = $_POST["password"];
+
+            // Validating form data (basic validation for demonstration)
+            if (empty($email)) {
+                $emailError = 'Email is required';
+            }
+            if (empty($password)) {
+                $passwordError = 'Password is required';
+            }
+
+            if (empty($emailError) && empty($passwordError)) {
+                // Fetch the hashed password and user category from the database based on the provided email
+                $stmt = $db->prepare("SELECT password, user_id, category, role, view_status FROM users WHERE email = ?");
+                $stmt->execute([$email]);
+                $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($user_data) {
+                    $dbpass = $user_data['password'];
+                    $role = $user_data['role'];
+                    $category = $user_data['category'];
+                    $user_id = $user_data['user_id'];
+                    $view_status = $user_data['view_status'];
+
+                    // Check the view_status first
+                    if ($view_status != NULL) {
+                        writeLog($db, "User failed to log in because the account has been deleted by the admin", "ERROR", $user_id);
+                        $accountError = 'This account has been deleted. Please follow up with the admin in the contact us page on the top of the screen';
+                    } else {
+                        // Hash the provided password using SHA256 for comparison
+                        $hashed_input_password = hash('sha256', $password);
+
+                        // Compare the hashed input password with the hashed password from the database
+                        if ($hashed_input_password === $dbpass) {
+                            // Credentials match, login successful
+                            // Store user_id in the session
+                            $_SESSION['user_id'] = $user_data['user_id'];
+                            $_SESSION['category'] = $category;
+                            $_SESSION['role'] = $role;
+                            writeLog($db, "User logged in", "INFO", $user_id);
+
+                            // Redirect based on user category
+                            switch ($role) {
+                                case 'Client':
+                                    header("Location: ../Buyer/buyerdashboard.php");
+                                    break;
+                                case 'Dealer':
+                                    header("Location: ../Seller/sellerdashboard.php");
+                                    break;
+                                case 'Admin':
+                                    header("Location: ../Admin/admindashboard.php");
+                                    break;
+                                default:
+                                    header("Location: generic_dashboard.php");
+                                    break;
+                            }
+                            exit();
+                        } else {
+                            writeLog($db, "User failed to log in due to wrong credentials", "ERROR", $user_id);
+                            // Display error notification if credentials are incorrect
+                            $passwordError = 'Incorrect email or password. Please try again.';
+                        }
+                    }
+                } else {
+                    // Display error notification if user with the provided email does not exist
+                    writeLog($db, "User failed to log in as user does not exist", "ERROR", null);
+                    $emailError = 'User with the provided email does not exist.';
+                }
             }
         }
     }
@@ -87,6 +112,7 @@ try {
     echo 'An error occurred. Please try again later.';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,6 +140,7 @@ try {
                 <div class="top">
                     <h1 class="header-h1">Welcome Back!!</h1>
                     <h5>Login to continue</h5>
+                    <div id="resetPasswordMessage" class="message"></div>
                 </div>
 
                 <form action="login.php" method="post" id="LoginForm" name="form" autocomplete="true">
@@ -173,7 +200,34 @@ try {
                     <div class="inputcontrol">
                         <label for="email2">Email</label>
                         <input type="text" class="inputfield" name="email2" />
-                        <div class="error"><?php echo $emailError; ?></div>
+                        <div class="error" id="resetPasswordError"></div>
+                    </div>
+                    <button type="submit" class="button">Submit</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="newpasswordmodal" class="modal">
+        <form id="newpasswordform" action="" method="post">
+
+            <div id="resetpasswordmodal-header" class="modal-header">
+
+                <h2>Reset Password</h2>
+                <div class="close">
+                    <i class="fa-solid fa-xmark" onclick="cancel();"></i>
+                </div>
+            </div>
+
+            <div id="resetpasswordmodal-content" class="modal-content">
+
+                <div class="input-box">
+                    <div class="inputcontrol">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" class="inputfield" id="newPassword" name="newPassword" />
+                        <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility(this)"></i>
+
+                        <div class="error" id="newPasswordError"></div>
                     </div>
                     <button type="submit" class="button">Submit</button>
 
@@ -195,6 +249,16 @@ try {
             });
 
         document.getElementById('resetpasswordmodal').style.display = "none";
+        document.getElementById('newpasswordmodal').style.display = "none";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (token) {
+            // If the token is present, show the new password modal
+            shownewPasswordModal();
+        }
+
 
 
     });
@@ -282,8 +346,15 @@ try {
 
     }
 
+    function shownewPasswordModal() {
+        document.getElementById('newpasswordmodal').style.display = 'block';
+        document.getElementById('main-content').classList.add('blurred');
+
+    }
+
     function cancel() {
         document.getElementById('resetpasswordmodal').style.display = 'none';
+        document.getElementById('newpasswordmodal').style.display = 'none';
         document.getElementById('main-content').classList.remove('blurred');
 
     }
@@ -300,7 +371,12 @@ try {
                 })
                 .then(response => response.text())
                 .then(data => {
-                    alert(data);
+                    var messageElement = document.getElementById('resetPasswordMessage');
+                    if (messageElement) {
+                        messageElement.textContent =
+                            "A password reset email has been sent to your email address. Please check your inbox and follow the instructions provided.";
+
+                    }
                     if (data.includes("Password reset email sent.")) {
                         document.getElementById('resetpasswordmodal').style.display = 'none';
                         document.getElementById('main-content').classList.remove('blurred');

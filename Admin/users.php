@@ -226,14 +226,14 @@ try {
                 <div class="rows">
                     <!-- Adding the user items -->
                     <?php foreach ($users as $user): ?>
-                    <div class="row">
-                        <div class="cell">
-                            <?php echo $user['serialno'];
+                        <div class="row">
+                            <div class="cell">
+                                <?php echo $user['serialno'];
                                 ?>
-                        </div>
+                            </div>
 
-                        <div class="bigger-cell2">
-                            <?php
+                            <div class="bigger-cell2">
+                                <?php
 
                                 // Check category and retrieve name accordingly
                                 switch ($user['category']) {
@@ -301,45 +301,45 @@ try {
                                 }
                                 echo $name;
                                 ?>
-                        </div>
+                            </div>
 
-                        <div class="bigger-cell2">
-                            <?php echo $user['email']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $user['role']; ?>
-                        </div>
-                        <div class="bigger-cell">
-                            <?php echo $user['category']; ?>
-                        </div>
+                            <div class="bigger-cell2">
+                                <?php echo $user['email']; ?>
+                            </div>
+                            <div class="bigger-cell">
+                                <?php echo $user['role']; ?>
+                            </div>
+                            <div class="bigger-cell">
+                                <?php echo $user['category']; ?>
+                            </div>
 
-                        <div class="bigger-cell">
-                            <?php echo $user['date_joined']; ?>
-                        </div>
-                        <!-- <div class="cell">
+                            <div class="bigger-cell">
+                                <?php echo $user['date_joined']; ?>
+                            </div>
+                            <!-- <div class="cell">
                             </div> -->
 
-                        <!-- <div class="icon-cell">
+                            <!-- <div class="icon-cell">
                             <i class="fa-solid fa-eye-slash"></i>
                         </div> -->
-                        <div class="icon-cell">
-                            <i class="fa-solid fa-pen" id="editIcon" style="cursor:pointer;"
-                                data-role="<?php echo $user['role']; ?>"
-                                data-userid="<?php echo $user['user_id']; ?>"></i>
-                        </div>
-                        <!-- <div class="icon-cell">
+                            <div class="icon-cell">
+                                <i class="fa-solid fa-pen" id="editIcon" style="cursor:pointer;"
+                                    data-role="<?php echo $user['role']; ?>"
+                                    data-userid="<?php echo $user['user_id']; ?>"></i>
+                            </div>
+                            <!-- <div class="icon-cell">
                             <a href="#" class="delete-link" data-table="books"
                                 data-pk="<php echo $product['bookid']; ?>" data-pk-name="bookid">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </div> -->
-                        <div class="icon-cell">
-                            <a href="#" class="delete-link" data-table="users" data-pk="<?php echo $user['user_id']; ?>"
-                                data-pk-name="user_id">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+                            <div class="icon-cell">
+                                <a href="#" class="delete-link" data-table="users" data-pk="<?php echo $user['user_id']; ?>"
+                                    data-pk-name="user_id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -361,129 +361,129 @@ try {
 
 </body>
 <script>
-let tableName, primaryKey, pkName, deleteLink;
+    let tableName, primaryKey, pkName, deleteLink;
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Get all elements with the class "delete-link"
-    var deleteLinks = document.querySelectorAll('.delete-link');
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements with the class "delete-link"
+        var deleteLinks = document.querySelectorAll('.delete-link');
 
-    // Loop through each delete link
-    deleteLinks.forEach(function(link) {
-        // Add click event listener to each delete link
-        link.addEventListener('click', function(event) {
-            // Prevent the default behavior (i.e., following the href)
+        // Loop through each delete link
+        deleteLinks.forEach(function (link) {
+            // Add click event listener to each delete link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (i.e., following the href)
 
-            // Get the table name, primary key column name, and primary key value from the data attributes
-            tableName = link.getAttribute('data-table');
-            primaryKey = link.getAttribute('data-pk');
-            pkName = link.getAttribute('data-pk-name');
-            deleteLink = link;
-            var row = link.closest('.row'); // Get the closest row element
+                // Get the table name, primary key column name, and primary key value from the data attributes
+                tableName = link.getAttribute('data-table');
+                primaryKey = link.getAttribute('data-pk');
+                pkName = link.getAttribute('data-pk-name');
+                deleteLink = link;
+                var row = link.closest('.row'); // Get the closest row element
 
-            event.preventDefault();
-            document.getElementById('delete-modal').style.display = 'block';
+                event.preventDefault();
+                document.getElementById('delete-modal').style.display = 'block';
 
+            });
         });
     });
-});
 
-document.getElementById('confirm-delete-button').addEventListener('click', function() {
-    confirmDelete(tableName, primaryKey, pkName, deleteLink);
-});
-// Perform AJAX request to the delete script
-// function confirmDelete(tableName, primaryKey, pkName, link) {
-//     var xhr = new XMLHttpRequest();
-//     xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
-//         primaryKey +
-//         '&pk_name=' + pkName, true);
-//     xhr.onload = function() {
-//         if (xhr.status === 200) {
-//             // Handle successful deletion (if needed)
-//             // For example, you can remove the deleted row from the DOM
-//             link.parentElement.parentElement.remove();
-//             // console.log(pkName + " " + primaryKey);
-//             console.log(pkName + " " + primaryKey + " " + tableName + "   " + link);
-
-//             console.log("removing");
-//         } else {
-//             // Handle error (if needed)
-//             console.error('Error:', xhr.statusText);
-//         }
-//     };
-//     xhr.onerror = function() {
-//         // Handle network errors (if needed)
-//         console.error('Request failed');
-//     };
-//     console.log("Sending");
-//     xhr.send();
-
-// }
-function confirmDelete(tableName, primaryKey, pkName, link) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', window.location.pathname + '?action=hide_user&user_id=' + primaryKey, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            // Handle successful update
-            link.parentElement.parentElement.remove();
-            console.log("User status updated to hidden");
-        } else {
-            // Handle error
-            console.error('Error:', xhr.statusText);
-        }
-    };
-    xhr.onerror = function() {
-        // Handle network errors
-        console.error('Request failed');
-    };
-    xhr.send();
-    // document.getElementById('delete-modal').style.display = 'none';
-    location.reload();
-
-}
-
-
-function cancelDelete() {
-    document.getElementById('delete-modal').style.display = 'none';
-}
-
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    var exportButton = document.getElementById('exportButton');
-    exportButton.addEventListener('click', function() {
-        // Update the href attribute of the export button with the desired URL
-        var currentHref = window.location.href;
-        var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
-            '?export=true';
-        exportButton.querySelector('a').setAttribute('href', exportUrl);
+    document.getElementById('confirm-delete-button').addEventListener('click', function () {
+        confirmDelete(tableName, primaryKey, pkName, deleteLink);
     });
-});
+    // Perform AJAX request to the delete script
+    // function confirmDelete(tableName, primaryKey, pkName, link) {
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open('GET', '/Shared Components/delete.php?table=' + tableName + '&pk=' +
+    //         primaryKey +
+    //         '&pk_name=' + pkName, true);
+    //     xhr.onload = function() {
+    //         if (xhr.status === 200) {
+    //             // Handle successful deletion (if needed)
+    //             // For example, you can remove the deleted row from the DOM
+    //             link.parentElement.parentElement.remove();
+    //             // console.log(pkName + " " + primaryKey);
+    //             console.log(pkName + " " + primaryKey + " " + tableName + "   " + link);
 
+    //             console.log("removing");
+    //         } else {
+    //             // Handle error (if needed)
+    //             console.error('Error:', xhr.statusText);
+    //         }
+    //     };
+    //     xhr.onerror = function() {
+    //         // Handle network errors (if needed)
+    //         console.error('Request failed');
+    //     };
+    //     console.log("Sending");
+    //     xhr.send();
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Select all edit icons with the class 'edit-icon'
-    const editIcons = document.querySelectorAll('.fa-pen');
-
-    // Loop through each edit icon and add the click event listener
-    editIcons.forEach(icon => {
-        icon.addEventListener('click', function() {
-            const role = this.getAttribute('data-role');
-            const userId = this.getAttribute('data-userid');
-            console.log('User role:', role);
-            console.log('User ID:', userId);
-
-            if (role === 'Client') {
-                window.location.href = '../Buyer/clientprofile.php?user_id=' + userId;
-            } else if (role === 'Dealer') {
-                window.location.href = '../Shared Components/profile.php?user_id=' + userId;
+    // }
+    function confirmDelete(tableName, primaryKey, pkName, link) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', window.location.pathname + '?action=hide_user&user_id=' + primaryKey, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Handle successful update
+                link.parentElement.parentElement.remove();
+                console.log("User status updated to hidden");
             } else {
-                alert('Invalid role.');
+                // Handle error
+                console.error('Error:', xhr.statusText);
             }
+        };
+        xhr.onerror = function () {
+            // Handle network errors
+            console.error('Request failed');
+        };
+        xhr.send();
+        // document.getElementById('delete-modal').style.display = 'none';
+        location.reload();
+
+    }
+
+
+    function cancelDelete() {
+        document.getElementById('delete-modal').style.display = 'none';
+    }
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var exportButton = document.getElementById('exportButton');
+        exportButton.addEventListener('click', function () {
+            // Update the href attribute of the export button with the desired URL
+            var currentHref = window.location.href;
+            var exportUrl = currentHref.includes('?export=true') ? currentHref : currentHref +
+                '?export=true';
+            exportButton.querySelector('a').setAttribute('href', exportUrl);
         });
     });
-});
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all edit icons with the class 'edit-icon'
+        const editIcons = document.querySelectorAll('.fa-pen');
+
+        // Loop through each edit icon and add the click event listener
+        editIcons.forEach(icon => {
+            icon.addEventListener('click', function () {
+                const role = this.getAttribute('data-role');
+                const userId = this.getAttribute('data-userid');
+                console.log('User role:', role);
+                console.log('User ID:', userId);
+
+                if (role === 'Client') {
+                    window.location.href = '../Buyer/clientprofile.php?user_id=' + userId;
+                } else if (role === 'Dealer') {
+                    window.location.href = '../Shared Components/profile.php?user_id=' + userId;
+                } else {
+                    alert('Invalid role.');
+                }
+            });
+        });
+    });
 </script>
 
 </html>

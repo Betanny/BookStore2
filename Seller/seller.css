@@ -1001,14 +1001,22 @@ body {
   
   /* Modal Content/Box */
   .modal-content {
-    margin: auto; /* 15% from the top and centered */
+    margin: 150px auto; /* 15% from the top and centered */
     background-color: #fefefe;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 50%; /* Could be more or less, depending on screen size */
   }
   
+  .blurred {
+    filter: blur(2px);
+    pointer-events: none;
+}
 
 
-
+.modal-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 

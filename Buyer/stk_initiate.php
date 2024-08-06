@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     var_dump($contactNumber);
 
     // $contactNumber = (int) $contactNumber;
-    $formattedNumber = (int) 254 * pow(10, strlen($contactNumber) - 1) + $contactNumber;
+    $formattedNumber = (int) 254 * pow(10, strlen($contactNumber) - 1) + (int) $contactNumber;
     var_dump($formattedNumber);
 
     //echo $formattedNumber; // Output: 254798989898
@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ob_start();
     include 'gen_token.php';
     $accessToken = ob_get_clean();
+    var_dump($accessToken);
 
     $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
     $shortCode = '174379'; // Sandbox Short Code

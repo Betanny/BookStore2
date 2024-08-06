@@ -258,7 +258,7 @@ try {
                 </div>
                 <?php endif; ?>
 
-
+                <?php if ($role !== 'Admin'): ?>
                 <h4><br><br>Change Password?</h4><br>
                 <div class="input-box">
                     <div class="inputcontrol">
@@ -290,6 +290,7 @@ try {
                     </div>
                 </div>
 
+                <?php endif; ?>
 
                 <div class="modal-buttons">
                     <button class="button" type="button" onclick="goBack();">Cancel</button>

@@ -125,9 +125,9 @@ try {
     <title>Registration</title>
 
     <style>
-    .error {
-        color: red;
-    }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 
@@ -177,7 +177,7 @@ try {
                     </div>
                 </form>
                 <div class="bottom">
-                    <span class="light-text">Don't have an account? <a href="/Home/homepage.html"
+                    <span class="light-text">Don't have an account? <a href="/Home/homepage.php"
                             class="reg-link">Register</a></span>
                 </div>
             </div>
@@ -236,155 +236,155 @@ try {
         </form>
     </div>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('/Shared Components/header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-        fetch('/Shared Components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            });
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/Shared Components/header.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+            fetch('/Shared Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
 
-        document.getElementById('resetpasswordmodal').style.display = "none";
-        document.getElementById('newpasswordmodal').style.display = "none";
+            document.getElementById('resetpasswordmodal').style.display = "none";
+            document.getElementById('newpasswordmodal').style.display = "none";
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
 
-        if (token) {
-            // If the token is present, show the new password modal
-            shownewPasswordModal();
+            if (token) {
+                // If the token is present, show the new password modal
+                shownewPasswordModal();
+            }
+
+
+
+        });
+
+        document.getElementById("LoginForm").addEventListener('submit', function (e) {
+            // Prevent the default form submission
+            e.preventDefault();
+            submitForm();
+        });
+
+        function submitForm() {
+            var isValid = false;
+            isValid = validateForm();
+            if (isValid) {
+                document.getElementById("LoginForm").submit();
+            }
+        }
+
+        function validateForm() {
+            var isValid = true;
+            isValid = validateEmail('email') && isValid;
+            isValid = validateField('password', 'Password is required') && isValid;
+
+            return isValid;
         }
 
 
-
-    });
-
-    document.getElementById("LoginForm").addEventListener('submit', function(e) {
-        // Prevent the default form submission
-        e.preventDefault();
-        submitForm();
-    });
-
-    function submitForm() {
-        var isValid = false;
-        isValid = validateForm();
-        if (isValid) {
-            document.getElementById("LoginForm").submit();
+        function validateField(fieldName, errorMessage) {
+            var inputField = document.getElementsByName(fieldName)[0];
+            var inputControl = inputField.parentElement;
+            var errorDisplay = inputControl.querySelector('.error');
+            var fieldValue = inputField.value.trim();
+            if (fieldValue === '') {
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+                errorDisplay.textContent = errorMessage;
+                return false;
+            } else {
+                errorDisplay.textContent = "";
+                return true;
+            }
         }
-    }
 
-    function validateForm() {
-        var isValid = true;
-        isValid = validateEmail('email') && isValid;
-        isValid = validateField('password', 'Password is required') && isValid;
+        function validateEmail(fieldName) {
+            var inputField = document.getElementsByName(fieldName)[0];
+            var inputControl = inputField.parentElement;
+            var errorDisplay = inputControl.querySelector('.error');
+            var email = inputField.value.trim();
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        return isValid;
-    }
-
-
-    function validateField(fieldName, errorMessage) {
-        var inputField = document.getElementsByName(fieldName)[0];
-        var inputControl = inputField.parentElement;
-        var errorDisplay = inputControl.querySelector('.error');
-        var fieldValue = inputField.value.trim();
-        if (fieldValue === '') {
-            inputControl.classList.add('error');
-            inputControl.classList.remove('success');
-            errorDisplay.textContent = errorMessage;
-            return false;
-        } else {
-            errorDisplay.textContent = "";
-            return true;
+            if (email === '') {
+                var errorMessage = "Email is required";
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+                errorDisplay.textContent = errorMessage;
+                return false;
+            } else if (!emailPattern.test(email)) {
+                var errorMessage = "Invalid email format";
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+                errorDisplay.textContent = errorMessage;
+                return false;
+            } else {
+                errorDisplay.textContent = "";
+                return true;
+            }
         }
-    }
 
-    function validateEmail(fieldName) {
-        var inputField = document.getElementsByName(fieldName)[0];
-        var inputControl = inputField.parentElement;
-        var errorDisplay = inputControl.querySelector('.error');
-        var email = inputField.value.trim();
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (email === '') {
-            var errorMessage = "Email is required";
-            inputControl.classList.add('error');
-            inputControl.classList.remove('success');
-            errorDisplay.textContent = errorMessage;
-            return false;
-        } else if (!emailPattern.test(email)) {
-            var errorMessage = "Invalid email format";
-            inputControl.classList.add('error');
-            inputControl.classList.remove('success');
-            errorDisplay.textContent = errorMessage;
-            return false;
-        } else {
-            errorDisplay.textContent = "";
-            return true;
+        function togglePasswordVisibility(icon) {
+            var passwordField = icon.previousElementSibling; // Get the input field before the icon
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
         }
-    }
 
-    function togglePasswordVisibility(icon) {
-        var passwordField = icon.previousElementSibling; // Get the input field before the icon
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        } else {
-            passwordField.type = "password";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
+        function showResetPasswordModal() {
+            document.getElementById('resetpasswordmodal').style.display = 'block';
+            document.getElementById('main-content').classList.add('blurred');
+
         }
-    }
 
-    function showResetPasswordModal() {
-        document.getElementById('resetpasswordmodal').style.display = 'block';
-        document.getElementById('main-content').classList.add('blurred');
+        function shownewPasswordModal() {
+            document.getElementById('newpasswordmodal').style.display = 'block';
+            document.getElementById('main-content').classList.add('blurred');
 
-    }
+        }
 
-    function shownewPasswordModal() {
-        document.getElementById('newpasswordmodal').style.display = 'block';
-        document.getElementById('main-content').classList.add('blurred');
+        function cancel() {
+            document.getElementById('resetpasswordmodal').style.display = 'none';
+            document.getElementById('newpasswordmodal').style.display = 'none';
+            document.getElementById('main-content').classList.remove('blurred');
 
-    }
+        }
 
-    function cancel() {
-        document.getElementById('resetpasswordmodal').style.display = 'none';
-        document.getElementById('newpasswordmodal').style.display = 'none';
-        document.getElementById('main-content').classList.remove('blurred');
-
-    }
-
-    document.getElementById("ResetPasswordForm").addEventListener('submit', function(e) {
-        e.preventDefault();
-        var emailFieldName = 'email2';
-        if (validateEmail(emailFieldName)) {
-            var form = this;
-            var formData = new FormData(form);
-            fetch('reset_password_request.php', {
+        document.getElementById("ResetPasswordForm").addEventListener('submit', function (e) {
+            e.preventDefault();
+            var emailFieldName = 'email2';
+            if (validateEmail(emailFieldName)) {
+                var form = this;
+                var formData = new FormData(form);
+                fetch('reset_password_request.php', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.text())
-                .then(data => {
-                    var messageElement = document.getElementById('resetPasswordMessage');
-                    if (messageElement) {
-                        messageElement.textContent =
-                            "A password reset email has been sent to your email address. Please check your inbox and follow the instructions provided.";
+                    .then(response => response.text())
+                    .then(data => {
+                        var messageElement = document.getElementById('resetPasswordMessage');
+                        if (messageElement) {
+                            messageElement.textContent =
+                                "A password reset email has been sent to your email address. Please check your inbox and follow the instructions provided.";
 
-                    }
-                    if (data.includes("Password reset email sent.")) {
-                        document.getElementById('resetpasswordmodal').style.display = 'none';
-                        document.getElementById('main-content').classList.remove('blurred');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    });
+                        }
+                        if (data.includes("Password reset email sent.")) {
+                            document.getElementById('resetpasswordmodal').style.display = 'none';
+                            document.getElementById('main-content').classList.remove('blurred');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
     </script>
     <div id="footer-container"></div>
 </body>

@@ -122,7 +122,8 @@ try {
 <body>
     <header>
         <div class="logo">
-            <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
+            <img src="/Shared Components/smartcbc.svg" onclick="window.location.href='../Seller/sellerdashboard.php'"
+                style="width:150px !important" alt="LOGO">
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -133,7 +134,7 @@ try {
                 <li><a href="/Seller/orders.php" id="orders-link" class="link light-text">Orders</a></li>
                 <li><a href="/Seller/transactions.php" id="transactions-link" class="link light-text">Transactions</a>
                 </li>
-                <li><a href="/Shared Components/feedback.php" id="feedback-link" class="link light-text">Feedback</a>
+                <li><a href="/Shared%20Components/feedback.php" id="feedback-link" class="link light-text">Feedback</a>
                 </li>
             </ul>
         </nav>

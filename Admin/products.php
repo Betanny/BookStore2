@@ -155,6 +155,17 @@ try {
 
     }
 
+
+    $reviewsQuery = "SELECT r.review_text, r.rating
+    FROM reviews r
+    WHERE r.product_id = :bookid";
+    $reviewsStmt = $db->prepare($reviewsQuery);
+    $reviewsStmt->bindParam(':bookid', $bookid);
+    $reviewsStmt->execute();
+    $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve form data
         $bookid = $_POST['bookid'];
@@ -495,7 +506,29 @@ try {
                     </div>
                 </div>
                 <!-- ?php endif; ?> -->
+                <div class="reviews-section">
+                    <h4>Reviews</h4>
+                    <?php if (!empty($reviews)): ?>
+                    <ul>
+                        <?php foreach ($reviews as $review): ?>
+                        <div class="wholereview">
+                            <p style="font-size:10px; padding-bottom:10px;">By:anonymous client</p>
 
+
+                            <li>
+                                <p>rated :
+                                    <?php echo htmlspecialchars($review['rating']); ?>/5
+                                </p>
+                                <p><?php echo htmlspecialchars($review['review_text']); ?></p>
+                            </li>
+
+                        </div>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php else: ?>
+                    <p>No reviews available for this book.</p>
+                    <?php endif; ?>
+                </div>
                 <div class="modal-buttons">
                     <button class="button" type="button" onclick="cancel();">Cancel</button>
                     <button class="button" type="submit">Save Changes</button>

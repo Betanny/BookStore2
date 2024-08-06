@@ -127,7 +127,7 @@
                     platform connects creators, publishers, educators, and learners, offering a comprehensive selection
                     of high-quality materials. Join us in shaping the future of education and unlocking the power of
                     learning together.</p>
-                <a href="Aboutus.html" class="button">Read More</a>
+                <a href="Aboutus.php" class="button">Read More</a>
 
             </div>
 
@@ -144,8 +144,8 @@
                             breeze!"</p>
                     </div>
                     <div class="profile">
-                        <img src="/Images/Illustrations/Male.svg" class="img-profile">
-                        <p>Milly Wambui<br>Nairobi Academy</p>
+                        <img src="/Images/Illustrations/Maleprofile.svg" class="img-profile">
+                        <p>Jeremiah Otieno<br>Nairobi Academy</p>
 
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                             communication. I couldn't be happier with my experience!"</p>
                     </div>
                     <div class="profile">
-                        <img src="/Images/Illustrations/Male.svg" class="img-profile">
+                        <img src="/Images/Illustrations/Female.svg" class="img-profile">
                         <p>Author<br>Melissa Kenneth</p>
 
                     </div>
@@ -186,26 +186,26 @@
 
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('/Shared Components/header.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-    fetch('/Shared Components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer-container').innerHTML = data;
-        });
-    document.getElementById('home-link').classList.add('active-link');
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/Shared Components/header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+        fetch('/Shared Components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
+        document.getElementById('home-link').classList.add('active-link');
 
 
-});
-// document.addEventListener("DOMContentLoaded", function() {
-//     fetch('/Shared Components/logout.php').then(response => response.text()).then(data => {
-//         document.getElementById('logout-container').innerHTML = data;
-//     });
-// });
+    });
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     fetch('/Shared Components/logout.php').then(response => response.text()).then(data => {
+    //         document.getElementById('logout-container').innerHTML = data;
+    //     });
+    // });
 </script>
 
 </html>

@@ -383,6 +383,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_POST['submit'])) {
         window.history.back();
 
     }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const links = document.querySelectorAll('#nav-menu a');
+
+        function activateLink() {
+            const currentPath = window.location.pathname;
+            console.log(currentPath);
+            links.forEach(link => {
+                if (currentPath.endsWith(link.getAttribute('href'))) {
+                    link.classList.add('active-link');
+                }
+            });
+        }
+
+        deactivateAllLinks();
+        activateLink();
+    });
     </script>
 
 </body>

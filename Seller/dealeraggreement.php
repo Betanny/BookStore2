@@ -95,87 +95,87 @@ try {
     <link rel="icon" href="/Images/Logo/Logo2.png" type="image/png">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-        .agreement-content p {
-            margin-bottom: 10px;
-        }
+    .agreement-content p {
+        margin-bottom: 10px;
+    }
 
-        .agreement-content strong {
-            font-weight: bold;
-        }
+    .agreement-content strong {
+        font-weight: bold;
+    }
 
-        form {
-            margin-top: 20px;
-        }
+    form {
+        margin-top: 20px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 15px;
-        }
+    label {
+        display: block;
+        margin-bottom: 15px;
+    }
 
-        input[type="checkbox"] {
-            margin-right: 10px;
-        }
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
 
-        button {
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: var(--primary-color);
-            height: 35px;
-            width: 25%;
-            margin-left: 35%;
-        }
+    button {
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: var(--primary-color);
+        height: 35px;
+        width: 25%;
+        margin-left: 35%;
+    }
 
-        button:hover {
-            background-color: var(--accent-color2);
-            color: var(--primary-color);
-            font-weight: bolder;
+    button:hover {
+        background-color: var(--accent-color2);
+        color: var(--primary-color);
+        font-weight: bolder;
 
 
-        }
+    }
 
-        .decline-button {
-            margin-top: 20px;
-            color: var(--primary-color);
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: var(--background-color);
-            border: 1px solid var(--primary-color);
-            ;
-            height: 35px;
-            width: 25%;
-            margin-left: 35%;
-        }
+    .decline-button {
+        margin-top: 20px;
+        color: var(--primary-color);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: var(--background-color);
+        border: 1px solid var(--primary-color);
+        ;
+        height: 35px;
+        width: 25%;
+        margin-left: 35%;
+    }
 
-        .parties {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            margin: 20px 10px;
-        }
+    .parties {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 20px 10px;
+    }
     </style>
 </head>
 
@@ -270,25 +270,24 @@ try {
     </div>
 
     <script>
+    document.addEventListener("DOMContentLoaded", function() {
 
-        document.addEventListener("DOMContentLoaded", function () {
+        const agreeCheckbox = document.getElementById("agreeCheckbox");
+        const acceptButton = document.getElementById("acceptButton");
 
-            const agreeCheckbox = document.getElementById("agreeCheckbox");
-            const acceptButton = document.getElementById("acceptButton");
-
-            acceptButton.addEventListener("click", function () {
-                if (agreeCheckbox.checked) {
-                    alert("Agreement accepted!");
-                    // You can add further actions here, like submitting the form
-                } else {
-                    alert("Please agree to the terms and conditions before accepting.");
-                }
-            });
+        acceptButton.addEventListener("click", function() {
+            if (agreeCheckbox.checked) {
+                alert("Agreement accepted!");
+                // You can add further actions here, like submitting the form
+            } else {
+                alert("Please agree to the terms and conditions before accepting.");
+            }
         });
+    });
 
-        function cancel() {
-            window.location.href = "/Home/homepage.html";
-        }
+    function cancel() {
+        window.location.href = "/Home/homepage.php";
+    }
     </script>
 </body>
 

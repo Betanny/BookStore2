@@ -77,42 +77,41 @@ try {
     $notifications = $stmt_notifications->fetchAll(PDO::FETCH_ASSOC);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['notification_id'])) {
-            // Handle notification status update (if needed)
-            $notification_id = intval($_POST['notification_id']);
+        $recipient_email = $_POST['recipient'];
+        $message = $_POST['message'];
+        $reply_id = isset($_POST['reply_id']) && is_numeric($_POST['reply_id']) ? intval($_POST['reply_id']) : null;
 
-            // Update notification status to 'read'
-            $sql_update_status = "UPDATE notifications SET status = true WHERE notification_id = :notification_id";
-            $stmt_update_status = $db->prepare($sql_update_status);
-            $stmt_update_status->execute(['notification_id' => $notification_id]);
-        } else {
-            $recipient_email = $_POST['recipient'];
-            $message = $_POST['message'];
-            $reply_id = isset($_POST['reply_id']) && is_numeric($_POST['reply_id']) ? intval($_POST['reply_id']) : null;
+        // Log received data
+        error_log("Recipient Email: $recipient_email");
+        error_log("Message: $message");
+        error_log("Reply ID: " . ($reply_id !== null ? $reply_id : 'NULL'));
 
-            // Log received data
-            error_log("Recipient Email: $recipient_email");
-            error_log("Message: $message");
-            error_log("Reply ID: " . ($reply_id !== null ? $reply_id : 'NULL'));
+        // Fetch recipient user_id
+        $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
+        $stmt->execute(['email' => $recipient_email]);
+        $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Fetch recipient user_id
-            $stmt = $db->prepare("SELECT user_id FROM users WHERE email = :email");
-            $stmt->execute(['email' => $recipient_email]);
-            $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($recipient) {
+            $recipient_id = $recipient['user_id'];
 
-            if ($recipient) {
-                $recipient_id = $recipient['user_id'];
+            // Check if a similar notification already exists
+            $sql_check_duplicate = "SELECT COUNT(*) FROM notifications 
+                                    WHERE sender_id = :sender_id 
+                                    AND recipient_id = :recipient_id 
+                                    AND notification_message = :message";
+            $stmt_check_duplicate = $db->prepare($sql_check_duplicate);
+            $stmt_check_duplicate->execute([
+                'sender_id' => $user_id,
+                'recipient_id' => $recipient_id,
+                'message' => $message
+            ]);
 
-                // Update existing notification status to 'read' if reply_id is provided
-                if ($reply_id !== null) {
-                    $sql_update_status = "UPDATE notifications SET status = true WHERE notification_id = :reply_id";
-                    $stmt_update_status = $db->prepare($sql_update_status);
-                    $stmt_update_status->execute(['reply_id' => $reply_id]);
-                }
+            $count = $stmt_check_duplicate->fetchColumn();
 
-                // Insert new notification with proper handling of reply_id
+            if ($count == 0) {
+                // Insert new notification if not a duplicate
                 $sql_insert_notification = "INSERT INTO notifications (sender_id, recipient_id, notification_message, reply_id) 
-                    VALUES (:sender_id, :recipient_id, :message, :reply_id)";
+                                            VALUES (:sender_id, :recipient_id, :message, :reply_id)";
                 $stmt_insert_notification = $db->prepare($sql_insert_notification);
 
                 // Log the insert query and parameters
@@ -125,16 +124,15 @@ try {
                     'message' => $message,
                     'reply_id' => $reply_id
                 ]);
+            } else {
+                error_log("Duplicate notification detected. No new notification inserted.");
             }
         }
     }
-} catch (PDOException $e) {
-    error_log("PDO Error: " . $e->getMessage());
 } catch (Exception $e) {
     error_log("General Error: " . $e->getMessage());
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -161,7 +159,7 @@ try {
         <div class="modal-header">
             <div class="left-section">
 
-                <button type="submit" class="add-button">New <div class="icon-cell">
+                <button type="button" class="add-button">New <div class="icon-cell">
                         <i class="fa-solid fa-plus"></i>
                     </div></button>
 
@@ -180,11 +178,13 @@ try {
                     data-message=" <?php echo htmlspecialchars($notification['notification_message']); ?>"
                     data-reply-id="<?php echo htmlspecialchars($notification['notification_id']); ?>"
                     onclick=" openNotification(this);">
-                    <h4>
-                        <?php echo htmlspecialchars($notification['email']); ?>
-                    </h4>
+                    <?php if (!$notification['status']): ?>
+                    <div class="unread-dot"></div>
+                    <?php endif; ?>
+                    <h4><?php echo htmlspecialchars($notification['email']); ?></h4>
                     <h5><?php echo htmlspecialchars($notification['notification_message']); ?></h5>
                 </div>
+
                 <?php endforeach; ?>
 
 
@@ -227,34 +227,23 @@ try {
         </div>
     </div>
 
-
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-
     document.getElementsByClassName('modal').style.display = 'none';
-
-
 });
 
 function cancel() {
     window.history.back();
 }
+
 var allnotification = document.getElementById('all-notifications');
 var openednotification = document.getElementById('opened-notification');
 var newnotification = document.getElementById('new-notification');
 var addButton = document.querySelector('.add-button');
 
-
-// function openNotification() {
-//     allnotification.style.display = 'none';
-//     newnotification.style.display = 'none';
-//     openednotification.style.display = 'block';
-
-// }
 function openNotification(element) {
     const email = element.getAttribute('data-email');
     const message = element.getAttribute('data-message');
@@ -267,16 +256,33 @@ function openNotification(element) {
     document.getElementById('all-notifications').style.display = 'none';
     document.getElementById('new-notification').style.display = 'none';
     document.getElementById('opened-notification').style.display = 'block';
+
+    // Send AJAX request to update notification status
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "update_notification_status.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var status = xhr.status;
+            if (status === 0 || (status >= 200 && status < 400)) {
+                // The request has been completed successfully
+                console.log(xhr.responseText);
+            } else {
+                // Oh no! There has been an error with the request!
+                console.error("Failed to update notification status: " + xhr.responseText);
+            }
+        }
+    };
+
+    xhr.send("notification_id=" + replyId);
 }
-
-
 
 function newNotification() {
     allnotification.style.display = 'none';
     newnotification.style.display = 'block';
     openednotification.style.display = 'none';
     addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-
 }
 
 function allNotification() {
@@ -284,8 +290,8 @@ function allNotification() {
     newnotification.style.display = 'none';
     openednotification.style.display = 'none';
     addButton.innerHTML = 'New <div class="icon-cell"><i class="fa-solid fa-plus"></i></div>';
-
 }
+
 addButton.addEventListener('click', function() {
     if (this.innerHTML.includes('Back')) {
         allNotification();
@@ -294,16 +300,6 @@ addButton.addEventListener('click', function() {
     }
 });
 
-// function replyToNotification() {
-//     const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
-//     document.querySelector('input[name="recipient"]').value = recipient;
-//     const replyId = document.getElementById('reply-id').value;
-
-//     document.getElementById('all-notifications').style.display = 'none';
-//     document.getElementById('new-notification').style.display = 'block';
-//     document.getElementById('opened-notification').style.display = 'none';
-//     addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
-// }
 function replyToNotification() {
     const recipient = document.getElementById('sender-email').innerText.replace('Sender: ', '');
     document.querySelector('input[name="recipient"]').value = recipient;
@@ -323,6 +319,5 @@ function replyToNotification() {
     addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
 }
 </script>
-
 
 </html>

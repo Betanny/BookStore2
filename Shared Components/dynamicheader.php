@@ -50,20 +50,20 @@ $user_data = getUserData();
             <ul>
                 <li><a href="/Home/homepage.html" class="link light-text active-link">Home</a></li>
                 <?php if ($user_data): ?>
-                <?php if ($user_data['category'] == 'Admin'): ?>
+                <?php if ($user_data['role'] == 'Admin'): ?>
                 <li><a href="admindashboard.php" class="link light-text active-link">Dashboard</a></li>
                 <li><a href="products.php" class="link light-text">Products</a></li>
                 <li><a href="users.php" class="link light-text">Users</a></li>
                 <li><a href="orders.php" class="link light-text">Orders</a></li>
                 <li><a href="transactions.php" class="link light-text">Transactions</a></li>
-                <?php elseif ($user_data['category'] == 'Buyer'): ?>
+                <?php elseif ($user_data['role'] == 'Client'): ?>
                 <li><a href="buyerdashboard.php" class="link light-text active-link">Dashboard</a></li>
                 <li><a href="products.php" class="link light-text">Products</a></li>
                 <li><a href="myorders.php" class="link light-text">My orders</a></li>
                 <li><a href="feedback.php" class="link light-text">Feedback</a>
                 </li>
                 <li><a href="bookselect.php" class="link light-text">Review a book</a></li>
-                <?php elseif ($user_data['category'] == 'Seller'): ?>
+                <?php elseif ($user_data['role'] == 'Dealer'): ?>
                 <li><a href="sellerdashboard.php" class="link light-text active-link">Dashboard</a></li>
                 <li><a href="ViewProducts.php" class=" link light-text">Products</a></li>
                 <li><a href="orders.php" class="link light-text">Orders</a></li>

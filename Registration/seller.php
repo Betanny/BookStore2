@@ -1,5 +1,6 @@
 <?php
 include '../Shared Components\logger.php';
+require_once '../Shared Components/dbconnection.php';
 
 session_start(); // Start the session
 
@@ -61,7 +62,7 @@ try {
             $contact_phone = $_POST["cphone"];
             $publisher_email = $_POST["OrgEmail"];
             $publisher_phone = $_POST["OrgPhone"];
-            $publisher_address = $_POST["address1"]; // Make sure the address input has a unique name
+            $publisher_address = $_POST["org-address"];
             $publisher_website = $_POST["website1"];
             $publisher_password = hash('sha256', $_POST["org-password"]);
 
@@ -88,7 +89,7 @@ try {
             $contact_phone = $_POST['cphone'];
             $manufacturer_email = $_POST['OrgEmail'];
             $manufacturer_phone = $_POST['OrgPhone'];
-            $address = $_POST['address1'];
+            $address = $_POST['org-address'];
             $website = $_POST['website1'];
             $manufacturer_password = hash('sha256', $_POST["org-password"]);
             $products_offered = isset($_POST['products']) ? $_POST['products'] : array();

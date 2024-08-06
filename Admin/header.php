@@ -68,7 +68,8 @@ try {
 <body>
     <header>
         <div class="logo">
-            <img src="/Shared Components\smartcbc.svg" style="width:150px !important" alt="LOGO">
+            <img src="/Shared Components\smartcbc.svg" onclick="window.location.href='../Admin/admindashboard.php'"
+                style="width:150px !important" alt="LOGO">
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -96,7 +97,7 @@ try {
             </div>
             <div class="profile">
                 <div class="user-image">
-                    <img src="/Images/Illustrations/profile.svg" class="img-profile">
+                    <img src="/Images/Illustrations/Maleprofile.svg" class="img-profile">
 
                 </div>
                 <div class="user-name">

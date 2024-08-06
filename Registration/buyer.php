@@ -100,7 +100,7 @@ try {
 
             $_SESSION['user_id'] = $user_id;
             $_SESSION['category'] = "Organization";
-            $_SESSION['role'] = "Dealer";
+            $_SESSION['role'] = "Client";
             writeLog($db_connection, "User has registered as a client", "INFO", $user_id);
 
             header("Location: ../Buyer/buyerdashboard.php");

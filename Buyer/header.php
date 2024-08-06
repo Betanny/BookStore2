@@ -113,7 +113,8 @@ VALUES (:sender_id, :recipient_id, :message)";
 
     <header>
         <div class="logo">
-            <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
+            <img src="/Shared Components/smartcbc.svg" onclick="window.location.href='../Buyer/buyerdashboard.php'"
+                style="width:150px !important" alt="LOGO">
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -122,7 +123,7 @@ VALUES (:sender_id, :recipient_id, :message)";
                         class="link light-text active-link">Dashboard</a></li>
                 <li><a href="/Home/products.php" id="products-link" class="link light-text">Products</a></li>
                 <li><a href="/Buyer/myorders.php" id="orders-link" class="link light-text">My orders</a></li>
-                <li><a href="/Shared Components/feedback.php" id="feedback-link" class="link light-text">Feedback</a>
+                <li><a href="/Shared%20Components/feedback.php" id="feedback-link" class="link light-text">Feedback</a>
                 </li>
                 <li><a href="/Buyer/bookselect.php" id="review-link" class="link light-text">Review a book</a></li>
             </ul>

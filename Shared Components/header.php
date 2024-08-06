@@ -12,7 +12,8 @@
 <body>
     <header>
         <div class="logo">
-            <img src="/Shared Components/smartcbc.svg" style="width:150px !important" alt="LOGO">
+            <img src="/Shared Components/smartcbc.svg" onclick="window.location.href='../Home/homepage.php'"
+                style="width:150px !important" alt="LOGO">
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -32,31 +33,31 @@
     </header>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const links = document.querySelectorAll('#nav-menu a');
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll('#nav-menu a');
 
-        // Function to deactivate all links
-        function deactivateAllLinks() {
-            links.forEach(link => {
-                console.log(links);
-                link.classList.remove('active-link');
-            });
-        }
+            // Function to deactivate all links
+            function deactivateAllLinks() {
+                links.forEach(link => {
+                    console.log(links);
+                    link.classList.remove('active-link');
+                });
+            }
 
-        // Function to activate the correct link based on the current URL
-        function activateLink() {
-            const currentPath = window.location.pathname;
-            console.log(currentPath);
-            links.forEach(link => {
-                if (currentPath.endsWith(link.getAttribute('href'))) {
-                    link.classList.add('active-link');
-                }
-            });
-        }
+            // Function to activate the correct link based on the current URL
+            function activateLink() {
+                const currentPath = window.location.pathname;
+                console.log(currentPath);
+                links.forEach(link => {
+                    if (currentPath.endsWith(link.getAttribute('href'))) {
+                        link.classList.add('active-link');
+                    }
+                });
+            }
 
-        deactivateAllLinks();
-        activateLink();
-    });
+            deactivateAllLinks();
+            activateLink();
+        });
     </script>
 </body>
 

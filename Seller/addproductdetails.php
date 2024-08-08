@@ -15,6 +15,22 @@ if (!isset($_SESSION['user_id'])) {
 // Get user ID and category from session
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
+
+
+
+// Prepare the SQL query to select all ISBN numbers
+$query = "SELECT isbn FROM books";
+$stmt = $db->prepare($query);
+
+// Execute the query
+$stmt->execute();
+
+// Fetch all the ISBN numbers
+$isbns = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+$isbnJson = json_encode($isbns);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -365,8 +381,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // You can add more image inputs and their respective preview IDs here if needed
 
-});
 
+});
+var isbnList = <?php echo $isbnJson; ?>;
+console.log(isbnList);
 // Function to handle image changes for any image input element
 function handleImageChange(inputElement, imagePreviewId) {
     inputElement.addEventListener('change', function() {
@@ -672,14 +690,34 @@ function validateFileUpload(fieldName, errorMessage) {
     }
 }
 
+// function checkIsbnUniqueness(isbn) {
+//     return fetch('../Seller/check_isbn.php', { // Make sure to update this path according to your directory structure
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 isbn: isbn
+//             })
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             return data.isUnique;
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             return false;
+//         });
+// }
 function checkIsbnUniqueness(isbn) {
-    return fetch('check_isbn.php', { // Make sure to update this path according to your directory structure
+    return fetch('', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify({
-                isbn: isbn
+            body: new URLSearchParams({
+                'check_isbn': true,
+                'isbn': isbn
             })
         })
         .then(response => response.json())
@@ -711,30 +749,31 @@ function validateCurrentStep() {
 
 function validateBasicDetails() {
     var isValid = true;
+
+    // Validate basic fields
     isValid = validateField('booktitle', 'Book Title is required') && isValid;
     isValid = validateField('author', 'Author is required') && isValid;
     isValid = validateField('publisher', 'Publisher is required') && isValid;
     isValid = validateField('ISBN', 'ISBN number is required') && isValid;
     isValid = validateRequiredNumber('ISBN', 'ISBN must be a number') && isValid;
-    isValid = validateField('edition', 'Edition is required') && isValid;
-    return isValid;
 
-    if (isValid) {
-        var isbn = document.getElementsByName('ISBN')[0].value.trim();
-        return checkIsbnUniqueness(isbn).then(function(isUnique) {
-            if (!isUnique) {
-                var inputControl = document.getElementsByName('ISBN')[0].parentElement;
-                var errorDisplay = inputControl.querySelector('.error');
-                inputControl.classList.add('error');
-                inputControl.classList.remove('success');
-                errorDisplay.textContent = 'ISBN number already exists';
-                return false;
-            }
-            return true;
-        });
+    // Check if the ISBN number is in the list
+    var isbn = document.getElementsByName('ISBN')[0].value.trim();
+    console.log(isbnList); // Debugging line
+    if (isbnList.includes(isbn)) {
+        var inputControl = document.getElementsByName('ISBN')[0].parentElement;
+        var errorDisplay = inputControl.querySelector('.error');
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = 'ISBN number already exists';
+        isValid = false; // Set isValid to false if the ISBN exists
     }
-    return Promise.resolve(false);
+
+    // Return final validation result
+    return isValid;
 }
+
+
 
 function validateAdditionalDetails() {
     var isValid = true;

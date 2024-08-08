@@ -136,7 +136,7 @@ $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
             <h4>
                 <?php echo $book['title']; ?>
             </h4>
-            <h5>By:Author
+            <h5>Author:
                 <?php echo $book['author']; ?>
             </h5>
             <h5>Publisher:
@@ -201,7 +201,9 @@ $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php } else { ?>
                     <?php foreach ($reviews as $review) { ?>
                     <div class="review">
-                        <p><?php echo htmlspecialchars($review['review_text']); ?></p>
+                        <p>
+                            <?php echo htmlspecialchars($review['review_text']); ?>
+                        </p>
                         <div class="profile">
                             <p style="font-size:10px;">By:anonymous client</p>
                         </div>

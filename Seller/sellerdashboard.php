@@ -309,7 +309,7 @@ try {
         border-radius: 50%;
 
         background:
-            <?php echo $total_status_count==0 ? '#063547': "conic-gradient(green 0% $delivered_percentage%, orange $delivered_percentage% ". ($pending_percentage + $delivered_percentage) . "%, red ". ($pending_percentage + $delivered_percentage) . "% 100%)";
+            <?php echo $total_status_count==0 ? '#99becd': "conic-gradient(green 0% $delivered_percentage%, orange $delivered_percentage% ". ($pending_percentage + $delivered_percentage) . "%, red ". ($pending_percentage + $delivered_percentage) . "% 100%)";
         ?>;
 
 

@@ -356,402 +356,413 @@ $category = $_SESSION['category'];
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        handleImageChange(document.getElementById('front-cover'), 'front-image-preview');
-        handleImageChange(document.getElementById('back-cover'), 'back-image-preview');
-        handleImageChange(document.getElementById('relevant-page1'), 'relevant-page1-preview');
-        handleImageChange(document.getElementById('relevant-page2'), 'relevant-page2-preview');
-        handleImageChange(document.getElementById('relevant-page3'), 'relevant-page3-preview');
+document.addEventListener("DOMContentLoaded", function() {
+    handleImageChange(document.getElementById('front-cover'), 'front-image-preview');
+    handleImageChange(document.getElementById('back-cover'), 'back-image-preview');
+    handleImageChange(document.getElementById('relevant-page1'), 'relevant-page1-preview');
+    handleImageChange(document.getElementById('relevant-page2'), 'relevant-page2-preview');
+    handleImageChange(document.getElementById('relevant-page3'), 'relevant-page3-preview');
 
-        // You can add more image inputs and their respective preview IDs here if needed
+    // You can add more image inputs and their respective preview IDs here if needed
 
-    });
+});
 
-    // Function to handle image changes for any image input element
-    function handleImageChange(inputElement, imagePreviewId) {
-        inputElement.addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById(imagePreviewId).src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-
-
-
-
-
-    // // //Subjects based on book category
-    // // Function to add subjects to the dropdown
-    // function addSubjectsToDropdown(subjects) {
-    //     var subjectsDropdown = document.getElementById('subjects');
-
-    //     // Clear existing options
-    //     subjectsDropdown.innerHTML = '';
-
-    //     // Add new options based on the subjects array
-    //     subjects.forEach(function(subject) {
-    //         var option = document.createElement('option');
-    //         option.value = subject.toLowerCase().replace(/\s/g, '_'); // Convert subject name to lowercase and replace spaces with underscores
-    //         option.textContent = subject; // Set the visible text (e.g., "Algebra")
-    //         subjectsDropdown.appendChild(option);
-    //     });
-    // }
-
-    // // Event listener for the book category selection change
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     document.getElementById('book-categories').addEventListener('change', function() {
-    //         var bookCategory = this.value;
-
-    //         // Call the function to populate subjects based on the selected book category
-    //         switch(bookCategory) {
-    //             case 'mathematics':
-    //                 addSubjectsToDropdown(['Algebra', 'Geometry', 'Trigonometry', 'Calculus']);
-    //                 break;
-    //             case 'science':
-    //                 addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
-    //                 break;
-    //             case 'social_studies':
-    //                 addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
-    //                 break;
-    //             case 'languages':
-    //                 addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
-    //                 break;
-    //             case 'religious_education':
-    //                 addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
-    //                 break;
-    //             case 'practicals':
-    //                 addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
-    //                 break;
-    //             case 'physical_health':
-    //                 addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
-    //                 break;
-    //             case 'environmental':
-    //                 addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
-    //                 break;
-    //             default:
-    //                 // If no book category matches, display a default message or behavior
-    //                 var defaultOption = document.createElement('option');
-    //                 defaultOption.value = "";
-    //                 defaultOption.text = "No subjects available";
-    //                 subjectsDropdown.appendChild(defaultOption);
-    //         }
-    //     });
-    // });
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('book-categories').addEventListener('change', function () {
-            var bookCategory = this.value;
-            var subjectsDropdown = document.getElementById('subjects');
-
-            // Clear existing options
-            subjectsDropdown.innerHTML = '';
-
-            // Populate subjects based on the selected book category
-            switch (bookCategory) {
-                case 'mathematics':
-                    addSubjectsToDropdown(['Mathematics']);
-                    break;
-                case 'science':
-                    addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
-                    break;
-                case 'social_studies':
-                    addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
-                    break;
-                case 'languages':
-                    addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
-                    break;
-                case 'religious_education':
-                    addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
-                    break;
-                case 'practicals':
-                    addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
-                    break;
-                case 'physical_health':
-                    addSubjectsToDropdown(['Physical Education', 'Health Education',
-                        'Hygiene & Nutrition'
-                    ]);
-                    break;
-                case 'environmental':
-                    addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
-                    break;
-                default:
-                    // If no book category matches, display a default message or behavior
-                    var defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.text = 'No subjects available. Please go back and pick the correct Genre';
-                    subjectsDropdown.appendChild(defaultOption);
-                    break;
-            }
-        });
-
-        function addSubjectsToDropdown(subjects) {
-            var subjectsDropdown = document.getElementById('subjects');
-            subjects.forEach(function (subject) {
-                var option = document.createElement('option');
-                option.value = subject.toLowerCase();
-                option.textContent = subject;
-                subjectsDropdown.appendChild(option);
-            });
+// Function to handle image changes for any image input element
+function handleImageChange(inputElement, imagePreviewId) {
+    inputElement.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(imagePreviewId).src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     });
-
-
-    function toggleTextBox(show) {
-        var textBoxContainer = document.getElementById("textBoxContainer");
-        textBoxContainer.style.display = show ? "block" : "none";
-    }
+}
 
 
 
 
-    var step1 = document.getElementById("basic-details");
-    var step2 = document.getElementById("additional-details");
-    var step3 = document.getElementById("pricing");
-    var step4 = document.getElementById("uploading-images");
-    var prevbtn = document.getElementById("prev");
-    var nextbtn = document.getElementById("next");
-    var submitbtn = document.getElementById("submit");
-    var currentStep = 1; // Current step of the form
 
-    document.addEventListener("DOMContentLoaded", function () {
-        showStep(currentStep);
-    });
+// // //Subjects based on book category
+// // Function to add subjects to the dropdown
+// function addSubjectsToDropdown(subjects) {
+//     var subjectsDropdown = document.getElementById('subjects');
 
-    function previousStep() {
-        if (currentStep > 1) {
-            currentStep--;
-        }
-        showStep(currentStep);
-    }
+//     // Clear existing options
+//     subjectsDropdown.innerHTML = '';
+
+//     // Add new options based on the subjects array
+//     subjects.forEach(function(subject) {
+//         var option = document.createElement('option');
+//         option.value = subject.toLowerCase().replace(/\s/g, '_'); // Convert subject name to lowercase and replace spaces with underscores
+//         option.textContent = subject; // Set the visible text (e.g., "Algebra")
+//         subjectsDropdown.appendChild(option);
+//     });
+// }
+
+// // Event listener for the book category selection change
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('book-categories').addEventListener('change', function() {
+//         var bookCategory = this.value;
+
+//         // Call the function to populate subjects based on the selected book category
+//         switch(bookCategory) {
+//             case 'mathematics':
+//                 addSubjectsToDropdown(['Algebra', 'Geometry', 'Trigonometry', 'Calculus']);
+//                 break;
+//             case 'science':
+//                 addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
+//                 break;
+//             case 'social_studies':
+//                 addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
+//                 break;
+//             case 'languages':
+//                 addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
+//                 break;
+//             case 'religious_education':
+//                 addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
+//                 break;
+//             case 'practicals':
+//                 addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
+//                 break;
+//             case 'physical_health':
+//                 addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
+//                 break;
+//             case 'environmental':
+//                 addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
+//                 break;
+//             default:
+//                 // If no book category matches, display a default message or behavior
+//                 var defaultOption = document.createElement('option');
+//                 defaultOption.value = "";
+//                 defaultOption.text = "No subjects available";
+//                 subjectsDropdown.appendChild(defaultOption);
+//         }
+//     });
+// });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('book-categories').addEventListener('change', function() {
+        var bookCategory = this.value;
+        var subjectsDropdown = document.getElementById('subjects');
 
-    function nextStep() {
-        var isValid = validateCurrentStep();
-        console.log('isValid:', isValid);
-        console.log('currentStep:', currentStep);
-        if (isValid) {
-            if (currentStep < 4) {
-                currentStep++;
-                console.log('Moving to step', currentStep);
-                showStep(currentStep);
-            } else if (currentStep === 4) {
-                console.log('Submitting form');
-                // If the current step is the last step, submit the form
-                document.getElementById('Add-products').submit();
-            }
-        }
-    }
+        // Clear existing options
+        subjectsDropdown.innerHTML = '';
 
-
-
-    function showStep(step) {
-        var progressSteps = document.querySelectorAll('.progress-step');
-        progressSteps.forEach(step => {
-            step.classList.remove('current-item');
-        });
-        switch (step) {
-            case 1:
-                step1.style.display = "block";
-                step2.style.display = "none";
-                step3.style.display = "none";
-                step4.style.display = "none";
-                prevbtn.style.display = "none";
-                submitbtn.style.display = "none"
-                document.getElementById('step1').classList.add('current-item');
-
+        // Populate subjects based on the selected book category
+        switch (bookCategory) {
+            case 'mathematics':
+                addSubjectsToDropdown(['Mathematics']);
                 break;
-            case 2:
-                step1.style.display = "none";
-                step2.style.display = "block";
-                step3.style.display = "none";
-                step4.style.display = "none";
-                prevbtn.style.display = "block";
-                nextbtn.style.display = "block";
-                submitbtn.style.display = "none"
-                document.getElementById('step2').classList.add('current-item');
-
-
-
-
+            case 'science':
+                addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
                 break;
-            case 3:
-                step1.style.display = "none";
-                step2.style.display = "none";
-                step3.style.display = "block";
-                step4.style.display = "none";
-                prevbtn.style.display = "block";
-                nextbtn.style.display = "block";
-                submitbtn.style.display = "none"
-                document.getElementById('step3').classList.add('current-item');
-
-
-
-
+            case 'social_studies':
+                addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
                 break;
-            case 4:
-                step1.style.display = "none";
-                step2.style.display = "none";
-                step3.style.display = "none";
-                step4.style.display = "block";
-                nextbtn.style.display = "none";
-                prevbtn.style.display = "block";
-                submitbtn.style.display = "block"
-                document.getElementById('step4').classList.add('current-item');
-
-
-
+            case 'languages':
+                addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
+                break;
+            case 'religious_education':
+                addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
+                break;
+            case 'practicals':
+                addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
+                break;
+            case 'physical_health':
+                addSubjectsToDropdown(['Physical Education', 'Health Education',
+                    'Hygiene & Nutrition'
+                ]);
+                break;
+            case 'environmental':
+                addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
                 break;
             default:
+                // If no book category matches, display a default message or behavior
+                var defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.text = 'No subjects available. Please go back and pick the correct Genre';
+                subjectsDropdown.appendChild(defaultOption);
                 break;
         }
+    });
+
+    function addSubjectsToDropdown(subjects) {
+        var subjectsDropdown = document.getElementById('subjects');
+        subjects.forEach(function(subject) {
+            var option = document.createElement('option');
+            option.value = subject.toLowerCase();
+            option.textContent = subject;
+            subjectsDropdown.appendChild(option);
+        });
     }
+});
+
+
+function toggleTextBox(show) {
+    var textBoxContainer = document.getElementById("textBoxContainer");
+    textBoxContainer.style.display = show ? "block" : "none";
+}
 
 
 
-    /*--------------------Form validation --------------------*/
-    //     document.getElementById("Add-products").addEventListener('submit', function (e) {
-    //     e.preventDefault();
-    //     // Determine user type based on UI state
-    //     validateFileUploads();
-    // });
 
-    function validateField(fieldName, errorMessage) {
-        var inputField = document.getElementsByName(fieldName)[0];
-        var inputControl = inputField.parentElement;
-        var errorDisplay = inputControl.querySelector('.error');
-        var fieldValue = inputField.value.trim();
-        if (fieldValue === '') {
-            inputControl.classList.add('error');
-            inputControl.classList.remove('success');
-            errorDisplay.textContent = errorMessage;
+var step1 = document.getElementById("basic-details");
+var step2 = document.getElementById("additional-details");
+var step3 = document.getElementById("pricing");
+var step4 = document.getElementById("uploading-images");
+var prevbtn = document.getElementById("prev");
+var nextbtn = document.getElementById("next");
+var submitbtn = document.getElementById("submit");
+var currentStep = 1; // Current step of the form
+
+document.addEventListener("DOMContentLoaded", function() {
+    showStep(currentStep);
+});
+
+function previousStep() {
+    if (currentStep > 1) {
+        currentStep--;
+    }
+    showStep(currentStep);
+}
+
+
+
+function nextStep() {
+    var isValid = validateCurrentStep();
+    console.log('isValid:', isValid);
+    console.log('currentStep:', currentStep);
+    if (isValid) {
+        if (currentStep < 4) {
+            currentStep++;
+            console.log('Moving to step', currentStep);
+            showStep(currentStep);
+        } else if (currentStep === 4) {
+            console.log('Submitting form');
+            // If the current step is the last step, submit the form
+            document.getElementById('Add-products').submit();
+        }
+    }
+}
+
+
+
+function showStep(step) {
+    var progressSteps = document.querySelectorAll('.progress-step');
+    progressSteps.forEach(step => {
+        step.classList.remove('current-item');
+    });
+    switch (step) {
+        case 1:
+            step1.style.display = "block";
+            step2.style.display = "none";
+            step3.style.display = "none";
+            step4.style.display = "none";
+            prevbtn.style.display = "none";
+            submitbtn.style.display = "none"
+            document.getElementById('step1').classList.add('current-item');
+
+            break;
+        case 2:
+            step1.style.display = "none";
+            step2.style.display = "block";
+            step3.style.display = "none";
+            step4.style.display = "none";
+            prevbtn.style.display = "block";
+            nextbtn.style.display = "block";
+            submitbtn.style.display = "none"
+            document.getElementById('step2').classList.add('current-item');
+
+
+
+
+            break;
+        case 3:
+            step1.style.display = "none";
+            step2.style.display = "none";
+            step3.style.display = "block";
+            step4.style.display = "none";
+            prevbtn.style.display = "block";
+            nextbtn.style.display = "block";
+            submitbtn.style.display = "none"
+            document.getElementById('step3').classList.add('current-item');
+
+
+
+
+            break;
+        case 4:
+            step1.style.display = "none";
+            step2.style.display = "none";
+            step3.style.display = "none";
+            step4.style.display = "block";
+            nextbtn.style.display = "none";
+            prevbtn.style.display = "block";
+            submitbtn.style.display = "block"
+            document.getElementById('step4').classList.add('current-item');
+
+
+
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+/*--------------------Form validation --------------------*/
+//     document.getElementById("Add-products").addEventListener('submit', function (e) {
+//     e.preventDefault();
+//     // Determine user type based on UI state
+//     validateFileUploads();
+// });
+
+function validateField(fieldName, errorMessage) {
+    var inputField = document.getElementsByName(fieldName)[0];
+    var inputControl = inputField.parentElement;
+    var errorDisplay = inputControl.querySelector('.error');
+    var fieldValue = inputField.value.trim();
+    if (fieldValue === '') {
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = errorMessage;
+        return false;
+    } else {
+        errorDisplay.textContent = "";
+        return true;
+    }
+}
+
+function validateRequiredNumber(fieldName, errorMessage) {
+    var inputField = document.getElementsByName(fieldName)[0];
+    var fieldValue = inputField.value.trim();
+    var inputControl = inputField.parentElement;
+    var errorDisplay = inputControl.querySelector('.error');
+    var numberPattern = /^\d+$/; // Regular expression to match only digits
+
+    // Check if the field is empty or not a valid number
+    if (fieldValue === '' || !numberPattern.test(fieldValue)) {
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+        errorDisplay.textContent = errorMessage;
+        return false;
+    } else {
+        errorDisplay.textContent = "";
+        return true;
+    }
+}
+
+function validateFileUpload(fieldName, errorMessage) {
+    var fileInput = document.getElementsByName(fieldName);
+    var inputControl = fileInput.parentElement;
+    // var errorDisplay = inputControl.querySelector('.error');
+    var files = fileInput.files;
+
+    if (files.length === 0) {
+        // errorDisplay.textContent = errorMessage;
+        return false;
+    } else {
+        // errorDisplay.textContent = "";
+        return true;
+    }
+}
+
+function checkIsbnUniqueness(isbn) {
+    return fetch('check_isbn.php', { // Make sure to update this path according to your directory structure
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                isbn: isbn
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data.isUnique;
+        })
+        .catch(error => {
+            console.error('Error:', error);
             return false;
-        } else {
-            errorDisplay.textContent = "";
+        });
+}
+
+
+
+function validateCurrentStep() {
+    switch (currentStep) {
+        case 1:
+            return validateBasicDetails();
+        case 2:
+            return validateAdditionalDetails();
+        case 3:
+            return validatePricing();
+        case 4:
+            return validateFileUploads();
+        default:
             return true;
-        }
     }
+}
 
-    function validateRequiredNumber(fieldName, errorMessage) {
-        var inputField = document.getElementsByName(fieldName)[0];
-        var fieldValue = inputField.value.trim();
-        var inputControl = inputField.parentElement;
-        var errorDisplay = inputControl.querySelector('.error');
-        var numberPattern = /^\d+$/; // Regular expression to match only digits
+function validateBasicDetails() {
+    var isValid = true;
+    isValid = validateField('booktitle', 'Book Title is required') && isValid;
+    isValid = validateField('author', 'Author is required') && isValid;
+    isValid = validateField('publisher', 'Publisher is required') && isValid;
+    isValid = validateField('ISBN', 'ISBN number is required') && isValid;
+    isValid = validateRequiredNumber('ISBN', 'ISBN must be a number') && isValid;
+    isValid = validateField('edition', 'Edition is required') && isValid;
+    return isValid;
 
-        // Check if the field is empty or not a valid number
-        if (fieldValue === '' || !numberPattern.test(fieldValue)) {
-            inputControl.classList.add('error');
-            inputControl.classList.remove('success');
-            errorDisplay.textContent = errorMessage;
-            return false;
-        } else {
-            errorDisplay.textContent = "";
+    if (isValid) {
+        var isbn = document.getElementsByName('ISBN')[0].value.trim();
+        return checkIsbnUniqueness(isbn).then(function(isUnique) {
+            if (!isUnique) {
+                var inputControl = document.getElementsByName('ISBN')[0].parentElement;
+                var errorDisplay = inputControl.querySelector('.error');
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+                errorDisplay.textContent = 'ISBN number already exists';
+                return false;
+            }
             return true;
-        }
+        });
     }
+    return Promise.resolve(false);
+}
 
-    function validateFileUpload(fieldName, errorMessage) {
-        var fileInput = document.getElementsByName(fieldName);
-        var inputControl = fileInput.parentElement;
-        // var errorDisplay = inputControl.querySelector('.error');
-        var files = fileInput.files;
+function validateAdditionalDetails() {
+    var isValid = true;
+    isValid = validateField('pages', 'Number of Pages is required') && isValid;
+    isValid = validateRequiredNumber('pages', 'Number of pages must be a number') && isValid;
+    isValid = validateField('details', 'Description is required') && isValid;
+    isValid = validateField('subjects', 'Subject is required') && isValid;
+    isValid = validateField('grade', 'Grade is required') && isValid;
+    return isValid;
+}
 
-        if (files.length === 0) {
-            // errorDisplay.textContent = errorMessage;
-            return false;
-        } else {
-            // errorDisplay.textContent = "";
-            return true;
-        }
-    }
-    // function validateFileUpload(fieldName, errorMessage) {
-    //     var fileInputs = document.getElementsByName(fieldName);
-    //     if (fileInputs.length === 0) {
-    //         console.error("No elements found with name:", fieldName);
-    //         return false;
-    //     }
+function validatePricing() {
+    var isValid = true;
+    isValid = validateField('retailprice', 'Retail Price is required') && isValid;
+    isValid = validateRequiredNumber('retailprice', 'Retail Price must be a number') && isValid;
+    isValid = validateField('priceinbulk', 'Price in Bulk is required') && isValid;
+    isValid = validateRequiredNumber('priceinbulk', 'Price in Bulk must be a number') && isValid;
+    isValid = validateField('mininbulk', 'Minimum number of copies in Bulk is required') && isValid;
+    isValid = validateRequiredNumber('mininbulk', 'Minimum number of copies in Bulk must be a number') && isValid;
+    return isValid;
+}
 
-    //     var fileInput = fileInputs[0]; // Assuming you only have one file input with the given name
-    //     var errorDisplay = fileInput.parentElement.querySelector('.error');
-
-    //     if (!errorDisplay) {
-    //         console.error("Error display element not found.");
-    //         return false;
-    //     }
-
-    //     var files = fileInput.files;
-
-    //     if (files.length === 0) {
-    //         errorDisplay.textContent = errorMessage;
-    //         return false;
-    //     } else {
-    //         errorDisplay.textContent = "";
-    //         return true;
-    //     }
-    // }
-
-
-
-    function validateCurrentStep() {
-        switch (currentStep) {
-            case 1:
-                return validateBasicDetails();
-            case 2:
-                return validateAdditionalDetails();
-            case 3:
-                return validatePricing();
-            case 4:
-                return validateFileUploads();
-            default:
-                return true;
-        }
-    }
-
-    function validateBasicDetails() {
-        var isValid = true;
-        isValid = validateField('booktitle', 'Book Title is required') && isValid;
-        isValid = validateField('author', 'Author is required') && isValid;
-        isValid = validateField('publisher', 'Publisher is required') && isValid;
-        isValid = validateField('ISBN', 'ISBN number is required') && isValid;
-        isValid = validateRequiredNumber('ISBN', 'ISBN must be a number') && isValid;
-        isValid = validateField('edition', 'Edition is required') && isValid;
-        return isValid;
-    }
-
-    function validateAdditionalDetails() {
-        var isValid = true;
-        isValid = validateField('pages', 'Number of Pages is required') && isValid;
-        isValid = validateRequiredNumber('pages', 'Number of pages must be a number') && isValid;
-        isValid = validateField('details', 'Description is required') && isValid;
-        isValid = validateField('subjects', 'Subject is required') && isValid;
-        isValid = validateField('grade', 'Grade is required') && isValid;
-        return isValid;
-    }
-
-    function validatePricing() {
-        var isValid = true;
-        isValid = validateField('retailprice', 'Retail Price is required') && isValid;
-        isValid = validateRequiredNumber('retailprice', 'Retail Price must be a number') && isValid;
-        isValid = validateField('priceinbulk', 'Price in Bulk is required') && isValid;
-        isValid = validateRequiredNumber('priceinbulk', 'Price in Bulk must be a number') && isValid;
-        isValid = validateField('mininbulk', 'Minimum number of copies in Bulk is required') && isValid;
-        isValid = validateRequiredNumber('mininbulk', 'Minimum number of copies in Bulk must be a number') && isValid;
-        return isValid;
-    }
-
-    function validateFileUploads() {
-        var isValid = true;
-        isValid = validateFileUpload('Front-cover', 'Front cover image is required') && isValid;
-        isValid = validateFileUpload('Back-cover', 'Back cover image is required') && isValid;
-        return isValid;
-    }
+function validateFileUploads() {
+    var isValid = true;
+    isValid = validateFileUpload('Front-cover', 'Front cover image is required') && isValid;
+    isValid = validateFileUpload('Back-cover', 'Back cover image is required') && isValid;
+    return isValid;
+}
 </script>
 
 </html>

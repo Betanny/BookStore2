@@ -31,13 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
             $mail->SMTPAuth = true;
-            $mail->Username = 'SmartCBCinfo@gmail.com'; // SMTP username
-            $mail->Password = 'kzqz krug kkbg mvnp'; // SMTP password
+            $mail->Username = 'smartcbcinfo@gmail.com'; // SMTP username
+            $mail->Password = 'yttf rsgi ccus rngz'; // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Enable SSL encryption
             $mail->Port = 465; // TCP port to connect to
 
             // Recipients
-            $mail->setFrom('SmartCBCinfo@gmail.com');
+            $mail->setFrom('smartcbcinfo@gmail.com');
             $mail->addAddress($email); // Add a recipient
 
             // Content

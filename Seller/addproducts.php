@@ -1,5 +1,8 @@
 <?php
 session_start(); // Start the session
+include '../Shared Components/logger.php';
+require_once '../Shared Components/dbconnection.php';
+
 
 // Store session ID in a session variable
 $session_id = session_id();

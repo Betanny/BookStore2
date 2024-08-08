@@ -814,3 +814,36 @@
 [2024-08-06 05:59:33] [INFO] [User ID: 454] User has logged out of the system
 [2024-08-06 06:00:22] [INFO] [User ID: 478] User logged in
 [2024-08-06 06:14:40] [INFO] [User ID: 478] User has logged out of the system
+[2024-08-06 08:33:22] [INFO] [User ID: 478] User logged in
+[2024-08-06 08:53:24] [INFO] [User ID: 478] User has logged out of the system
+[2024-08-06 08:54:26] [ERROR] [User ID: 468] Failed to send password reset email to beisymish@gmail.com. Mailer Error: SMTP Error: Could not authenticate.
+[2024-08-06 08:54:34] [ERROR] [User ID: 468] Failed to send password reset email to beisymish@gmail.com. Mailer Error: SMTP Error: Could not authenticate.
+[2024-08-06 08:55:34] [ERROR] [User ID: 470] Failed to send password reset email to 1040510@cuea.edu. Mailer Error: SMTP Error: Could not authenticate.
+[2024-08-06 08:56:12] [ERROR] [User ID: 468] Failed to send password reset email to beisymish@gmail.com. Mailer Error: SMTP Error: Could not authenticate.
+[2024-08-06 08:58:23] [INFO] [User ID: 433] User logged in
+[2024-08-06 09:00:59] [INFO] [User ID: 433] User has logged out of the system
+[2024-08-06 09:08:28] [ERROR] [User ID: 468] Failed to send password reset email to beisymish@gmail.com. Mailer Error: SMTP Error: Could not authenticate.
+[2024-08-06 09:20:25] [INFO] [User ID: 468] Password reset email sent to beisymish@gmail.com
+[2024-08-06 09:25:49] [INFO] [User ID: 468] Password reset email sent to beisymish@gmail.com
+[2024-08-06 09:29:53] [INFO] [User ID: 487] Password reset email sent to karechelsea@gmail.com
+[2024-08-06 09:35:33] [INFO] [User ID: 433] User logged in
+[2024-08-06 09:36:45] [INFO] [User ID: 437] User logged in
+[2024-08-06 09:40:34] [INFO] [User ID: 433] User has logged out of the system
+[2024-08-06 09:40:40] [INFO] [User ID: 454] User logged in
+[2024-08-06 09:40:51] [INFO] [User ID: 454] User is accessing their profile
+[2024-08-08 06:24:39] [INFO] [User ID: 468] Password reset email sent to beisymish@gmail.com
+[2024-08-08 06:25:12] [INFO] [User ID: 468] Password reset for user ID 468
+[2024-08-08 06:25:15] [INFO] [User ID: 468] User logged in
+[2024-08-08 06:29:23] [INFO] [User ID: 468] User has logged out of the system
+[2024-08-08 06:29:28] [INFO] [User ID: 435] User logged in
+[2024-08-08 06:29:43] [INFO] [User ID: 435] User has logged out of the system
+[2024-08-08 06:29:47] [INFO] [User ID: 437] User logged in
+[2024-08-08 06:30:45] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 333
+[2024-08-08 06:30:52] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 343
+[2024-08-08 06:30:58] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 389
+[2024-08-08 06:31:06] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 381
+[2024-08-08 06:31:17] [INFO] [User ID: 437] Admin is accessing a user's profile. User: 480
+[2024-08-08 06:32:43] [INFO] [User ID: 437] User has logged out of the system
+[2024-08-08 06:32:52] [INFO] [User ID: 433] User logged in
+[2024-08-08 06:34:03] [INFO] [User ID: 433] User has logged out of the system
+[2024-08-08 06:34:11] [INFO] [User ID: 433] User logged in

@@ -296,8 +296,8 @@ $isbnJson = json_encode($isbns);
                         <div class="front-back-container">
                             <div class="image-container">
                                 <div class="inputcontrol">
-                                    <label class="regular-label">Add the Front Cover of your book</label>
-                                    <label class="img-label" for="front-cover">Upload front cover Image</label>
+                                    <label class="regular-label2">Add the Front Cover of your book</label>
+                                    <label class="img-label no-asterisk" for="front-cover">Select Image</label>
                                     <input type="file" id="front-cover" name="Front-cover"
                                         accept=".jpg,.jpeg,.png,gif" />
                                     <img class="book-images" id="front-image-preview" src="">
@@ -307,8 +307,8 @@ $isbnJson = json_encode($isbns);
 
                             <div class="image-container">
                                 <div class="inputcontrol">
-                                    <label class="regular-label">Add the Back Cover of your book</label>
-                                    <label class="img-label" for="back-cover">Select Image</label>
+                                    <label class="regular-label2">Add the Back Cover of your book</label>
+                                    <label class="img-label no-asterisk" for="back-cover">Select Image</label>
                                     <input type="file" id="back-cover" name="Back-cover" accept=".jpg,.jpeg,.png,gif">
                                     <img class="book-images" id="back-image-preview" src="">
                                     <div class="error"></div>
@@ -316,8 +316,8 @@ $isbnJson = json_encode($isbns);
                             </div>
 
                         </div>
-                        <h4>Please upload other relevant images of your Book</h4>
-                        <h5>If the book is damaged please include the damaged page</h5>
+                        <h4>Please upload other relevant images of your Book<br>
+                            ( If the book is damaged please include the damaged page )</h4>
                         <div class="other-pages-container">
                             <div class="image-container">
                                 <div class="inputcontrol">
@@ -403,63 +403,7 @@ function handleImageChange(inputElement, imagePreviewId) {
 
 
 
-// // //Subjects based on book category
-// // Function to add subjects to the dropdown
-// function addSubjectsToDropdown(subjects) {
-//     var subjectsDropdown = document.getElementById('subjects');
 
-//     // Clear existing options
-//     subjectsDropdown.innerHTML = '';
-
-//     // Add new options based on the subjects array
-//     subjects.forEach(function(subject) {
-//         var option = document.createElement('option');
-//         option.value = subject.toLowerCase().replace(/\s/g, '_'); // Convert subject name to lowercase and replace spaces with underscores
-//         option.textContent = subject; // Set the visible text (e.g., "Algebra")
-//         subjectsDropdown.appendChild(option);
-//     });
-// }
-
-// // Event listener for the book category selection change
-// document.addEventListener('DOMContentLoaded', function() {
-//     document.getElementById('book-categories').addEventListener('change', function() {
-//         var bookCategory = this.value;
-
-//         // Call the function to populate subjects based on the selected book category
-//         switch(bookCategory) {
-//             case 'mathematics':
-//                 addSubjectsToDropdown(['Algebra', 'Geometry', 'Trigonometry', 'Calculus']);
-//                 break;
-//             case 'science':
-//                 addSubjectsToDropdown(['Physics', 'Chemistry', 'Biology', 'Environmental Science']);
-//                 break;
-//             case 'social_studies':
-//                 addSubjectsToDropdown(['History', 'Geography', 'Civics', 'Economics']);
-//                 break;
-//             case 'languages':
-//                 addSubjectsToDropdown(['English Language', 'Kiswahili Language', 'French', 'Spanish']);
-//                 break;
-//             case 'religious_education':
-//                 addSubjectsToDropdown(['Bible Studies', 'Quran Studies', 'Hindu Scriptures']);
-//                 break;
-//             case 'practicals':
-//                 addSubjectsToDropdown(['Home Science', 'Art & Craft', 'Agriculture']);
-//                 break;
-//             case 'physical_health':
-//                 addSubjectsToDropdown(['Physical Education', 'Health Education', 'Hygiene & Nutrition']);
-//                 break;
-//             case 'environmental':
-//                 addSubjectsToDropdown(['Ecology', 'Conservation', 'Sustainability']);
-//                 break;
-//             default:
-//                 // If no book category matches, display a default message or behavior
-//                 var defaultOption = document.createElement('option');
-//                 defaultOption.value = "";
-//                 defaultOption.text = "No subjects available";
-//                 subjectsDropdown.appendChild(defaultOption);
-//         }
-//     });
-// });
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -634,11 +578,7 @@ function showStep(step) {
 
 
 /*--------------------Form validation --------------------*/
-//     document.getElementById("Add-products").addEventListener('submit', function (e) {
-//     e.preventDefault();
-//     // Determine user type based on UI state
-//     validateFileUploads();
-// });
+
 
 function validateField(fieldName, errorMessage) {
     var inputField = document.getElementsByName(fieldName)[0];
@@ -690,25 +630,7 @@ function validateFileUpload(fieldName, errorMessage) {
     }
 }
 
-// function checkIsbnUniqueness(isbn) {
-//     return fetch('../Seller/check_isbn.php', { // Make sure to update this path according to your directory structure
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 isbn: isbn
-//             })
-//         })
-//         .then(response => response.json())
-//         .then(data => {
-//             return data.isUnique;
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             return false;
-//         });
-// }
+
 function checkIsbnUniqueness(isbn) {
     return fetch('', {
             method: 'POST',

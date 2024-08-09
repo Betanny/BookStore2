@@ -35,7 +35,7 @@
                         </div>
                         <div class="info">
                             <h5>Email Address</h5>
-                            <p>info@smartCBC.ac.ke</p>
+                            <p>smartcbcinfo@gmail.com</p>
                         </div>
                     </div>
                     <div class="contact">
@@ -53,7 +53,7 @@
                         </div>
                         <div class="info">
                             <h5>Email Address</h5>
-                            <p>info@smartCBC.ac.ke</p>
+                            <p>smartcbcinfo@gmail.com</p>
                         </div>
                     </div>
 

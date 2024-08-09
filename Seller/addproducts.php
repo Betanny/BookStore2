@@ -23,14 +23,7 @@ try {
     // Set PDO to throw exceptions for errors
     $db_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if (isset($_POST['check_isbn'])) {
-        $isbn = $_POST['isbn'];
-        $stmt = $db_connection->prepare("SELECT COUNT(*) FROM books WHERE isbn = :isbn");
-        $stmt->execute(['isbn' => $isbn]);
-        $isUnique = $stmt->fetchColumn() == 0;
-        echo json_encode(['isUnique' => $isUnique]);
-        exit;
-    }
+
 
 
     if (isset($_POST['submit'])) {

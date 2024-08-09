@@ -177,13 +177,19 @@ try {
             // Execute the statement
             if ($stmt->execute()) {
                 echo "Book status updated to hidden successfully.";
+                header("Refresh:2");
+
             } else {
                 echo "Failed to update book status.";
             }
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
+        header("Refresh:2");
+
+
         exit(); // End script execution after handling the hide action
+
     }
 
 

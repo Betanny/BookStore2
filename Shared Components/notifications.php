@@ -17,7 +17,13 @@ if (!isset($_SESSION['user_id'])) {
 // Get user ID and category from session
 $user_id = $_SESSION['user_id'];
 $category = $_SESSION['category'];
+// Fetch all user emails from the 'users' table
+$stmt_emails = $db->prepare("SELECT email FROM users");
+$stmt_emails->execute();
+$emails = $stmt_emails->fetchAll(PDO::FETCH_COLUMN);
 
+// Pass the emails to JavaScript
+echo "<script>var emailList = " . json_encode($emails) . ";</script>";
 try {
     // Determine which table to query based on user category
     $table_name = '';
@@ -132,6 +138,7 @@ try {
 } catch (Exception $e) {
     error_log("General Error: " . $e->getMessage());
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -205,7 +212,10 @@ try {
                         <div class="form-group">
                             <div class="inputcontrol">
                                 <label class="no-asterisk" for="recipient"></label>
-                                <input type="text" class="inputfield" name="recipient" />
+                                <input type="text" class="inputfield" name="recipient" list="email-suggestions" />
+                                <datalist id="email-suggestions">
+                                    <!-- JavaScript will populate this with options -->
+                                </datalist>
                             </div>
                         </div>
                     </div>
@@ -318,6 +328,18 @@ function replyToNotification() {
     document.getElementById('opened-notification').style.display = 'none';
     addButton.innerHTML = 'Back <div class="icon-cell"><i class="fa-solid fa-back"></i></div>';
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var emailSuggestions = document.getElementById('email-suggestions');
+
+    // Populate datalist with email options
+    emailList.forEach(function(email) {
+        var option = document.createElement('option');
+        option.value = email;
+        emailSuggestions.appendChild(option);
+    });
+});
 </script>
 
 </html>
